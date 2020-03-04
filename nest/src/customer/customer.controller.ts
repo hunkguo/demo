@@ -1,4 +1,5 @@
-import { Controller,Get,Post,Param } from '@nestjs/common';
+import { Controller,Get,Post,Param,Body } from '@nestjs/common';
+import {CreateCustomerDto} from './dto/create-customer.dto';
 
 @Controller('customer')
 export class CustomerController {
@@ -8,7 +9,7 @@ export class CustomerController {
     }
 
     @Post('create')
-    create(): string{
+    async create(@Body CreateCustomerDto:CreateCustomerDto): string{
         return "create success.";
     }
     @Get(':id')
