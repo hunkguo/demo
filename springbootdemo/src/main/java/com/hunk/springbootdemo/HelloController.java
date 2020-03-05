@@ -9,7 +9,7 @@ import org.springframework.ui.ModelMap;
 @Controller
 public class HelloController {
 
-    @RequestMapping("/")
+    @RequestMapping("/hello")
     public String index(ModelMap map){
         map.addAttribute("host", "www.qq.com");
         return "index";
