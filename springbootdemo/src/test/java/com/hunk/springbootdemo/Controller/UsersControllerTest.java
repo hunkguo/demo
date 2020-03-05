@@ -43,7 +43,7 @@ class UsersControllerTest {
         // 2、post提交一个user
         request = post("/users/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"id\":1,\"name\":\"测试大师\",\"age\":20}");
+                .content("{}");
         mvc.perform(request)
                 .andExpect(content().string(equalTo("success")));
 
@@ -51,19 +51,19 @@ class UsersControllerTest {
         request = get("/users/");
         mvc.perform(request)
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("[{\"id\":1,\"name\":\"测试大师\",\"age\":20}]")));
+                .andExpect(content().string(equalTo("[{\"id\":1,\"name\":\"测试大师\",\"phone\":\"\"}]")));
 
         // 4、put修改id为1的user
         request = put("/users/1")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"name\":\"测试终极大师\",\"age\":30}");
+                .content("{\"name\":\"测试终极大师\",\"phone\":30}");
         mvc.perform(request)
                 .andExpect(content().string(equalTo("success")));
 
         // 5、get一个id为1的user
         request = get("/users/1");
         mvc.perform(request)
-                .andExpect(content().string(equalTo("{\"id\":1,\"name\":\"测试终极大师\",\"age\":30}")));
+                .andExpect(content().string(equalTo("{\"id\":1,\"name\":\"测试终极大师\",\"phone\":30}")));
 
         // 6、del删除id为1的user
         request = delete("/users/1");
@@ -79,3 +79,5 @@ class UsersControllerTest {
     }
 
 }
+
+

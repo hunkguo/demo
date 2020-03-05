@@ -3,6 +3,7 @@ package com.hunk.springbootdemo.Controller;
 import com.hunk.springbootdemo.Dao.User;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 @RestController
@@ -30,7 +31,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/")
-    public String postUser(@RequestBody User user) {
+    public String postUser(@Valid @RequestBody User user) {
         // @RequestBody注解用来绑定通过http请求中application/json类型上传的数据
         users.put(user.getId(), user);
         return "success";
