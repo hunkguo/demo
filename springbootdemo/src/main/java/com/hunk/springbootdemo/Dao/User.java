@@ -13,4 +13,10 @@ public class User {
 
     @NotNull
     private String phone;
+
+    public User (String name,String phone) {
+        this.name = name;
+        this.phone = phone;
+    }
+
 }
