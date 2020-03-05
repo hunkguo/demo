@@ -43,7 +43,7 @@ class UsersControllerTest {
         // 2、post提交一个user
         request = post("/users/")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{}");
+                .content("{\"id\":1,\"name\":\"测试大师\",\"phone\":20}");
         mvc.perform(request)
                 .andExpect(content().string(equalTo("success")));
 
@@ -79,5 +79,3 @@ class UsersControllerTest {
     }
 
 }
-
-
