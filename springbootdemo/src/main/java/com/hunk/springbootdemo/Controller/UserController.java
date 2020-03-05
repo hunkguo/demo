@@ -21,6 +21,7 @@ public class UserController {
     public List<User> getUserList() {
         // 还可以通过@RequestParam从页面中传递参数来进行查询条件或者翻页信息的传递
         List<User> r = new ArrayList<User>(users.values());
+
         return r;
     }
 
@@ -75,4 +76,7 @@ public class UserController {
         users.remove(id);
         return "success";
     }
+
+
+
 }
