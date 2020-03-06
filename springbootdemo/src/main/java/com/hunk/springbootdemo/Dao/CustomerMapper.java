@@ -19,4 +19,5 @@ public interface CustomerMapper  {
 
     @Insert("INSERT INTO customers(name, phone) VALUES(#{name}, #{phone})")
     int insert(@Param("name") String name, @Param("phone") String phone);
+
 }
