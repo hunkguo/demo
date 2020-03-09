@@ -1,9 +1,6 @@
 package com.hunk.springbootdemo.Dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -13,11 +10,15 @@ public interface CustomerMapper  {
     List<Customer> findAll();
 
 
-    @Select("SELECT * FROM customers WHERE name=#{name}")
-    Customer findByName(@Param("name") String name);
+    @Select("SELECT * FROM customers WHERE id=#{id}")
+    Customer findById(@Param("id") int id);
 
 
     @Insert("INSERT INTO customers(name, phone) VALUES(#{name}, #{phone})")
     int insert(@Param("name") String name, @Param("phone") String phone);
+
+
+    @Update("UPDATE customers SET name=#{name}, phone=#{phone} WHERE id=#{id}")
+    int update(@Param("id") int id,@Param("name") String name, @Param("phone") String phone);
 
 }

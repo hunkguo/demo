@@ -8,4 +8,7 @@ import java.util.List;
 @Service
 public interface CustomerService {
     List<Customer> getList();
+    Customer findCustomerById(int id);
+    int addCustomer(Customer c);
+    int updateCustomer(Customer c);
 }

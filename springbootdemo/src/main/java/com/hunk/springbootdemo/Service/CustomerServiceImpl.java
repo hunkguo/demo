@@ -19,4 +19,36 @@ public class CustomerServiceImpl implements CustomerService{
     public List<Customer> getList() {
         return customerMapper.findAll();
     }
+
+    @Override
+    public int addCustomer(Customer c){
+        try
+        {
+            customerMapper.insert(c.getName(), c.getPhone());
+            return 1;
+        }
+        catch(Exception e)
+        {
+            return 0;
+        }
+
+    }
+
+    @Override
+    public Customer findCustomerById(int id){
+        Customer c = customerMapper.findById(id);
+        return c;
+    }
+
+    @Override
+    public int updateCustomer(Customer c){
+        try{
+            customerMapper.update(c.getId(),c.getName(),c.getPhone());
+            return 1;
+        }
+        catch(Exception e)
+        {
+            return 0;
+        }
+    }
 }

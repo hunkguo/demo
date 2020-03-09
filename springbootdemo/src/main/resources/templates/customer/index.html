@@ -8,9 +8,9 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-12main">
-            <h1 class="page-header">Dashboard</h1>
 
-            <h2 class="sub-header">Section title</h2>
+            <h5 class="sub-header"><a href="/customer/create">创建</a></h5>
+
             <div class="table-responsive">
                 <table class="table table-striped">
                     <thead>
@@ -27,7 +27,7 @@
                         <td th:text="${c.name}"></td>
                         <td th:text="${c.phone}"></td>
                         <td>
-                            <a  class="btn btn-primary"  th:href="@{/intoUpdate(id=${c.id})}">修改</a>
+                            <a  class="btn btn-primary"  th:href="@{/customer/intoUpdate(id=${c.id})}">修改</a>
                             <a  class="btn btn-danger"  th:href="@{/delete(id=${c.id})}">删除</a>
                         </td>
                     </tr>
