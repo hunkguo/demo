@@ -27,7 +27,8 @@
                         <td th:text="${c.name}"></td>
                         <td th:text="${c.phone}"></td>
                         <td>
-                            <a  class="btn btn-primary"  th:href="@{/customer/edit(id=${c.id})}">修改</a>
+                            <a  class="btn btn-primary"  th:href="@{'/customer/edit/' + ${c.id}}">修改</a>
+                            <a  class="btn btn-danger"  th:href="@{'/customer/delete/'+ ${c.id}}">删除</a>
                         </td>
                     </tr>
                     </tbody>

@@ -15,28 +15,26 @@
 
             <h5 class="sub-header">创建进货清单</h5>
 
-            <form th:action="@{/purchase/create}" th:object="${purchaseInfo}" method="post">
+            <form th:action="@{/purchase/save}" th:object="${purchaseInfo}" method="post">
                 <div class="form-group">
-                    <label for="product_id">产品编号id</label>
-                    <select class="form-control" id="product_id" th:field="*{product_id}" >
+                    <label for="product">产品编号id</label>
+                    <select class="form-control"  th:field="*{product}" >
                         <option value="0">请选择</option>
                         <option th:each="p:${product_list}" th:text="${p.name}"
-                                th:value="${p.id}"
-                                th:selected="(${p.id} == ${purchaseInfo.product_id})"></option>
-
+                                th:value="${p.id}"></option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label for="quantity">数量</label>
-                    <input type="text" class="form-control" id="quantity" placeholder="请输入产品进货数量" th:field="*{quantity}">
+                    <input type="text" class="form-control"  placeholder="请输入产品进货数量" th:field="*{quantity}">
                 </div>
                 <div class="form-group">
                     <label for="price">单价</label>
-                    <input type="text" class="form-control" id="price" placeholder="请输入产品单价" th:field="*{price}">
+                    <input type="text" class="form-control"  placeholder="请输入产品单价" th:field="*{price}">
                 </div>
                 <div class="form-group">
                     <label for="contact">联系人</label>
-                    <input type="text" class="form-control" id="contact" placeholder="请输入产品联系人" th:field="*{contact}">
+                    <input type="text" class="form-control"  placeholder="请输入产品联系人" th:field="*{contact}">
                 </div>
                 <button type="submit" class="btn btn-default">保存</button>
             </form>

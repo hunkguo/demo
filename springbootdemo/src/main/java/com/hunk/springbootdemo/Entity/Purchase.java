@@ -2,10 +2,7 @@ package com.hunk.springbootdemo.Entity;
 
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -14,8 +11,11 @@ public class Purchase {
     @Id
     @GeneratedValue
     private Integer id;
-    //private Product product;
-    private Integer quantity;
-    private Number price;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id")
+    private Product product;
+    private int quantity;
+    private float price;
     private String contact;
 }

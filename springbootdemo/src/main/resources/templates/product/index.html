@@ -27,8 +27,8 @@
                         <td th:text="${c.name}"></td>
                         <td th:text="${c.sku}"></td>
                         <td>
-                            <a  class="btn btn-primary"  th:href="@{/product/intoUpdate(id=${c.id})}">修改</a>
-                            <a  class="btn btn-danger"  th:href="@{/delete(id=${c.id})}">删除</a>
+                            <a  class="btn btn-primary"  th:href="@{'/product/edit/' + ${c.id}}">修改</a>
+                            <a  class="btn btn-danger"  th:href="@{'/product/delete/'+ ${c.id}}">删除</a>
                         </td>
                     </tr>
                     </tbody>

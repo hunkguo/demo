@@ -11,7 +11,7 @@
 
             <h5 class="sub-header">编辑产品</h5>
 
-            <form th:action="@{/product/saveupdate}" th:object="${productInfo}" method="post">
+            <form th:action="@{/product/update}" th:object="${productInfo}" method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
                     <label for="name">产品名称</label>

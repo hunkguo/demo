@@ -3,6 +3,7 @@ package com.hunk.springbootdemo.Controller;
 
 import com.hunk.springbootdemo.Entity.Customer;
 import com.hunk.springbootdemo.Entity.CustomerRepository;
+import com.hunk.springbootdemo.Entity.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -40,8 +41,8 @@ public class CustomerController {
 
 
 
-    @GetMapping("/edit")
-    public String getEdit(@RequestParam("id") int id, Model model){
+    @GetMapping("/edit/{id}")
+    public String getEdit(@PathVariable("id") int id, Model model){
         Customer customerInfo = customerRepository.getOne(id);
         model.addAttribute("customerInfo", customerInfo);
         return "customer/edit";
@@ -51,6 +52,13 @@ public class CustomerController {
     public String postUpdate(@ModelAttribute(value = "customerInfo") Customer customerInfo){
 
         customerRepository.save(customerInfo);
+        return "redirect:/customer";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String getDelete(@PathVariable("id") int id, Model model){
+        Customer customerInfo = customerRepository.getOne(id);
+        customerRepository.delete(customerInfo);
         return "redirect:/customer";
     }
 
