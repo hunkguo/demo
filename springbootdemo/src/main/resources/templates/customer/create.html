@@ -12,7 +12,7 @@
 
             <h2 class="sub-header">Section title</h2>
 
-            <form th:action="@{/customer/create}" th:object="${customerInfo}" method="post">
+            <form th:action="@{/customer/save}" th:object="${customerInfo}" method="post">
                 <div class="form-group">
                     <label for="name">客户名称</label>
                     <input type="text" class="form-control" id="name" placeholder="请输入客户名称" th:field="*{name}">
