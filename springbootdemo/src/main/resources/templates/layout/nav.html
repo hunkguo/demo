@@ -19,8 +19,9 @@
                 </div>
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav navbar-right">
-                        <li th:class="${isCustomerManage} ? active"><a href="#">客户管理</a></li>
-                        <li th:class="${isCaigouManage} ? active"><a href="#about">采购管理</a></li>
+                        <li th:class="${isCustomerManage} ? active"><a href="/customer">客户管理</a></li>
+                        <li th:class="${isProductManage} ? active"><a href="/product">产品管理</a></li>
+                        <li th:class="${isPurchaseManage} ? active"><a href="/purchase">采购管理</a></li>
                         <li th:class="${isOrderManage} ? active"><a href="#contact">订单管理</a></li>
                         <li th:class="${isReturnManage} ? active"><a href="#contact">售后管理</a></li>
                         <li th:class="${isKucunManage} ? active"><a href="#contact">库存管理</a></li>
