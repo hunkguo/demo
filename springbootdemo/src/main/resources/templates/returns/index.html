@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head  th:replace="layout/header :: header"/>
+<body>
+<nav th:replace="layout/nav :: nav"></nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12main">
+
+            <h5 class="sub-header"><a href="/returns/create">创建订单</a></h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>产品名称</th>
+                        <th>订单ID</th>
+                        <th>退货数量</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="c : ${returns}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.product.name}"></td>
+                        <td th:text="${c.order.id}"></td>
+                        <td th:text="${c.quantity}"></td>
+                        <td>
+                            <a  class="btn btn-primary"  th:href="@{'/returns/edit/' + ${c.id}}">修改</a>
+                            <a  class="btn btn-danger"  th:href="@{'/returns/delete/'+ ${c.id}}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<div th:replace="layout/footer :: footer"></div>
+
+</body>
+</html>
+

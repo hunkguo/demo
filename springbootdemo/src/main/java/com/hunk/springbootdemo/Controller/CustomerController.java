@@ -3,13 +3,14 @@ package com.hunk.springbootdemo.Controller;
 
 import com.hunk.springbootdemo.Entity.Customer;
 import com.hunk.springbootdemo.Entity.CustomerRepository;
-import com.hunk.springbootdemo.Entity.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/customer")
@@ -33,7 +34,8 @@ public class CustomerController {
     }
 
     @PostMapping("/save")
-    public String postSave(@ModelAttribute(value = "customerInfo") Customer customerInfo){
+    public String postSave(@ModelAttribute(value = "customerInfo") @Valid Customer customerInfo){
+
         customerRepository.save(customerInfo);
         return "redirect:/customer";
 
@@ -49,7 +51,7 @@ public class CustomerController {
     }
 
     @PostMapping("/update")
-    public String postUpdate(@ModelAttribute(value = "customerInfo") Customer customerInfo){
+    public String postUpdate(@ModelAttribute(value = "customerInfo") @Valid Customer customerInfo){
 
         customerRepository.save(customerInfo);
         return "redirect:/customer";

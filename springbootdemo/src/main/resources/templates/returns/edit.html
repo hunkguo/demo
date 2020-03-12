@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head  th:replace="layout/header :: header"/>
+<body>
+<nav th:replace="layout/nav :: nav"></nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12main">
+
+            <h5 class="sub-header">创建退货</h5>
+
+            <form th:action="@{/returns/save}" th:object="${returnsInfo}" method="post">
+                <div class="form-group">
+                    <label for="product">产品编号id</label>
+                    <select class="form-control"  th:field="*{product}" >
+                        <option value="0">请选择</option>
+                        <option th:each="p:${product_list}" th:text="${p.name}"
+                                th:value="${p.id}"
+                                th:selected="(${p.id} == ${(returnsInfo.product).id})"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="order">订单id</label>
+                    <select class="form-control"  th:field="*{order}" >
+                        <option value="0">请选择</option>
+                        <option th:each="p:${order_list}" th:text="${p.id}"
+                                th:value="${p.id}"
+                                th:selected="(${p.id} == ${(returnsInfo.order).id})"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">数量</label>
+                    <input type="text" class="form-control"  placeholder="请输入产品销售数量" th:field="*{quantity}">
+                </div>
+                <button type="submit" class="btn btn-default">保存</button>
+            </form>
+
+
+
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<div th:replace="layout/footer :: footer"></div>
+
+</body>
+</html>
+

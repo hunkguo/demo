@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -35,7 +36,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/save")
-    public String postSave(@ModelAttribute(value = "purchaseInfo") Purchase purchaseInfo){
+    public String postSave(@ModelAttribute(value = "purchaseInfo") @Valid Purchase purchaseInfo){
         purchaseRepository.save(purchaseInfo);
         return "redirect:/purchase";
 
@@ -50,7 +51,7 @@ public class PurchaseController {
     }
 
     @PostMapping("/update")
-    public String postUpdate(@ModelAttribute(value = "purchaseInfo") Purchase purchaseInfo){
+    public String postUpdate(@ModelAttribute(value = "purchaseInfo") @Valid Purchase purchaseInfo){
 
         purchaseRepository.save(purchaseInfo);
         return "redirect:/purchase";
