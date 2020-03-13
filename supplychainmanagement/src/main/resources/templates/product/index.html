@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head  th:replace="layout/header :: header"/>
+<body>
+<nav th:replace="layout/nav :: nav"></nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12main">
+
+            <h5 class="sub-header"><a href="/product/create">创建产品</a></h5>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>产品名称</th>
+                        <th>SKU</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="c : ${products}">
+                        <td th:text="${c.id}"></td>
+                        <td th:text="${c.name}"></td>
+                        <td th:text="${c.sku}"></td>
+                        <td>
+                            <a  class="btn btn-primary"  th:href="@{'/product/edit/' + ${c.id}}">修改</a>
+                            <a  class="btn btn-danger"  th:href="@{'/product/delete/'+ ${c.id}}">删除</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<div th:replace="layout/footer :: footer"></div>
+
+</body>
+</html>
+
