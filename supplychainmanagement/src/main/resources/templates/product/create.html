@@ -8,22 +8,28 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-12main">
+            <div class="page-header">
+                <h5 class="sub-header"></h5>
+            </div>
 
-            <h5 class="sub-header">创建产品</h5>
-
-            <form th:action="@{/product/save}" th:object="${productInfo}" method="post">
-                <div class="form-group">
-                    <label for="name">产品名称</label>
-                    <input type="text" class="form-control" id="name" placeholder="请输入产品名称" th:field="*{name}">
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">创建产品</h3>
                 </div>
-                <div class="form-group">
-                    <label for="sku">SKU</label>
-                    <input type="text" class="form-control" id="sku" placeholder="请输入产品sku" th:field="*{sku}">
+                <div class="panel-body" >
+                    <form th:action="@{/product/save}" th:object="${productInfo}" method="post">
+                        <div class="form-group">
+                            <label for="name">产品名称</label>
+                            <input type="text" class="form-control" id="name" placeholder="请输入产品名称" th:field="*{name}">
+                        </div>
+                        <div class="form-group">
+                            <label for="sku">SKU</label>
+                            <input type="text" class="form-control" id="sku" placeholder="请输入产品sku" th:field="*{sku}">
+                        </div>
+                        <button type="submit" class="btn btn-default">保存</button>
+                    </form>
                 </div>
-                <button type="submit" class="btn btn-default">保存</button>
-            </form>
-
-
+            </div>
 
         </div>
     </div>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head  th:replace="layout/header :: header"/>
+<body>
+<nav th:replace="layout/nav :: nav"></nav>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 col-md-12main">
+
+            <h5 class="sub-header" th:text="${product.name}">产品名称</h5>
+
+            <ul>
+                <li>
+                    <dl>
+                        <dt>产品进货数量</dt>
+                        <dd th:text="${purchasecount}"></dd>
+                    </dl>
+                    <dl>
+                        <dt>产品进货总价</dt>
+                        <dd th:text="${purchasesum}"></dd>
+                    </dl>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+<!-- /.container -->
+
+<div th:replace="layout/footer :: footer"></div>
+
+</body>
+</html>
+

@@ -8,8 +8,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-12 col-md-12main">
+            <div class="page-header">
+                <h5 class="sub-header"></h5>
+            </div>
 
-            <h5 class="sub-header">编辑产品</h5>
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">编辑产品</h3>
+                </div>
+                <div class="panel-body" >
 
             <form th:action="@{/product/update}" th:object="${productInfo}" method="post">
                 <input type="hidden" th:field="*{id}"/>
@@ -23,8 +30,8 @@
                 </div>
                 <button type="submit" class="btn btn-default">保存</button>
             </form>
-
-
+                </div>
+            </div>
 
         </div>
     </div>

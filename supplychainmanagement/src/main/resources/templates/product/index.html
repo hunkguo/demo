@@ -9,30 +9,47 @@
     <div class="row">
         <div class="col-sm-12 col-md-12main">
 
-            <h5 class="sub-header"><a href="/product/create">创建产品</a></h5>
+            <div class="page-header">
+                <h3 class="sub-header"><a href="/product/create">创建产品</a></h3>
+            </div>
 
-            <div class="table-responsive">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>产品名称</th>
-                        <th>SKU</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="c : ${products}">
-                        <td th:text="${c.id}"></td>
-                        <td th:text="${c.name}"></td>
-                        <td th:text="${c.sku}"></td>
-                        <td>
-                            <a  class="btn btn-primary"  th:href="@{'/product/edit/' + ${c.id}}">修改</a>
-                            <a  class="btn btn-danger"  th:href="@{'/product/delete/'+ ${c.id}}">删除</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+            <div class="panel panel-primary"  th:each="c : ${products}">
+                <div class="panel-heading">
+                    <h3 class="panel-title" th:text="${c.name}">Panel title</h3>
+                </div>
+                <div class="panel-body" >
+                    <div class="list-group" th:if="${c.sku !=null}" >
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">SKU</h4>
+                            <p class="list-group-item-text" th:text="${c.sku}">...</p>
+                        </a>
+                    </div>
+                    <div class="list-group" th:if="${c.specification !=null}" >
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">规格</h4>
+                            <p class="list-group-item-text" th:text="${c.specification}">...</p>
+                        </a>
+                    </div>
+                    <div class="list-group" th:if="${c.feature !=null}" >
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">功能</h4>
+                            <p class="list-group-item-text" th:text="${c.feature}">...</p>
+                        </a>
+                    </div>
+                    <div class="list-group" th:if="${c.description !=null}" >
+                        <a href="#" class="list-group-item">
+                            <h4 class="list-group-item-heading">描述</h4>
+                            <p class="list-group-item-text" th:text="${c.description}">...</p>
+                        </a>
+                    </div>
+                    <p>
+                        <a  class="btn btn-primary"  th:href="@{'/product/edit/' + ${c.id}}">修改</a>
+                        <a  class="btn btn-danger"  th:href="@{'/product/delete/'+ ${c.id}}">删除</a>
+                        <a  class="btn btn-danger"  th:href="@{'/product/detail/'+ ${c.id}}">详情</a>
+                        <a  class="btn btn-danger"  th:href="@{'/instock/detail/'+ ${c.id}}">存货</a>
+                    </p>
+                </div>
+            </div>
 
             </div>
         </div>

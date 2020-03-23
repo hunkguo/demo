@@ -4,16 +4,13 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Data
-@Table(name="sales_order")
-public class Order {
-
+public class ProductImage {
     @Id
     @GeneratedValue
     private int id;
@@ -23,18 +20,13 @@ public class Order {
     @NotNull(message = "请选择产品！")
     private Product product;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
-    @NotNull(message = "请选择消费者！")
-    private Customer customer;
+    @Column(nullable = false, unique = true)
+    @NotEmpty(message = "图片路径")
+    private String imageFilePath;
 
-    @Min(value=1,message = "销售数量不能为空！")
-    private int quantity;
-    @Min(value=1,message = "销售单价不能为空！")
-    private BigDecimal price;
+    private String description;
 
     @CreationTimestamp
     @Temporal(TemporalType.TIMESTAMP)
     private Date created_at;
-
 }
