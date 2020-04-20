@@ -101,7 +101,7 @@ class announcement:
 
     def writeH5(self, h5Key, dfData):
         # 写h5
-        store = pd.HDFStore(self.hdfsFile,'w', complevel=4, complib='blosc')
+        store = pd.HDFStore(self.hdfsFile,'a', complevel=4, complib='blosc')
         store[h5Key] = dfData
         store.close()
 
@@ -112,18 +112,27 @@ class announcement:
 
     def getCal(self):
         try:
-            df_cal = self.readH5('cal')
+            data_cal = self.readH5('cal')
         except:
-            df_cal = self.pro.trade_cal(exchange='')
+            data_cal = self.pro.trade_cal(exchange='')
             self.writeH5('cal', df_cal)
-        return df_cal
+        return data_cal
 
     def getStock(self):
         try:
-            df_stock = self.readH5('stock')
+            data_stock = self.readH5('stock')
         except:
-            df_stock = self.pro.stock_basic(exchange='', list_status='L')
+            data_stock = self.pro.stock_basic(exchange='', list_status='L')
             self.writeH5('stock', df_stock)
+        return data_stock
+
+    def getAnnouncement(self, ts_code, last_month, curr_month):
+        try:
+            data_announcement = self.readH5('announcement')
+        except:
+            #获取最新的50条公告数据
+            data_announcement = self.pro.anns(ts_code=ts_code, start_date=last_month ,end_date=curr_month )
+            self.writeH5('announcement', data_announcement)
         return df_stock
 
 
@@ -132,9 +141,29 @@ class announcement:
 
 
         for stock in data_stock.iterrows():
-            print(stock[1]["ts_code"])
+            ts_code = stock[1]["ts_code"]
+
+            last_month = data_month[0]
+            for curr_month in data_month:
+                if(last_month == curr_month):
+                    continue
+                self.getAnnouncement(ts_code, last_month, curr_month)
+
+
+                last_month = curr_month
+
+            '''
         
-      
+
+            for anns in df_announcement.iterrows():
+                print(anns[1]["ts_code"])
+                print(anns[1]["ann_date"])
+                print(anns[1]["ann_type"])
+                print(anns[1]["title"])
+                print(anns[1]["pub_time"])
+                
+                #print(anns[1]["content"])
+            '''
 
     def test(self):
         today = datetime.datetime.today().date() 

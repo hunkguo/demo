@@ -69,10 +69,6 @@ if __name__ == '__main__':
             mwc.study(pdf_url)
 
     
-    sentences = word2vec.Text8Corpus('分词后的语料.txt')
-    # 训练模型
-    model = word2vec.Word2Vec(sentences, sg=1, workers=3,batch_words=1000)
-    # 保存模型
-    model.save('study.model')
+
 
 
