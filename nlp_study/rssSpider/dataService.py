@@ -32,15 +32,16 @@ def downloadRssDara(rss):
 
     start = time()
     cl = db["news"]
-    cl.ensure_index([('datetime', ASCENDING)], unique=True)         # 添加索引
+    cl.ensure_index([('link', ASCENDING)], unique=True)         # 添加索引
     for i in range(len(feedData.entries)):
+        '''
         print('-' * 20)
         print("开始下载[文章%d]数据" % i)
         print('-' * 20)
-        #print(feedData.entries[i].title)
+        print(feedData.entries[i].title)
         print(feedData.entries[i].summary)
-        #print(feedData.entries[i].link)
-
+        print(feedData.entries[i].link)
+        '''
 
         rss = RssData()
         rss.title = feedData.entries[i].title
@@ -48,7 +49,7 @@ def downloadRssDara(rss):
         rss.link = feedData.entries[i].link
         
         d = rss.__dict__
-        flt = {'datetime': start}
+        flt = {'link': rss.link}
         cl.replace_one(flt, d, True)            
 
     end = time()
