@@ -7,6 +7,8 @@ import datetime,time
 import tushare as ts
 import numpy as np
 import pandas as pd
+from utils import getTushareDate
+from tqdm import tqdm
 
 
 # 概念
@@ -19,9 +21,11 @@ class concept:
         # 初始化
         pro = ts.pro_api('d94b8d1af9f3110dca7acf2e85b4bf10b7d33de74491de8f671c4b8b')
 
+        currentDate = getTushareDate()
+
 
         #获取单日全部股票数据
-        moneyflow = pro.moneyflow(trade_date='20200528',fields='ts_code,net_mf_vol,net_mf_amount')
+        moneyflow = pro.moneyflow(trade_date=currentDate,fields='ts_code,net_mf_vol,net_mf_amount')
         #print(moneyflow)
 
         '''
@@ -40,21 +44,30 @@ class concept:
         # 取所有概念
         concept_list = pro.concept(fields='code,name')
 
-        for concept in concept_list.iterrows():
-            #print(concept[1]['code'])
-            #print(concept[1]['name'])
+        for index, concept in tqdm(concept_list.iterrows(), total=concept_list.shape[0]):
             time.sleep(0.3)
-            concept_detail = pro.concept_detail(id=concept[1]['code'], fields='ts_code,name')
+
+            concept_ts_code = concept['code']
+            concept_name = concept['name']
+
+            concept_detail = pro.concept_detail(id=concept_ts_code, fields='ts_code,name')
 
             concept_amount = pd.merge(moneyflow,concept_detail,on=['ts_code'])
-            #print(concept_amount['net_mf_amount'].sum())
+            concept_amount = concept_amount['net_mf_amount'].sum()
 
-            series = pd.Series({"code":concept[1]['code'],'net_mf_amount':concept_amount['net_mf_amount'].sum()},name=concept[1]['name'])
+            #print(concept_name)
+            #print(concept_amount)
 
-            df_concept_net_mf_amount = df_concept_net_mf_amount.append(series)
-            
-            print(df_concept_net_mf_amount)
-        df_concept_net_mf_amount.to_csv('概念20200528.csv')
+            if(concept_amount == 0):
+                break
+
+            new_concept = pd.Series({'code':concept_ts_code,'net_mf_amount':concept_amount},name=concept_name)
+
+
+            df_concept_net_mf_amount = df_concept_net_mf_amount.append(new_concept)
+
+            #print(df_concept_net_mf_amount)
+        df_concept_net_mf_amount.to_csv('概念'+currentDate+'.csv')
             
 '''
 ts_code  name
