@@ -1,83 +1,67 @@
 <template>
-  <v-app id="inspire">
-    <v-navigation-drawer
-      v-model="drawer"
-      app
-      clipped
-    >
-      <v-list dense>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-view-dashboard</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Dashboard</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-    </v-navigation-drawer>
+  <v-card
+    max-width="450"
+    class="mx-auto"
+  >
+    <v-list three-line>
+      <template v-for="(item, index) in items">
+        <v-subheader
+          v-if="item.header"
+          :key="item.header"
+          v-text="item.header"
+        ></v-subheader>
 
-    <v-app-bar
-      app
-      clipped-left
-    >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
-    </v-app-bar>
+        <v-divider
+          v-else-if="item.divider"
+          :key="index"
+          :inset="item.inset"
+        ></v-divider>
 
-    <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
+        <v-list-item
+          v-else
+          :key="item.title"
         >
-          <v-col class="shrink">
-            <v-tooltip right>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  :href="source"
-                  icon
-                  large
-                  target="_blank"
-                  v-on="on"
-                >
-                  <v-icon large>mdi-code-tags</v-icon>
-                </v-btn>
-              </template>
-              <span>Source</span>
-            </v-tooltip>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-content>
 
-    <v-footer app>
-      <span>&copy; 2020</span>
-    </v-footer>
-  </v-app>
+          <v-list-item-content>
+            <v-list-item-title v-html="item.title"></v-list-item-title>
+            <v-list-item-subtitle v-html="item.subtitle"></v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-list>
+  </v-card>
 </template>
 
 <script>
   export default {
-    props: {
-      source: String,
-    },
     data: () => ({
-      drawer: null,
+      items: [
+        { header: 'Youtube Audio List' },
+        {
+          title: 'Brunch this weekend?',
+          subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?",
+        },
+        { divider: true, inset: true },
+        {
+          title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+          subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend.",
+        },
+        { divider: true, inset: true },
+        {
+          title: 'Oui oui',
+          subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?",
+        },
+        { divider: true, inset: true },
+        {
+          title: 'Birthday gift',
+          subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?",
+        },
+        { divider: true, inset: true },
+        {
+          title: 'Recipe to try',
+          subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos.",
+        },
+      ],
     }),
-    created () {
-      this.$vuetify.theme.dark = true
-    },
   }
 </script>
