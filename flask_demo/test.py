@@ -12,7 +12,8 @@ ydl_opts = {
         '-ar', '16000'
     ],
     'prefer_ffmpeg': True,
-    'keepvideo': True
+    'keepvideo': True,
+    'outtmpl': '/tmp/foo_%(title)s-%(id)s.%(ext)s'
 }
 
 with youtube_dl.YoutubeDL(ydl_opts) as ydl:
