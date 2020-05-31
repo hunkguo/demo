@@ -42,14 +42,19 @@
           align="center"
           justify="center"
         >
-          <v-col class="shrink">
-              <BottomNavigation/>
+          <v-col class="shrink">              
+            <router-view></router-view>
           </v-col>
         </v-row>
         
         
 
       </v-container>
+
+    <img src="./assets/logo.png">
+       <router-link :to="{name:'HelloWorld'}"><h1>H1</h1></router-link>
+       <router-link :to="{name:'H1'}"><h1>H2</h1></router-link>
+    <router-view></router-view>
     </v-content>
 
     <v-footer app>
@@ -59,15 +64,9 @@
 </template>
 
 <script>
-import BottomNavigation from './components/BottomNavigation';
 
 export default {
   name: 'App',
-
-  components: {
-    BottomNavigation
-  },
-
   props: {
     source: String,
   },
