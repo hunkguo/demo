@@ -6,6 +6,7 @@ import VueRouter from 'vue-router';
 Vue.config.productionTip = false
 
 
+
 //安装插件
 Vue.use(VueRouter); //挂载属性
 
