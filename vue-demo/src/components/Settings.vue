@@ -6,12 +6,10 @@
         class="mb-5"
         cols="12"
       >
-      
-        <h2 class="headline font-weight-bold mb-3">
-          Home
-        </h2>
         <v-row justify="center">
-          <router-link :to="{path:'/'}">首页</router-link>
+          <h2 class="headline font-weight-bold mb-3">
+            {{ msg }}Settings
+          </h2>
         </v-row>
       </v-col>
 
@@ -21,7 +19,7 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'Settings',
   props: {
     msg: String
   }

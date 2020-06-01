@@ -11,7 +11,19 @@
             <v-icon>mdi-view-dashboard</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Dashboard</v-list-item-title>
+            <v-list-item-title>
+              <router-link :to="{name:'HelloWorld'}">首页</router-link>
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link>
+          <v-list-item-action>
+            <v-icon>mdi-view-dashboard</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              <router-link :to="{name:'Dashboard'}">Dashboard</router-link>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link>
@@ -19,7 +31,9 @@
             <v-icon>mdi-cog</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
+            <v-list-item-title>
+              <router-link :to="{name:'Settings'}">Settings</router-link>
+            </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -42,19 +56,11 @@
           align="center"
           justify="center"
         >
-          <v-col class="shrink">              
+          <v-col class="shrink">
             <router-view></router-view>
           </v-col>
         </v-row>
-        
-        
-
       </v-container>
-
-    <img src="./assets/logo.png">
-       <router-link :to="{name:'HelloWorld'}"><h1>H1</h1></router-link>
-       <router-link :to="{name:'H1'}"><h1>H2</h1></router-link>
-    <router-view></router-view>
     </v-content>
 
     <v-footer app>
@@ -63,18 +69,17 @@
   </v-app>
 </template>
 
+
 <script>
 
 export default {
   name: 'App',
-  props: {
-    source: String,
+
+  components: {
   },
+
   data: () => ({
-      drawer: null,
+    //
   }),
-  created () {
-    this.$vuetify.theme.dark = true
-  },
 };
 </script>
