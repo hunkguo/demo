@@ -13,6 +13,7 @@
 
         
         <v-row justify="center">
+        <span>{{ info }}</span>
         <span
             v-for="(user, i) in info"
             :key="i"
@@ -41,17 +42,11 @@
   import Vue from 'vue'
   export default {
     name: 'HelloWorld',
-    mounted () {  
-      Vue.axios.get('http://106.55.33.30:5000/api/').then((response) => {
-        console.log(response.data);
-        this.info = response.data;
-})
-    },
 
-    data: () => ({
-      return: {
-        info: null
-      },
+    data() {
+      return {
+        info: [],
+
       importantLinks: [
         {
           text: 'Documentation',
@@ -62,6 +57,13 @@
           href: 'https://medium.com/vuetify',
         },
       ],
-    }),
+    },
+
+    mounted: {  
+      Vue.axios.get('http://106.55.33.30:5000/api/').then((response) => {
+        //console.log(response.data);
+        this.info = response.data;
+})
+    },
   }
 </script>

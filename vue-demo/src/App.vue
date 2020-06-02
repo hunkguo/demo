@@ -75,11 +75,16 @@
 export default {
   name: 'App',
 
+  props: {
+    source: String,
+  },
   components: {
   },
-
   data: () => ({
-    //
+    drawer: null,
   }),
+  created () {
+    this.$vuetify.theme.dark = true
+  },
 };
 </script>
