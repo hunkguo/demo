@@ -6,11 +6,18 @@ import Dashboard from './components/Dashboard.vue'
 import Settings from './components/Settings.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import vuetify from './plugins/vuetify';
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+
 
 Vue.config.productionTip = false
 
 //安装插件
 Vue.use(VueRouter); //挂载属性
+
+
+Vue.use(VueAxios, axios)
+
 //创建路由对象并配置路由规则
 let router = new VueRouter({
     routes: [

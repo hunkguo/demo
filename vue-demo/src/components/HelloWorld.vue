@@ -10,8 +10,16 @@
         <h2 class="headline font-weight-bold mb-3">
           Important Links
         </h2>
+
         
         <v-row justify="center">
+        <span
+            v-for="(user, i) in info"
+            :key="i"
+            :href="user.id"
+          >
+            {{ user.name }}
+          </span>
           <a
             v-for="(link, i) in importantLinks"
             :key="i"
@@ -29,10 +37,21 @@
 </template>
 
 <script>
+
+  import Vue from 'vue'
   export default {
     name: 'HelloWorld',
+    mounted () {  
+      Vue.axios.get('http://106.55.33.30:5000/api/').then((response) => {
+        console.log(response.data);
+        this.info = response.data;
+})
+    },
 
     data: () => ({
+      return: {
+        info: null
+      },
       importantLinks: [
         {
           text: 'Documentation',
