@@ -39,31 +39,34 @@
 
 <script>
 
-  import Vue from 'vue'
   export default {
     name: 'HelloWorld',
+
 
     data() {
       return {
         info: [],
-
-      importantLinks: [
-        {
-          text: 'Documentation',
-          href: 'https://vuetifyjs.com',
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify',
-        },
-      ],
+        error: undefined,
+        importantLinks: [
+          {
+            text: 'Documentation',
+            href: 'https://vuetifyjs.com',
+          },
+          {
+            text: 'Articles',
+            href: 'https://medium.com/vuetify',
+          },
+        ],
+      }
     },
-
-    mounted: {  
-      Vue.axios.get('http://106.55.33.30:5000/api/').then((response) => {
-        //console.log(response.data);
-        this.info = response.data;
-})
-    },
+    mounted () {
+        this.$http.get('api').then(response => {
+        this.info = response.body;
+        console.log(response.body)
+        }, error => {
+          console.log(error)
+      });
+    }
   }
+    
 </script>

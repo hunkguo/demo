@@ -6,17 +6,15 @@ import Dashboard from './components/Dashboard.vue'
 import Settings from './components/Settings.vue'
 import HelloWorld from './components/HelloWorld.vue'
 import vuetify from './plugins/vuetify';
-import axios from 'axios';
-import VueAxios from 'vue-axios';
+
+import VueResource from 'vue-resource';
 
 
 Vue.config.productionTip = false
+Vue.use(VueResource);
 
 //安装插件
 Vue.use(VueRouter); //挂载属性
-
-
-Vue.use(VueAxios, axios)
 
 //创建路由对象并配置路由规则
 let router = new VueRouter({
@@ -29,6 +27,7 @@ let router = new VueRouter({
     ]
 });
 
+Vue.http.options.root = 'http://106.55.33.30:5000/';
 
 new Vue({
     //让vue知道我们的路由规则
