@@ -16,6 +16,7 @@
                 label="链接"
                 placeholder="支持youtube地址"
                 required
+                autofocus='true'
               ></v-text-field>
 
             </v-card-text>
@@ -37,8 +38,6 @@
 
   export default {
     name: 'HelloWorld',
-
-
     data() {
       return {
         videoLink: null,
