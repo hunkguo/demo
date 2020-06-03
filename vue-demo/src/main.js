@@ -27,7 +27,7 @@ let router = new VueRouter({
     ]
 });
 
-Vue.http.options.root = 'http://106.55.33.30:5000/';
+Vue.http.options.root = 'http://106.55.33.30:5000/api/';
 
 new Vue({
     //让vue知道我们的路由规则
