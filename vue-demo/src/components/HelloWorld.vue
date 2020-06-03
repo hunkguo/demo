@@ -1,8 +1,29 @@
 <template>
   <v-container>
+
     <v-row justify="center">
       <v-col cols="12" sm="10" md="8" lg="6">
         <v-row justify="center">
+
+
+          <v-card
+            class="mx-auto"
+            max-width="400"
+            tile
+          >
+            <v-list>
+              <v-list-item-group v-model="model">
+                <v-list-item
+                  v-for="(v, i) in videolist"
+                  :key="i"
+                >
+                  <v-list-item-content>
+                    <v-list-item-title v-text="v.link"></v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-item-group>
+            </v-list>
+          </v-card>
           <v-card ref="form">
             <v-card-text>
               <h2 class="headline font-weight-bold ">
@@ -44,7 +65,8 @@
         errorMessages: '',
         formHasErrors: false,
 
-        info: [],
+        info: null,
+        videolist: null,
         error: undefined,
       }
     },
@@ -60,19 +82,24 @@
         this.errorMessages = ''
       },
     },
-    mounted () {
-        this.$http.get('').then(response => {
-        this.info = response.body;
-        }, error => {
-          console.log(error)
-      });
-    },
     methods:{
+      getData(){
+        this.$http.get('').then(response => {
+          this.info = response.body;
+          }, error => {
+            console.log(error)
+        });
+        this.$http.get('videolist').then(response => {
+          this.videolist = response.body;
+          console.log(this.videolist)
+          }, error => {
+            console.log(error)
+        });
+      },
       resetForm () {
         console.log('重置...')
         this.errorMessages = []
         this.formHasErrors = false
-        console.log(this.name)
         Object.keys(this.form).forEach(f => {
           this.$refs[f].reset()
         })
@@ -84,8 +111,23 @@
           if (!this.form[f]) this.formHasErrors = true
           this.$refs[f].validate(true)
         })
+
+        this.$http.post('savevideolist',{link:this.videoLink}).then(response => {
+          this.videolist = response.body;
+          console.log(this.videolist)
+          console.log('刷新数据')
+          this.getData()
+          this.resetForm()
+          }, error => {
+            console.log(error)
+        });
+        
       },
-    }
+    },
+
+    mounted () {
+        this.getData()
+    },
   }
     
 </script>

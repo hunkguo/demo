@@ -25,6 +25,7 @@ from api.models import *
 def home():
     return jsonify('It''s work.')
 
+
 if __name__ == '__main__':
     
     db.drop_all()
@@ -32,8 +33,16 @@ if __name__ == '__main__':
 
     us1 = User(name='zhangsan')
     us2 = User(name='lisi')
-    db.session.add_all([us1, us2])
+
+    yv1 = YoutubeVideo(link='https://www.youtube.com/watch?v=Q_PfYlAtvHc',isDownload=True)
+    yv2 = YoutubeVideo(link='https://www.youtube.com/watch?v=ziOLkgTqs0M',isDownload=False)
+    yv3 = YoutubeVideo(link='https://www.youtube.com/watch?v=3iOLk1Tqs0M',isDownload=True)
+    yv4 = YoutubeVideo(link='https://www.youtube.com/watch?v=diOLkgT3s0M',isDownload=False)
+    yv5 = YoutubeVideo(link='https://www.youtube.com/watch?v=8iOLkgTqs0M',isDownload=True)
+    db.session.add_all([us1, us2, yv1, yv2, yv3, yv4, yv5])
     db.session.commit()
+
+
 
 
 

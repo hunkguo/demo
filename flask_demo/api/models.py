@@ -19,8 +19,21 @@ class User(db.Model):
 
 class YoutubeVideo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    link = db.Column(db.String(150), unique=True)
-    download_status = db.Column(db.Boolean)
-    download_time = db.Column(db.Time)
-    download_file = db.Column(db.String(256))
+    link = db.Column(db.String(256))
+    videoTitle = db.Column(db.String(256))
+    createDate = db.Column(db.DateTime)
+    isDownload = db.Column(db.Boolean)
+    downloadDate = db.Column(db.Time)
+    downloadFile = db.Column(db.String(256))
+
+    def __init__(self, link, isDownload):
+        self.link = link
+        self.isDownload = isDownload
+    
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "link": self.link,
+            "videoTitle": self.videoTitle,
+        }
 
