@@ -31,3 +31,22 @@ def saveYoutubeVideo():
     db.session.commit()
 
     return jsonify({'success':True}), 200, {'ContentType':'application/json'} 
+
+
+@bp.route('/nodownloadvideolist', methods=['GET'])
+def nodownloadvideolist():
+    limit = min(request.args.get('limit', 10, int), 100)
+    offset = (request.args.get('page', 1, int) - 1) * request.args.get('limit', 10, int)
+    return jsonify([yv.to_dict() for yv in YoutubeVideo.query.filter(YoutubeVideo.isDownload==False).limit(limit).offset(offset).all()])
+
+
+@bp.route('/savedownloadvideo', methods=['POST'])
+def savedownloadvideo():
+
+    link = request.json['link']
+
+    yv = YoutubeVideo(link=link,isDownload=True)
+    db.session.add_all([yv])
+    db.session.commit()
+
+    return jsonify({'success':True}), 200, {'ContentType':'application/json'} 
