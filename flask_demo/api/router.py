@@ -26,7 +26,7 @@ def saveYoutubeVideo():
 
     link = request.json['link']
 
-    yv = YoutubeVideo(link=link,isDownload=True)
+    yv = YoutubeVideo(link=link,isDownload=False)
     db.session.add_all([yv])
     db.session.commit()
 
@@ -42,11 +42,11 @@ def nodownloadvideolist():
 
 @bp.route('/savedownloadvideo', methods=['POST'])
 def savedownloadvideo():
-
-    link = request.json['link']
-
-    yv = YoutubeVideo(link=link,isDownload=True)
-    db.session.add_all([yv])
+    
+    yv = YoutubeVideo.query.get(request.json['id'])
+    yv.isDownload=True
+    yv.videoTitle = request.json['title']
+    yv.downloadFile = request.json['file']
     db.session.commit()
 
     return jsonify({'success':True}), 200, {'ContentType':'application/json'} 

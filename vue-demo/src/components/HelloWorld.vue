@@ -8,17 +8,28 @@
 
           <v-card
             class="mx-auto"
-            max-width="400"
-            tile
+            max-width="600"
           >
             <v-list>
               <v-list-item-group v-model="model">
-                <v-list-item
+                <v-list-item 
+                  two-line
                   v-for="(v, i) in videolist"
                   :key="i"
                 >
                   <v-list-item-content>
-                    <v-list-item-title v-text="v.link"></v-list-item-title>
+                    <v-list-item-title v-text="v.videoTitle"></v-list-item-title>
+                    <v-list-item-subtitle>
+                    <!--
+                    autoplay="autoplay" 
+                    -->
+                      <audio 
+                            controls="controls"
+                            preload="auto"
+                            v-bind:src="'http://106.55.33.30:5000/static/media/' + v.videoFile"
+                            >
+                      </audio>
+                    </v-list-item-subtitle>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>

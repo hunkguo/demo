@@ -6,10 +6,9 @@ class GetItem(object):
     def rename_hook(self,d):
         # 重命名下载的视频名称的钩子
         if d['status'] == 'finished':
-            print(d)
-            print('下载完成')
+            pass
 
-    def download(self,youtube_url):
+    def download(self, id, youtube_url):
         # 定义某些下载参数
         ydl_opts = {
             'progress_hooks': [self.rename_hook],
@@ -26,7 +25,7 @@ class GetItem(object):
             ],
             'prefer_ffmpeg': True,
             'keepvideo': True,
-            'outtmpl': '%(id)s.%(ext)s'
+            'outtmpl': 'static/media/%(id)s.%(ext)s'
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             
@@ -39,10 +38,10 @@ class GetItem(object):
             video_id = info_dict.get("id", None)
             video_title = info_dict.get('title', None)
 
-            r = requests.post('http://httpbin.org/post', json={"key": "value"})
->>> r.status_code
- print(video_title)
-            print(video_id)
+            r = requests.post('http://106.55.33.30:5000/api/savedownloadvideo', json={"id": id,"title": video_title,"file":video_id+".mp3"})
+            if(r.status_code):
+                print("success")
+            #print(info_dict)
 
 
 if __name__ == '__main__':
@@ -53,6 +52,6 @@ if __name__ == '__main__':
 
     getItem =  GetItem()
     for l in videolist:
-        print(l['link'])
-        getItem.download(l['link'])
+        #print(l['id'])
+        getItem.download(l['id'], l['link'])
         

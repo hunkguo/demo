@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 
-app = Flask(__name__)
+app = Flask(__name__
+            )
 CORS(app)
  
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://demo:ghlhj2891@localhost/demo'
@@ -34,11 +35,11 @@ if __name__ == '__main__':
     us1 = User(name='zhangsan')
     us2 = User(name='lisi')
 
-    yv1 = YoutubeVideo(link='https://www.youtube.com/watch?v=Q_PfYlAtvHc',isDownload=True)
-    yv2 = YoutubeVideo(link='https://www.youtube.com/watch?v=ziOLkgTqs0M',isDownload=False)
-    yv3 = YoutubeVideo(link='https://www.youtube.com/watch?v=3iOLk1Tqs0M',isDownload=True)
-    yv4 = YoutubeVideo(link='https://www.youtube.com/watch?v=diOLkgT3s0M',isDownload=False)
-    yv5 = YoutubeVideo(link='https://www.youtube.com/watch?v=8iOLkgTqs0M',isDownload=True)
+    yv1 = YoutubeVideo(link='https://www.youtube.com/watch?v=itUoWLU3EWU',isDownload=False)
+    yv2 = YoutubeVideo(link='https://www.youtube.com/watch?v=CWxuTYEt0pc',isDownload=False)
+    yv3 = YoutubeVideo(link='https://www.youtube.com/watch?v=pLMMKwikHK4',isDownload=False)
+    yv4 = YoutubeVideo(link='https://www.youtube.com/watch?v=Xs1wVkkxpoI',isDownload=False)
+    yv5 = YoutubeVideo(link='https://www.youtube.com/watch?v=QFDyzfSG80o',isDownload=False)
     db.session.add_all([us1, us2, yv1, yv2, yv3, yv4, yv5])
     db.session.commit()
 
