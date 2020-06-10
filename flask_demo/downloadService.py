@@ -1,7 +1,7 @@
 from __future__ import unicode_literals
 import youtube_dl
 import requests 
-class GetItem(object):
+class GetVideoItem(object):
 
     def rename_hook(self,d):
         # 重命名下载的视频名称的钩子
@@ -25,7 +25,7 @@ class GetItem(object):
             ],
             'prefer_ffmpeg': True,
             'keepvideo': True,
-            'outtmpl': 'static/media/%(id)s.%(ext)s'
+            'outtmpl': './static/media/%(id)s.%(ext)s'
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     response = requests.get('http://106.55.33.30:5000/api/nodownloadvideolist')
     videolist = response.json()
 
-    getItem =  GetItem()
+    getVideoItem =  GetVideoItem()
     for l in videolist:
         #print(l['id'])
-        getItem.download(l['id'], l['link'])
+        getVideoItem.download(l['id'], l['link'])
         

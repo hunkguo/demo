@@ -12,7 +12,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link :to="{name:'HelloWorld'}">首页</router-link>
+              <router-link :to="{name:'VideoList'}">首页</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -22,17 +22,7 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>
-              <router-link :to="{name:'Dashboard'}">Dashboard</router-link>
-            </v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-list-item link>
-          <v-list-item-action>
-            <v-icon>mdi-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>
-              <router-link :to="{name:'Settings'}">Settings</router-link>
+              <router-link :to="{name:'AddVideo'}">提交视频地址</router-link>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -44,23 +34,11 @@
       clipped-left
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>听视频</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
-      <v-container
-        class="fill-height"
-        fluid
-      >
-        <v-row
-          align="center"
-          justify="center"
-        >
-          <v-col class="shrink">
-            <router-view></router-view>
-          </v-col>
-        </v-row>
-      </v-container>
+      <router-view></router-view>
     </v-content>
 
     <v-footer app>
@@ -75,11 +53,16 @@
 export default {
   name: 'App',
 
+  props: {
+    source: String,
+  },
   components: {
   },
-
   data: () => ({
-    //
+    drawer: null,
   }),
+  created () {
+    this.$vuetify.theme.dark = true
+  },
 };
 </script>
