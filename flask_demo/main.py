@@ -3,7 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
 
-app = Flask(__name__
+app = Flask(__name__, static_url_path='/api/static'
             )
 CORS(app)
  
@@ -11,6 +11,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://demo:ghlhj2891@localhos
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
 db = SQLAlchemy(app)
+
 
 
 from flask import Blueprint

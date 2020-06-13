@@ -77,7 +77,8 @@
           this.$refs[f].validate(true)
         })
 
-        this.$http.post('/api/savevideolist',{link:this.videoLink}).then(response => {
+        this.$http.post('http://10.8.0.6:5000/api/savevideolist',{link:this.videoLink}).then(response => {
+        //this.$http.post('/api/savevideolist',{link:this.videoLink}).then(response => {
           this.videolist = response.body;
           this.resetForm()
           }, error => {

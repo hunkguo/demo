@@ -8,18 +8,26 @@
 
           <v-card
             class="mx-auto"
-            max-width="300"
+            max-width="450"
           >
-            <v-list>
-              <v-list-item-group v-model="model">
-                <v-list-item 
-                  two-line
-                  v-for="(v, i) in videolist"
-                  :key="i"
-                >
-                  <v-list-item-content>
-                    <v-list-item-title class="wrap-text" v-text="v.videoTitle" @click="playVideo(v.id)">
-                    </v-list-item-title>
+            <v-list  three-line>
+              <v-list-item-group v-model="model" 
+                    v-for="(v, i) in videolist"
+                    :key="i">
+                  <v-list-item 
+                    three-line
+                  >
+       
+                  <v-list-item-avatar>
+                    <v-img :src="v.videoThumbnail"></v-img>
+                  </v-list-item-avatar>
+                  <v-list-item-content
+                   @click="playVideo(v.id)">                    
+                    <v-list-item-title v-html="v.videoTitle"></v-list-item-title>
+                    <v-list-item-subtitle v-html="v.videoDescription"  class="wrap-text"></v-list-item-subtitle>
+                    <v-list-item-title>{{v.videoUploader}} - {{v.videoUploadDate}} - 时长{{v.videoDuration}}秒</v-list-item-title>
+
+
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -50,7 +58,7 @@
           }, error => {
             console.log(error)
         });
-        //this.$http.get('http://106.55.33.30:5000/api/videolist').then(response => {
+        //this.$http.get('http://10.8.0.6:5000/api/videolist').then(response => {
         this.$http.get('/api/videolist').then(response => {
           this.videolist = response.body;
           //console.log(this.videolist)

@@ -22,7 +22,7 @@
                       <audio autoplay="autoplay" 
                             controls="controls"
                             preload="auto"
-                            v-bind:src="'/static/media/' + video.videoFile"
+                            v-bind:src="'/api/static/media/' + video.videoFile"
                             >
                       </audio>
                     </v-list-item-subtitle>

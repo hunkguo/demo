@@ -47,6 +47,18 @@ def savedownloadvideo():
     yv.isDownload=True
     yv.videoTitle = request.json['title']
     yv.downloadFile = request.json['file']
+
+    
+    yv.videoUploader = request.json['uploader']
+    yv.videoChannelUrl =request.json['channel_url']
+    yv.videoUploadDate = request.json['upload_date']
+    yv.videoThumbnail = request.json['thumbnail']
+    yv.videoDescription = request.json['desc'].replace('\n', '').replace('\r', '')
+    yv.videoDuration = request.json['duration']
+    yv.videoViewCount = request.json['video_view_count']
+    yv.videoLikeCount = request.json['video_like_count']
+    yv.videoDislikeCount = request.json['video_dislike_count']
+    yv.videoAverageRating =request.json['video_average_rating']
     db.session.commit()
 
     return jsonify({'success':True}), 200, {'ContentType':'application/json'} 
