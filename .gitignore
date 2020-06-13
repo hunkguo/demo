@@ -4,3 +4,4 @@
 
 *.pyc
 flask_demo/access.log
+flask_demo/access.log
