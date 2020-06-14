@@ -25,12 +25,14 @@ def youtubeVideoList():
 def saveYoutubeVideo():
 
     link = request.json['link']
+    if (YoutubeVideo.query.filter(YoutubeVideo.link==link).first()):
+        return jsonify({'error': 'duplicate'}), 404, {'ContentType':'application/json'}
+    else:
+        yv = YoutubeVideo(link=link,isDownload=False)        
+        db.session.add(yv)
+        db.session.commit()
 
-    yv = YoutubeVideo(link=link,isDownload=False)
-    db.session.add_all([yv])
-    db.session.commit()
-
-    return jsonify({'success':True}), 200, {'ContentType':'application/json'} 
+        return jsonify({'success':True}), 200, {'ContentType':'application/json'} 
 
 
 @bp.route('/nodownloadvideolist', methods=['GET'])

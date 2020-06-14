@@ -19,6 +19,7 @@ bp = Blueprint('api', __name__)
 from api.router import *
 
 app.register_blueprint(bp, url_prefix='/api')
+app.config['JSON_AS_ASCII'] = False
 
 
 from api.models import *

@@ -26,7 +26,7 @@ let router = new VueRouter({
         { name: 'Player', path: '/Player/:id', component: Player },
     ]
 });
-Vue.http.options.root = 'http://10.8.0.6:5000/api/';
+Vue.http.options.root = 'http://192.168.30.55/api/';
 
 new Vue({
     //让vue知道我们的路由规则

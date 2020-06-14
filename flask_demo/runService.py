@@ -17,7 +17,7 @@ if __name__ == '__main__':
     while True:
         sleepTime = random.randint(60,90)
         try:
-            response = requests.get('http://10.8.0.6/api/nodownloadvideolist')
+            response = requests.get('http://192.168.30.55/api/nodownloadvideolist')
             videolist = response.json()
 
             getVideoItem =  GetVideoItem()
