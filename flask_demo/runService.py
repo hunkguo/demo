@@ -15,7 +15,7 @@ from downloadService import GetVideoItem
 if __name__ == '__main__':    
     # 进入主循环
     while True:
-        sleepTime = random.randint(60,90)
+        sleepTime = random.randint(1800,3600)
         try:
             response = requests.get('http://192.168.30.55/api/nodownloadvideolist')
             videolist = response.json()
@@ -24,8 +24,8 @@ if __name__ == '__main__':
             for l in videolist:
                 #print(l['id'])
                 getVideoItem.download(l['id'], l['link'])
-            print('休息一下...%s秒' % sleepTime)
-            time.sleep(sleepTime)
+                print('休息一下...%s秒' % sleepTime)
+                time.sleep(sleepTime)
         except:
             print('有异常，休息一下...%s秒' % sleepTime)
             time.sleep(sleepTime)

@@ -26,7 +26,7 @@ def saveYoutubeVideo():
 
     link = request.json['link']
     if (YoutubeVideo.query.filter(YoutubeVideo.link==link).first()):
-        return jsonify({'error': 'duplicate'}), 404, {'ContentType':'application/json'}
+        return jsonify({'error': 'duplicate'}), 200, {'ContentType':'application/json'}
     else:
         yv = YoutubeVideo(link=link,isDownload=False)        
         db.session.add(yv)
@@ -57,10 +57,10 @@ def savedownloadvideo():
     yv.videoThumbnail = request.json['thumbnail']
     yv.videoDescription = request.json['desc'].replace('\n', '').replace('\r', '')
     yv.videoDuration = request.json['duration']
-    yv.videoViewCount = request.json['video_view_count']
-    yv.videoLikeCount = request.json['video_like_count']
-    yv.videoDislikeCount = request.json['video_dislike_count']
-    yv.videoAverageRating =request.json['video_average_rating']
+    yv.videoViewCount = request.json['view_count']
+    yv.videoLikeCount = request.json['like_count']
+    yv.videoDislikeCount = request.json['dislike_count']
+    yv.videoAverageRating =request.json['average_rating']
     db.session.commit()
 
     return jsonify({'success':True}), 200, {'ContentType':'application/json'} 

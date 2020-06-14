@@ -59,7 +59,7 @@ class GetVideoItem(object):
                 # 平均星级
                 video_average_rating = info_dict.get('average_rating', None)
 
-                r = requests.post('http://10.8.0.6/api/savedownloadvideo', json={"id": id,"title": video_title,"file":video_id+".mp3", "uploader": video_uploader, "channel_url":video_channel_url, "upload_date":video_upload_date, "thumbnail":video_thumbnail, "desc":video_description, "duration":video_duration,"view_count":video_view_count, "like_count":video_like_count, "dislike_count":video_dislike_count, "average_rating":video_average_rating})
+                r = requests.post('http://192.168.30.55/api/savedownloadvideo', json={"id": id,"title": video_title,"file":video_id+".mp3", "uploader": video_uploader, "channel_url":video_channel_url, "upload_date":video_upload_date, "thumbnail":video_thumbnail, "desc":video_description, "duration":video_duration,"view_count":video_view_count, "like_count":video_like_count, "dislike_count":video_dislike_count, "average_rating":video_average_rating})
             except:
                 pass
             #if(r.status_code):
@@ -70,7 +70,7 @@ class GetVideoItem(object):
 if __name__ == '__main__':
     # 
     # import requests module 
-    response = requests.get('http://10.8.0.6/api/nodownloadvideolist')
+    response = requests.get('http://192.168.30.55/api/nodownloadvideolist')
     videolist = response.json()
 
     getVideoItem =  GetVideoItem()
