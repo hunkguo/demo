@@ -1,41 +1,27 @@
 <template>
   <v-container>
-
-    <v-row justify="center">
-      <v-col cols="12" sm="10" md="8" lg="6">
-        <v-row justify="center">
-
-
-          <v-card
-            class="mx-auto"
-            max-width="450"
+    <v-row dense>
+      <v-col cols="12"
+          v-model="model" 
+          v-for="(v, i) in videolist"
+          :key="i">
+        <v-card
+          dark
+          @click="playVideo(v.id)"
           >
-            <v-list  three-line>
-              <v-list-item-group v-model="model" 
-                    v-for="(v, i) in videolist"
-                    :key="i">
-                  <v-list-item 
-                    three-line
-                  >
-       
-                  <v-list-item-avatar>
-                    <v-img :src="v.videoThumbnail"></v-img>
-                  </v-list-item-avatar>
-                  <v-list-item-content
-                   @click="playVideo(v.id)">                    
-                    <v-list-item-title v-html="v.videoTitle"></v-list-item-title>
-                    <v-list-item-subtitle v-html="v.videoDescription"  class="wrap-text"></v-list-item-subtitle>
-                    <v-list-item-title>{{v.videoUploader}} - {{v.videoUploadDate}} - 时长{{v.videoDuration}}秒</v-list-item-title>
-
-
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-          </v-card>
-        </v-row>
+          <v-img height="250" :src="v.videoThumbnail"></v-img>
+          <v-card-title v-text="v.videoTitle"></v-card-title>
+                <v-divider class="mx-4"></v-divider>
+                <v-card-subtitle v-text="v.videoDescription"></v-card-subtitle>
+                <v-card-subtitle>{{v.videoUploader}} - {{v.videoUploadDate}} - 时长{{v.videoDuration}}秒</v-card-subtitle>
+          <v-card-text>
+                <v-card-actions>
+                  <v-btn text>点赞</v-btn>
+                  <v-btn text>删除</v-btn>
+                </v-card-actions>
+          </v-card-text>
+        </v-card>
       </v-col>
-
     </v-row>
   </v-container>
 </template>
@@ -58,7 +44,7 @@
           }, error => {
             console.log(error)
         });
-        //this.$http.get('http://10.8.0.6:5000/api/videolist').then(response => {
+        //this.$http.get('http://192.168.30.55:5000/api/videolist').then(response => {
         this.$http.get('/api/videolist').then(response => {
           this.videolist = response.body;
           //console.log(this.videolist)
