@@ -21,9 +21,9 @@
                 </v-card-subtitle>
           <v-card-text>
             <v-card-actions>
-              <v-btn text  @click="resetForm">清除</v-btn>
+              <v-btn  small   @click="resetForm">清除</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="submit">保存</v-btn>
+              <v-btn color="primary"  small  @click="submit">保存</v-btn>
             </v-card-actions>
           </v-card-text>
         </v-card>

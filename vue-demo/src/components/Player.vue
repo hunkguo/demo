@@ -19,9 +19,9 @@
             </v-card-subtitle>
           <v-card-text>
             <v-card-actions>
-              <v-btn text color="primary" @click="1">后退</v-btn>
+              <v-btn  small disabled color="primary" @click="1">后退</v-btn>
               <v-spacer></v-spacer>
-              <v-btn color="primary" text @click="1">快进</v-btn>
+              <v-btn color="primary"  small disabled @click="1">快进</v-btn>
             </v-card-actions>
           </v-card-text>
         </v-card>

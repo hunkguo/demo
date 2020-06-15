@@ -16,8 +16,8 @@
                 <v-card-subtitle>{{v.videoUploader}} - {{v.videoUploadDate}} - 时长{{v.videoDuration}}秒</v-card-subtitle>
           <v-card-text>
                 <v-card-actions>
-                  <v-btn text>点赞</v-btn>
-                  <v-btn text>删除</v-btn>
+                  <v-btn small disabled>点赞</v-btn>
+                  <v-btn small disabled>删除</v-btn>
                 </v-card-actions>
           </v-card-text>
         </v-card>
