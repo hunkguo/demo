@@ -1,41 +1,31 @@
 <template>
+
   <v-container>
-    
-    <v-row justify="center">
-      <v-col cols="12" sm="10" md="8" lg="6">
-        <v-row justify="center">
-          <v-card
-            class="mx-auto"
-            max-width="300"
+    <v-row dense>
+      <v-col cols="12">
+        <v-card
+          dark
+          ref="form"
           >
-
-            <v-list>
-              <v-list-item-group >
-                <v-list-item 
-                  two-line
-                  
-                >
-                  <v-list-item-content>
-                    <v-list-item-title class="wrap-text" v-text="video.videoTitle">
-                    </v-list-item-title>
-                    <v-list-item-subtitle>
-                      <audio autoplay="autoplay" 
-                            controls="controls"
-                            preload="auto"
-                            v-bind:src="'/api/static/media/' + video.videoFile"
-                            >
-                      </audio>
-                    </v-list-item-subtitle>
-
-                  </v-list-item-content>
-                </v-list-item>
-              </v-list-item-group>
-            </v-list>
-
-          </v-card>
-        </v-row>
+          <v-card-title v-text="video.videoTitle"></v-card-title>
+            <v-divider class="mx-4"></v-divider>
+            <v-card-subtitle>
+              <audio autoplay="autoplay" 
+                    controls="controls"
+                    preload="auto"
+                    v-bind:src="'/api/static/media/' + video.videoFile"
+                    >
+              </audio>
+            </v-card-subtitle>
+          <v-card-text>
+            <v-card-actions>
+              <v-btn text color="primary" @click="1">后退</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="primary" text @click="1">快进</v-btn>
+            </v-card-actions>
+          </v-card-text>
+        </v-card>
       </v-col>
-
     </v-row>
   </v-container>
 </template>
@@ -53,8 +43,8 @@
     },
     methods:{
       getData(){
-        //this.$http.get('http://106.55.33.30:5000/api/getvideo/'+this.$route.params.id).then(response => {
-        this.$http.get('/api/getvideo/'+this.$route.params.id).then(response => {
+        this.$http.get('http://192.168.30.55:5000/api/getvideo/'+this.$route.params.id).then(response => {
+        //this.$http.get('/api/getvideo/'+this.$route.params.id).then(response => {
             this.video = response.body;
           }, error => {
             console.log(error)
