@@ -16,9 +16,10 @@ def get_users():
 
 @bp.route('/videolist', methods=['GET'])
 def youtubeVideoList():
-    limit = min(request.args.get('limit', 10, int), 100)
-    offset = (request.args.get('page', 1, int) - 1) * request.args.get('limit', 10, int)
-    return jsonify([yv.to_dict() for yv in YoutubeVideo.query.filter(YoutubeVideo.isDownload==True).limit(limit).offset(offset).all()])
+    #limit = min(request.args.get('limit', 10, int), 100)
+    #offset = (request.args.get('page', 1, int) - 1) * request.args.get('limit', 10, int)
+    #return jsonify([yv.to_dict() for yv in YoutubeVideo.query.filter(YoutubeVideo.isDownload==True).limit(limit).offset(offset).all()])
+    return jsonify([yv.to_dict() for yv in YoutubeVideo.query.filter(YoutubeVideo.isDownload==True).all()])
 
 
 @bp.route('/savevideolist', methods=['POST'])

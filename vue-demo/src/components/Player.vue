@@ -13,6 +13,7 @@
               <audio autoplay="autoplay" 
                     controls="controls"
                     preload="auto"
+                    controlsList="nodownload"
                     v-bind:src="'/api/static/media/' + video.videoFile"
                     >
               </audio>
