@@ -15,7 +15,7 @@ from downloadService import GetVideoItem
 if __name__ == '__main__':    
     # 进入主循环
     while True:
-        sleepTime = random.randint(1800,3600)
+        sleepTime = random.randint(30,60)
         try:
             response = requests.get('http://192.168.30.55/api/nodownloadvideolist')
             videolist = response.json()
