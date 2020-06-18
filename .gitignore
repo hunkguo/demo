@@ -1,6 +1,8 @@
 *.mp3
 *.webm
 *.m4a
+*.txt
+*.csv
 
 *.pyc
 flask_demo/access.log
