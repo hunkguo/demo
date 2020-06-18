@@ -1,0 +1,12 @@
+{
+	"MONGO_HOST": "localhost",
+	"MONGO_PORT": 27017,
+
+	"SYMBOLS": ["510050", "510300"],
+
+	"News_DB_NAME": "news",
+
+	"RSS_SOURCE":[
+		"http://hunkhome.asuscomm.com:9200/xueqiu/user/5124430882"
+	]
+}
