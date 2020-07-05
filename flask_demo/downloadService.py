@@ -65,8 +65,8 @@ class GetVideoItem(object):
                 r = requests.post('http://192.168.30.55/api/savedownloadvideo', json={"id": id,"title": video_title,"file":video_id+".mp3", "uploader": video_uploader, "channel_url":video_channel_url, "upload_date":video_upload_date, "thumbnail":video_thumbnail, "desc":video_description, "duration":video_duration,"view_count":video_view_count, "like_count":video_like_count, "dislike_count":video_dislike_count, "average_rating":video_average_rating})
                 
                 #对已经上传到七牛的视频发起异步转码操作 
-                access_key = '111-BqXm'
-                secret_key = '111'
+                access_key = 'xxxxxxx'
+                secret_key = 'xxxxx'
                 q = Auth(access_key, secret_key)
                 #要转码的文件所在的空间和文件名。
                 bucket_name = 'listenvideo'
@@ -86,8 +86,7 @@ class GetVideoItem(object):
 
 
 if __name__ == '__main__':
-    # 
-    # import requests module 
+    '''
     response = requests.get('http://192.168.30.55/api/nodownloadvideolist')
     videolist = response.json()
 
@@ -95,3 +94,11 @@ if __name__ == '__main__':
     for l in videolist:
         #print(l['id'])
         getVideoItem.download(l['id'], l['link'])
+    '''
+    # 
+    url = 'https://www.youtube.com/watch?v=nyZCvR66CeE'
+    getVideoItem =  GetVideoItem()
+    getVideoItem.download(0, url)
+
+
+
