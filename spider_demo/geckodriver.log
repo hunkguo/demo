@@ -1,0 +1,55 @@
+1594951391516	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\hunk\\AppData\\Local\\Temp\\rust_mozprofilegpP0Rb"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594951394020	Marionette	INFO	Listening on port 55048
+1594951394186	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: resource://gre/actors/AutoCompleteChild.jsm, line 196: Error: Invalid autocomplete selectedIndex
+1594951398143	Marionette	INFO	Stopped listening on port 55048
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594951718383	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "-foreground" "-no-remote" "-profile" "C:\\Users\\hunk\\AppData\\Local\\Temp\\rust_mozprofileNnDjMa"
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594951720323	Marionette	INFO	Listening on port 55207
+1594951720404	Marionette	WARN	TLS certificate errors will be ignored for this session
+1594951721624	Marionette	INFO	Stopped listening on port 55207
+
+###!!! [Child][RunMessage] Error: Channel closing: too late to send/recv, messages will be lost
+
+
+###!!! [Child][MessageChannel::SendAndWait] Error: Channel error: cannot send/recv
+
+1594951783388	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\hunk\\AppData\\Local\\Temp\\rust_mozprofileKHSVOI"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594951784728	Marionette	INFO	Listening on port 55266
+1594951784903	Marionette	WARN	TLS certificate errors will be ignored for this session
+1594951785540	Marionette	INFO	Stopped listening on port 55266
+JavaScript error: resource:///modules/FaviconLoader.jsm, line 568: InvalidStateError: An attempt was made to use an object that is not, or is no longer, usable
+[Child 11396, Chrome_ChildThread] WARNING: pipe error: 232: file /builds/worker/checkouts/gecko/ipc/chromium/src/chrome/common/ipc_channel_win.cc, line 522
+1594951844582	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\hunk\\AppData\\Local\\Temp\\rust_mozprofileFNjOQN"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594951845930	Marionette	INFO	Listening on port 55331
+1594951846105	Marionette	WARN	TLS certificate errors will be ignored for this session
+1594951846547	Marionette	INFO	Stopped listening on port 55331
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/cgxx.shtml?mateid=23644&dataid=1 line 5 > eval, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/cgxx.shtml?mateid=23644&dataid=1 line 5 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/cgxx.shtml?mateid=23644&dataid=1 line 5 > eval, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/cgxx.shtml?mateid=23644&dataid=1 line 5 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+1594951885864	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "--headless" "-foreground" "-no-remote" "-profile" "C:\\Users\\hunk\\AppData\\Local\\Temp\\rust_mozprofilevwGtFJ"
+*** You are running in headless mode.
+JavaScript error: resource://gre/modules/XULStore.jsm, line 66: Error: Can't find profile directory.
+1594951887214	Marionette	INFO	Listening on port 55371
+1594951887393	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/xqgg/ line 5 > eval, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/xqgg/ line 5 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/xqgg/ line 5 > eval, line 1: WebGL warning: <Create>: Can't use WebGL in headless mode (https://bugzil.la/1375585).
+JavaScript warning: http://jycg.hubei.gov.cn/jyxx/zfcg/xqgg/ line 5 > eval, line 1: Failed to create WebGL context: WebGL creation failed: 
+* Can't use WebGL in headless mode (https://bugzil.la/1375585).
+Exiting due to channel error.
