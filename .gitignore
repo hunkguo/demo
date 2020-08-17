@@ -3,7 +3,9 @@
 *.m4a
 *.txt
 *.csv
+*.pdf
 
 *.pyc
 flask_demo/access.log
 flask_demo/access.log
+.DS_Store
