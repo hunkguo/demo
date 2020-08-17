@@ -2,6 +2,7 @@
 import requests
 import random
 from lxml import etree
+<<<<<<< HEAD
 
 import re
 import requests
