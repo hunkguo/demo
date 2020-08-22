@@ -5,16 +5,22 @@ from flask_nav import Nav
 from flask_nav.elements import *
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 from flask_pymongo import PyMongo
-
+from views.user import user_bp
 
 app = Flask(__name__, static_url_path='/static', template_folder='templates'
             )
+app.config["SECRET_KEY"] = "h63j6h36lkj37j3h74kj457h4k57h547h"  # 或者 app.secret_key = '123456'
 Bootstrap(app)
 
 nav=Nav()
 nav.register_element('top',Navbar(u'Flask入门',
                                     View(u'主页','home'),
-                                    View(u'关于','about'),
+                                    View(u'关于','about'),                                    
+                                    Subgroup(u'用户',
+                                             View(u'管理','user.index'),
+                                             Separator(),
+                                             View(u'添加', 'user.add'),
+                                    ),
                                     Subgroup(u'项目',
                                              View(u'项目一','about'),
                                              Separator(),
@@ -57,6 +63,9 @@ def register():
         print(form.data)
         return redirect(url_for('home'))
     return render_template('login.html', form=form)
+
+
+app.register_blueprint(user_bp, url_prefix='/user')
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)

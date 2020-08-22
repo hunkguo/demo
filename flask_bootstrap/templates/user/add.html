@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}  #声明继承
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}{{ title_name }}{% endblock %}
+{% block navbar %}
+    {{ nav.top.render() }}
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="container">
+            <h1>{{ self.title() }}</h1>
+        </div>
+    </div>
+    <div class="container">
+        
+        {% from "_formhelpers.html" import render_field %}
+        <form action="#" method="post">
+            {{ form.csrf_token }}
+            {% for f in form.item_list%}
+                {{ wtf.form_field(f.content) }}
+                {{ wtf.form_field(f.delete) }}
+            {%endfor%}
+            {{ form.submit }}
+        </form>
+    </div>
+{% endblock content %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
+{% endblock %}
