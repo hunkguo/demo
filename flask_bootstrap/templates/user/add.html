@@ -13,15 +13,28 @@
     </div>
     <div class="container">
         
-        {% from "_formhelpers.html" import render_field %}
-        <form action="#" method="post">
-            {{ form.csrf_token }}
-            {% for f in form.item_list%}
-                {{ wtf.form_field(f.content) }}
-                {{ wtf.form_field(f.delete) }}
-            {%endfor%}
-            {{ form.submit }}
-        </form>
+        <div class="row">
+            {% from "_formhelpers.html" import render_field %}
+            
+            <form action="#" method="post">
+                {{ wtf.form_errors(form, hiddens="only") }}
+                <div class="jumbotron">
+                    {{ wtf.form_field(form.community_name) }}
+                    <hr class="my-4">                    
+                    {% for f in form.family_member_list%}
+                        {{ wtf.form_field(f.member_name) }}
+                        {{ wtf.form_field(f.member_id_card) }}
+                        {{ wtf.form_field(f.family_relations) }}
+                        {{ wtf.form_field(f.family_member_delete, class="btn btn-success btn-lg btn-block") }}
+                        <hr class="my-4">                    
+                    {%endfor%}
+                    {{ wtf.form_field(form.family_member_add, class='btn btn-secondary btn-lg') }}
+                    {{ wtf.form_field(form.submit,class="btn btn-primary  btn-lg") }}
+                </div>                
+            </form>
+        </div>
+        
+        
     </div>
 {% endblock content %}
 

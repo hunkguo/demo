@@ -4,8 +4,8 @@ from flask import Flask,render_template,request,url_for,redirect
 from flask_nav import Nav
 from flask_nav.elements import *
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
-from flask_pymongo import PyMongo
 from views.user import user_bp
+from flask_pymongo import PyMongo
 
 app = Flask(__name__, static_url_path='/static', template_folder='templates'
             )
@@ -33,7 +33,8 @@ nav.init_app(app)
 
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/bzb"
-mongo = PyMongo(app)
+app.mongo = PyMongo(app)
+
 
 
 @app.route('/')
