@@ -77,10 +77,30 @@ ts_code  name
 
 '''
 
+
+class ggt:
+    def __init__ (self):
+        self.pro = ts.pro_api('d94b8d1af9f3110dca7acf2e85b4bf10b7d33de74491de8f671c4b8b')
         
+    def run(self):
+        #获取多日统计信息
+        #df = self.pro.ggt_daily(trade_date='20200901,20200902')
+
+        #获取单日全部持股
+        '''
+        df = self.pro.hk_hold(trade_date='20200831')
+        df.sort_values("ratio", inplace=False)
+        print(df.tail(20))
+        '''
+        # 沪深股通十大成交股
+        df = self.pro.hsgt_top10(trade_date='20200901', market_type='1')
+        #df.sort_values("ratio", inplace=False)
+        print(df.tail(20))
+
+
 if __name__ == "__main__":
     
-    s = concept()
+    s = ggt()
     s.run()
     #print('开始交易日为：%s ;结束交易日为：%s ' % (start_date_open, end_date_open))
 
