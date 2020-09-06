@@ -1,23 +1,28 @@
 import feedparser
+import jieba
+import jieba.analyse
 import stanza
+import re
 
-d=feedparser.parse('http://hunkhome.asuscomm.com:9200/xueqiu/user/5124430882')
+jieba.set_dictionary('data/dict.txt')
 
-
-
-print("-"*20+"标题"+"-"*20)
-print(d.feed.title)
-
-print("-"*20+"链接"+"-"*20)
-print(d.feed.link)
+pattern = re.compile(r'<[^>]+>',re.S)
 
 
-zh_nlp = stanza.Pipeline('zh')
+d=feedparser.parse('http://hunkhome.asuscomm.com:9200/taoguba/index')
+#d=feedparser.parse('http://hunkhome.asuscomm.com:9200/cls/telegraph')
+
+'''
+stanza
+'''
+#zh_nlp = stanza.Pipeline('zh')
 
 for i in range(len(d.entries)):
-	print("-"*20+"文章"+str(i)+"-"*20)
-	print(d.entries[i].summary)
-	doc = zh_nlp(d.entries[i].summary)
+	print("-"*3+"文章"+str(i)+"---"+d.entries[i].title)
+	print("-"*5+"摘要-----"+pattern.sub('',d.entries[i].summary))
+	'''
+	#stanza
+	doc = zh_nlp(pattern.sub('',d.entries[i].summary))
 	for sent in doc.sentences:
 		#print("Sentence：" + sent.text) # 断句
 		#print("Tokenize：" + ' '.join(token.text for token in sent.tokens)) # 中文分词
@@ -27,3 +32,9 @@ for i in range(len(d.entries)):
 
 		if sent.ents:
 			print("***关键词*** " + ' '.join(f'{ent.text}/{ent.type}' for ent in sent.ents))
+	'''
+	#jieba
+	content = pattern.sub('',d.entries[i].summary)
+	tags = jieba.analyse.extract_tags(content, topK=20)
+	print(",".join(tags))
+

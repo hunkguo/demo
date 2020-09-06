@@ -5,6 +5,7 @@ from flask_nav import Nav
 from flask_nav.elements import *
 from wtforms import Form, BooleanField, TextField, PasswordField, validators
 from views.user import user_bp
+from views.jzs import jzs_bp
 from flask_pymongo import PyMongo
 
 app = Flask(__name__, static_url_path='/static', template_folder='templates'
@@ -20,6 +21,11 @@ nav.register_element('top',Navbar(u'Flask入门',
                                              View(u'管理','user.index'),
                                              Separator(),
                                              View(u'添加', 'user.add'),
+                                    ),
+                                    Subgroup(u'经转商项目',
+                                             View(u'地方铁路局一期','jzs.index'),
+                                             Separator(),
+                                             View(u'项目二', 'service'),
                                     ),
                                     Subgroup(u'项目',
                                              View(u'项目一','about'),
@@ -67,6 +73,7 @@ def register():
 
 
 app.register_blueprint(user_bp, url_prefix='/user')
+app.register_blueprint(jzs_bp, url_prefix='/jzs')
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)
