@@ -22,8 +22,16 @@ start = datetime.datetime.utcnow().isoformat()
 end = (datetime.datetime.utcnow()-datetime.timedelta(minutes=60)).isoformat()
 print('-'*20)
 count_frq = Counter()
+
+useless_eyword = ['--','div','class','style','appendQr','align','font','cms','...','normal','11','justify','img','ul','start','strong','Bold','span','Center','width','https','page','list']
 for row in cl.find({'published': {'$lt': start, '$gte': end }}):
-  #print(row['tags'])
-  count_frq.update(row['tags'])
+    #print(row['tags'])
+    for keyword in row['tags']:
+        #print(keyword)
+        if keyword in useless_eyword:
+            print(keyword)
+            row['tags'].remove(keyword)
+    #print(row['tags'])
+    count_frq.update(row['tags'])
 print(count_frq)
 print('-'*20)

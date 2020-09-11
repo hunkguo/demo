@@ -9,6 +9,8 @@
 		"http://hunkhome.asuscomm.com:9200/cls/telegraph",
 		"http://hunkhome.asuscomm.com:9200/cs/news/hyzx",
 		"http://hunkhome.asuscomm.com:9200/cs/news/zzkx",
-		"http://hunkhome.asuscomm.com:9200/taoguba/index"
+		"http://hunkhome.asuscomm.com:9200/taoguba/index",
+		"http://hunkhome.asuscomm.com:9200/sina/finance",
+		"http://hunkhome.asuscomm.com:9200/sina/finance"
 	]
 }
