@@ -9,7 +9,7 @@ import feedparser
 from rssObject import RssData
 import jieba
 import jieba.analyse
-from util import formatGMTime,convertISODate
+from util import filter_tags,convertISODate
 
 
 jieba.set_dictionary('dict.txt')
@@ -44,13 +44,13 @@ def downloadRssDara(rss):
         print("开始下载[文章%d]数据" % i)
         print('-' * 20)
         print(convertISODate(feedData.entries[i].published))
-        print(feedData.entries[i].summary)
+        print(filter_tags(feedData.entries[i].summary))
         print(feedData.entries[i].link)
         '''
 
         rss = RssData()
         rss.title = feedData.entries[i].title
-        rss.summary = feedData.entries[i].summary
+        rss.summary = filter_tags(feedData.entries[i].summary)
         #rss.published = formatGMTime(feedData.entries[i].published)
         rss.published = convertISODate(feedData.entries[i].published)
         rss.link = feedData.entries[i].link
