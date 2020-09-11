@@ -2,11 +2,13 @@
 	"MONGO_HOST": "localhost",
 	"MONGO_PORT": 27017,
 
-	"SYMBOLS": ["510050", "510300"],
-
-	"News_DB_NAME": "news",
+	"News_DB_NAME": "rssdata",
 
 	"RSS_SOURCE":[
-		"http://hunkhome.asuscomm.com:9200/xueqiu/user/5124430882"
+		"http://hunkhome.asuscomm.com:9200/xueqiu/user/5124430882",
+		"http://hunkhome.asuscomm.com:9200/cls/telegraph",
+		"http://hunkhome.asuscomm.com:9200/cs/news/hyzx",
+		"http://hunkhome.asuscomm.com:9200/cs/news/zzkx",
+		"http://hunkhome.asuscomm.com:9200/taoguba/index"
 	]
 }

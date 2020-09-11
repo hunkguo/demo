@@ -1,9 +1,9 @@
 ########################################################################
+from datetime import datetime
 class BaseData(object):
     def __init__(self):
         """Constructor"""
-        self.gatewayName = ''         # Gateway名称        
-        self.rawData = None                     # 原始数据
+        pass
 
  
 class RssData(BaseData):
@@ -11,6 +11,8 @@ class RssData(BaseData):
         """Constructor"""
         super(RssData, self).__init__()
                 
-        self.title = ''           
+        self.title = ''       
+        self.published = datetime.now()
         self.summary = ''    
-        self.link =''       
+        self.link =''    
+        self.tags = {}   

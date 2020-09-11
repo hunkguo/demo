@@ -14,4 +14,4 @@ if __name__ == '__main__':
     # 进入主循环
     while True:
         downloadAllData()
-        sleep(600)
+        sleep(60)
