@@ -19,7 +19,7 @@ cl = db["news"]
 
 # convert your date string to datetime object
 start = datetime.datetime.utcnow().isoformat()
-end = (datetime.datetime.utcnow()-datetime.timedelta(minutes=60)).isoformat()
+end = (datetime.datetime.utcnow()-datetime.timedelta(hours=6)).isoformat()
 print('-'*20)
 count_frq = Counter()
 
@@ -33,5 +33,5 @@ for row in cl.find({'published': {'$lt': start, '$gte': end }}):
             row['tags'].remove(keyword)
     #print(row['tags'])
     count_frq.update(row['tags'])
-print(count_frq)
+print(count_frq.most_common(20))
 print('-'*20)

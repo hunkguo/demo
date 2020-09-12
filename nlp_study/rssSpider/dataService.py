@@ -22,6 +22,7 @@ MONGO_HOST = setting['MONGO_HOST']
 MONGO_PORT = setting['MONGO_PORT']
 News_DB_NAME = setting['News_DB_NAME']
 RSS_SOURCE = setting["RSS_SOURCE"]
+RSS_HOTS = setting["RSS_HOTS"]
 
 mc = MongoClient(MONGO_HOST, MONGO_PORT)        # Mongo连接
 db = mc[News_DB_NAME]                         # 数据库
@@ -29,13 +30,13 @@ db = mc[News_DB_NAME]                         # 数据库
 
 
 
-def downloadRssDara(rss):
+def downloadRssDara(rssFeed):
     """下载Rss数据"""
 
-    feedData=feedparser.parse(rss)
+    feedData=feedparser.parse(rssFeed)
 
 
-    start = time()
+    #start = time()
     cl = db["news"]
     cl.ensure_index([('link', ASCENDING)], unique=True)         # 添加索引
     for i in range(len(feedData.entries)):  
@@ -48,23 +49,30 @@ def downloadRssDara(rss):
         print(feedData.entries[i].link)
         '''
 
-        rss = RssData()
-        rss.title = feedData.entries[i].title
-        rss.summary = filter_tags(feedData.entries[i].summary)
-        #rss.published = formatGMTime(feedData.entries[i].published)
-        rss.published = convertISODate(feedData.entries[i].published)
-        rss.link = feedData.entries[i].link
+        rssDate = RssData()
+        try:
+            rssDate.title = feedData.entries[i].title
+            rssDate.summary = filter_tags(feedData.entries[i].summary)
+            #rssDate.published = formatGMTime(feedData.entries[i].published)
+            try:
+                rssDate.published = convertISODate(feedData.entries[i].published)
+            except:
+                pass
+            rssDate.link = feedData.entries[i].link
 
-        rss.tags = jieba.analyse.extract_tags(rss.summary, topK=20)
+            rssDate.tags = jieba.analyse.extract_tags(rssDate.summary, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz', 'vn', 'v'))
+        except:
+            print(feedData.entries[i])
+            continue
         
-        d = rss.__dict__
-        flt = {'link': rss.link}
+        d = rssDate.__dict__
+        flt = {'link': rssDate.link}
         cl.replace_one(flt, d, True)   
 
-    end = time()
-    cost = (end - start) * 1000
-
-    print(u'数据下载完成，耗时%s毫秒' %(cost))
+    #end = time()
+    #cost = (end - start) * 1000
+    #print(u'数据下载完成，耗时%s毫秒' %(cost))
+    print(u'【%s】数据下载完成' %(rssFeed))
 
 def downloadAllData():
 
@@ -73,8 +81,9 @@ def downloadAllData():
     print('-' * 50)
 
     # 添加下载任务
-    for rss in RSS_SOURCE:
-        downloadRssDara(rss)
+    for feed in RSS_SOURCE:
+        downloadRssDara(RSS_HOTS+feed)
+        #print(RSS_HOTS+feed)
 
     print('-' * 50)
     print(u'RSS数据下载完成')
