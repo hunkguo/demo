@@ -24,8 +24,7 @@ def reBuild():
     cl.ensure_index([('link', ASCENDING)], unique=True)         # 添加索引
     
     for row in cl.find():
-        rssDate = RssData()        
-        rssDate.ObjectId = row['_id']
+        rssDate = RssData() 
         rssDate.title = row['title']
         rssDate.summary = row['summary']
         rssDate.published = row['published']
@@ -34,7 +33,7 @@ def reBuild():
 
         
         d = rssDate.__dict__
-        flt = {'link': rssDate.link}
+        flt = {'_id': row['_id']}
         cl.replace_one(flt, d, True) 
 
         

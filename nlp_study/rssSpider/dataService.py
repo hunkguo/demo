@@ -57,7 +57,7 @@ def downloadRssDara(rssFeed):
             try:
                 rssDate.published = convertISODate(feedData.entries[i].published)
             except:
-                pass
+                rssDate.published = convertISODate(rssDate.published)
             rssDate.link = feedData.entries[i].link
 
             rssDate.tags = jieba.analyse.extract_tags(rssDate.summary, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz'))
