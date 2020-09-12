@@ -60,7 +60,7 @@ def downloadRssDara(rssFeed):
                 pass
             rssDate.link = feedData.entries[i].link
 
-            rssDate.tags = jieba.analyse.extract_tags(rssDate.summary, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz', 'vn', 'v'))
+            rssDate.tags = jieba.analyse.extract_tags(rssDate.summary, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz'))
         except:
             print(feedData.entries[i])
             continue

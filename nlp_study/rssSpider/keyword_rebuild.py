@@ -30,7 +30,7 @@ def reBuild():
         rssDate.summary = row['summary']
         rssDate.published = row['published']
         rssDate.link = row['link']
-        rssDate.tags = jieba.analyse.extract_tags(rssDate.summary, topK=100, allowPOS=('ns', 'n', 'nr', 'nt', 'nz', 'vn', 'v'))
+        rssDate.tags = jieba.analyse.extract_tags(rssDate.summary, topK=100, allowPOS=('ns', 'n', 'nr', 'nt', 'nz'))
 
         
         d = rssDate.__dict__
