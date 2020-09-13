@@ -44,7 +44,7 @@
           }, error => {
             console.log(error)
         });
-        this.$http.get('http://192.168.30.55:5000/api/videolist').then(response => {
+        this.$http.get('http://192.168.30.55/api/videolist').then(response => {
         //this.$http.get('/api/videolist').then(response => {
           this.videolist = response.body;
           //console.log(this.videolist)

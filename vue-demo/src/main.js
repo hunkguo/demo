@@ -18,7 +18,7 @@ Vue.use(VueRouter); //挂载属性
 //创建路由对象并配置路由规则
 let router = new VueRouter({
     mode: 'history',
-    base:"/demo",
+    base:"/ytplayer",
     routes: [
         //一个个对象
         { name: 'VideoList', path: '/', component: VideoList },

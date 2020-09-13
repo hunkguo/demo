@@ -14,7 +14,7 @@
                     controls="controls"
                     preload="auto"
                     controlsList="nodownload"
-                    v-bind:src="'http://qc0ll6vnu.bkt.clouddn.com/' + video.videoFile"
+                    v-bind:src="'http://192.168.30.55/api/static/media/' + video.videoFile"
                     >
               </audio>
             </v-card-subtitle>

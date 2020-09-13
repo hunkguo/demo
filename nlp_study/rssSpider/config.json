@@ -29,10 +29,6 @@
 		"/eeo/15",
 		"/eeo/16",
 		"/eeo/17",
-		"/zaobao/realtime/china",
-		"/zaobao/realtime/singapore",
-		"/zaobao/realtime/world",
-		"/zaobao/realtime/zfinance",
 		"/infzm/1",
 		"/infzm/2",
 		"/infzm/3",
@@ -62,9 +58,6 @@
 		"/bjnews/roll",
 		"/sina/rollnews",
 		"/xwlb/index",
-		"/gov/zhengce/zuixin",
-		"/gov/zhengce/wenjian",
-		"/gov/news",
-		"/csrc/fashenwei"
+		"/gov/news"
 	]
 }
