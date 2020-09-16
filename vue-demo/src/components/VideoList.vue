@@ -9,10 +9,8 @@
           dark
           @click="playVideo(v.id)"
           >
-          <v-img height="250" :src="v.videoThumbnail"></v-img>
           <v-card-title v-text="v.videoTitle"></v-card-title>
                 <v-divider class="mx-4"></v-divider>
-                <v-card-subtitle v-text="v.videoDescription"></v-card-subtitle>
                 <v-card-subtitle>{{v.videoUploader}} - {{v.videoUploadDate}} - 时长{{v.videoDuration}}秒</v-card-subtitle>
           <v-card-text>
                 <v-card-actions>
