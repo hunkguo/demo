@@ -20,6 +20,32 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 
+
+import clsx from 'clsx';
+
+import Drawer from '@material-ui/core/Drawer';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import Divider from '@material-ui/core/Divider';
+import List from '@material-ui/core/List';
+import { mainListItems, secondaryListItems } from './listItems';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Box from '@material-ui/core/Box';
+import Link from '@material-ui/core/Link';
+
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="textSecondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://material-ui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
 function App() {
   const [videos, setVideos] = React.useState([]);
   React.useEffect(() => {
@@ -47,66 +73,171 @@ function App() {
     setShowPlayer(true);
   }
 
+  const drawerWidth = 240;
   const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1,
-      width: 550,
+      display: 'flex',
+    },
+    toolbar: {
+      paddingRight: 24, // keep right padding when drawer closed
+    },
+    toolbarIcon: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      padding: '0 8px',
+      ...theme.mixins.toolbar,
+    },
+    appBar: {
+      zIndex: theme.zIndex.drawer + 1,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+    },
+    appBarShift: {
+      marginLeft: drawerWidth,
+      width: `calc(100% - ${drawerWidth}px)`,
+      transition: theme.transitions.create(['width', 'margin'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
     },
     menuButton: {
-      marginRight: theme.spacing(2),
+      marginRight: 36,
+    },
+    menuButtonHidden: {
+      display: 'none',
     },
     title: {
       flexGrow: 1,
     },
+
+    drawerPaper: {
+      position: 'relative',
+      whiteSpace: 'nowrap',
+      width: drawerWidth,
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+    },
+    drawerPaperClose: {
+      overflowX: 'hidden',
+      transition: theme.transitions.create('width', {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+      }),
+      width: theme.spacing(7),
+      [theme.breakpoints.up('sm')]: {
+        width: theme.spacing(9),
+      },
+    },
+    appBarSpacer: theme.mixins.toolbar,
+    content: {
+      flexGrow: 1,
+      height: '100vh',
+      overflow: 'auto',
+    },
+    container: {
+      paddingTop: theme.spacing(4),
+      paddingBottom: theme.spacing(4),
+    },
+    paper: {
+      padding: theme.spacing(2),
+      display: 'flex',
+      overflow: 'auto',
+      flexDirection: 'column',
+    },
+    fixedHeight: {
+      height: 40,
+    },
   }));
   const classes = useStyles();
+  const [open, setOpen] = React.useState(true);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
   return (
-      <Container maxWidth="sm" >            
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
+          <Toolbar className={classes.toolbar}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
+            >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title}>
+            <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
               听视频
             </Typography>
-            <Player url={playerVideoUrl} isShow={showPlayer} />
+            <IconButton color="inherit">
+              <Player url={playerVideoUrl} isShow={showPlayer} />
+            </IconButton>
           </Toolbar>
         </AppBar>
-        <Grid >        
-          {videos.map(video =>    
-            <Card className={classes.root}>
-              <CardActionArea>
-                <CardMedia
-                  component="img"
-                  alt={video.videoTitle}
-                  height="140"
-                  image={video.videoThumbnail}
-                  title={video.videoTitle}
-                />
-                <CardContent onClick={handleClick.bind(this, video.videoFile)}>
-                  <Typography gutterBottom variant="h5" component="h2">
-                  {video.videoTitle}
-                  </Typography>
-                  <Typography variant="body2" color="textSecondary" component="p">
-                    {video.videoDescription}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-              <CardActions>
-                <Button size="small" color="secondary">
-                  删除
-                </Button>
-                <Button size="small" color="primary"  onClick={handleClick.bind(this, video.videoFile)}>
-                  播放
-                </Button>
-              </CardActions>
-            </Card>
-          )}          
-
-        </Grid>
-      </Container>
+        <Drawer
+          variant="permanent"
+          classes={{
+            paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
+          }}
+          open={open}
+        >
+          <div className={classes.toolbarIcon}>
+            <IconButton onClick={handleDrawerClose}>
+              <ChevronLeftIcon />
+            </IconButton>
+          </div>
+          <Divider />
+          <List>{mainListItems}</List>
+          <Divider />
+          <List>{secondaryListItems}</List>
+        </Drawer> 
+        <main className={classes.content}>
+          <div className={classes.appBarSpacer} />
+            <Container maxWidth="lg" className={classes.container}>
+              {videos.map(video =>    
+                <Grid item key={video} >        
+                  <Card className={classes.root}>
+                    <CardActionArea>
+                      <CardMedia
+                        component="img"
+                        alt={video.videoTitle}
+                        height="140"
+                        image={video.videoThumbnail}
+                        title={video.videoTitle}
+                      />
+                      <CardContent onClick={handleClick.bind(this, video.videoFile)}>
+                        <Typography gutterBottom variant="h5" component="h2">
+                        {video.videoTitle}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button size="small" color="secondary">
+                          删除
+                        </Button>
+                        <Button size="small" color="primary"  onClick={handleClick.bind(this, video.videoFile)}>
+                          播放
+                        </Button>
+                      </CardActions>
+                    </CardActionArea>
+                  </Card>     
+                </Grid>
+              )}     
+              <Box pt={4}>
+                <Copyright />
+              </Box>
+            </Container>
+        </main>
+      </div>
     
   );
 }
