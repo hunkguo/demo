@@ -4,6 +4,8 @@
 *.txt
 *.csv
 *.pdf
+*.flv
+*.mp4
 
 *.pyc
 flask_demo/access.log
