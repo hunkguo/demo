@@ -6,6 +6,7 @@
 *.pdf
 *.flv
 *.mp4
+*.mkv
 
 *.pyc
 flask_demo/access.log
