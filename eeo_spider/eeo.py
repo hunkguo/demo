@@ -122,12 +122,17 @@ class Eeo(object):
 
 
 def main():
+	print('-'*20+'开始下载经济观察报'+'-'*20)
 	eeo =  Eeo()
 	current_pdfid = int(eeo.getVersion())
+	print('-'*20+'获取最新版本成功'+'-'*20)
 	# 获取当前最新版报纸
 	pdfs_url = eeo.getPdfList(current_pdfid)
+	print('-'*20+'获取最新报纸'+'-'*20)
 	eeo.download_all_pdf_files(current_pdfid,pdfs_url)
+	print('-'*20+'下载成功'+'-'*20)
 	eeo.merge_pdf_files(current_pdfid,pdfs_url)
+	print('-'*20+'合并成功'+'-'*20)
 	'''
 	# 获取 第900期至今的报纸
 	for pdfid in range(900,current_pdfid+1):
