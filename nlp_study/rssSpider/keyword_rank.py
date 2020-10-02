@@ -19,7 +19,7 @@ cl = db["news"]
 
 # convert your date string to datetime object
 start = datetime.datetime.utcnow().isoformat()
-end = (datetime.datetime.utcnow()-datetime.timedelta(hours=6)).isoformat()
+end = (datetime.datetime.utcnow()-datetime.timedelta(days=6)).isoformat()
 print('-'*20)
 count_frq = Counter()
 
