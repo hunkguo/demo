@@ -33,25 +33,13 @@ print(cov)
 
 class tickerData:
     def __init__ (self):
-        self.pro = ts.pro_api('d94b8d1af9f3110dca7acf2e85b4bf10b7d33de74491de8f671c4b8b')
+    	ts.set_token('d94b8d1af9f3110dca7acf2e85b4bf10b7d33de74491de8f671c4b8b')
+    	self.pro = ts.pro_api()
         
     def run(self):
-    	all_data = {}
-    	for ticker in ['601398.SH', '601939.SH', '601857.SH', '600028.SH']:
-    		#获取各股票某时段的价格
-    		#all_data[ticker] = self.pro.daily(ts_code=ticker,start_date='20150101', end_date='20150126')
-    		all_data[ticker] = self.pro.daily_basic(ts_code=ticker,start_date='20150101', end_date='20150126')
-
-
-    	price = DataFrame({tic: data['volume_ratio'] 
-    		for tic, data in all_data.items()})
-
-    	print(price)
-    	#计算股票价格每日变化
-    	returns = price.pct_change()
-    	#计算相关性
-    	corr=returns.corr()
-    	print(corr)
+    	
+    	df = ts.pro_bar(ts_code='601398.sh', start_date='20200901',end_date='20200930',freq='D', factors='vr')
+    	print(df)
 
 if __name__ == "__main__":
     
