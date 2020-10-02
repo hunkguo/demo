@@ -1,0 +1,58 @@
+{% extends 'bootstrap/base.html' %}  #声明继承
+
+{% block title %}{{ title_name }}{% endblock %}
+{% block navbar %}
+    {{ nav.top.render() }}
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="container">
+            <h1>{{ self.title() }}</h1>
+        </div>
+    </div>
+    <div class="container">
+        This is jzs.
+        {% for jzs in jzs_list %}    
+        <div class="list-group">
+            <a href="#" class="list-group-item ">
+                {% for member in jzs.家庭成员 %}
+                <h1><small>{{ member.申请人 }}</small>   {{ member.身份证号 }}</h1>
+                {% endfor %}
+                
+                <h2>
+                    <small>档案编号</small>{{jzs.档案编号}}
+                </h2>
+                <h2>
+                    <small>项目名称：</small>{{jzs.小区名称}}
+                </h2>
+                <h3><small>房屋地址</small>   {{jzs.楼栋号}} - {{jzs.单元号}} - {{jzs.楼层号}} - {{jzs.房号}}</h3>
+                <h2>
+                    <small>建筑面积</small>{{jzs.建筑面积}}
+                </h2>
+                <h2>
+                    <small>发改部门核定价格</small>{{jzs.发改部门核定价格}}
+                </h2>
+                <h2>
+                    <small>缴纳土地出让金百分比</small>{{jzs.缴纳土地出让金百分比}}
+                </h2>
+                <h2>
+                    <small>土地出让金金额</small>{{jzs.土地出让金金额}}
+                </h2>
+            </a>
+        </div>
+
+
+        {% endfor %}
+
+    </div>
+{% endblock content %}
+
+{% block head %}
+    {{ super() }}
+{% endblock %}
+
+{% block styles %}
+    {{ super() }}
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
+{% endblock %}
