@@ -48,7 +48,7 @@ def newslist():
     else:
         total_page = int(count/100)
     # 分页查询
-    newslist = mongo.db.news.find({'published': {'$lt': start, '$gte': end }}).sort([('_id', DESCENDING)]).skip(per_page*(page-1)).limit(100)
+    newslist = mongo.db.news.find({'published': {'$lt': start, '$gte': end }}).sort([('published', -1)]).skip(per_page*(page-1)).limit(100)
 
 #    star = mongo.db.slient.find(finder).sort([('_id', DESCENDING)]).skip(per_page*(page-1)).limit(10)
 
