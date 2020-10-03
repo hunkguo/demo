@@ -3,8 +3,7 @@ import tushare as ts
 from pandas import DataFrame
 import json,time
 from pymongo import MongoClient, ASCENDING
-#from Object import NewsData
-from schedulerTask.newsSpider.Object import NewsData
+from Object import NewsData
 import jieba
 import jieba.analyse
 
@@ -13,7 +12,7 @@ jieba.set_dictionary('./schedulerTask/newsSpider/dict.txt')
 #jieba.set_dictionary('dict.txt')
 
 # 加载配置
-config = open('./schedulerTask/newsSpider/config.json')
+config = open('./schedulerTask/config.json')
 #config = open('config.json')
 setting = json.load(config)
 

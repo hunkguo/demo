@@ -4,6 +4,7 @@ from flask import Flask,render_template,request,url_for,redirect
 from flask_nav import Nav
 from flask_nav.elements import *
 from views.keywordRank import keywordRank_bp
+from views.youtubeVideoToAudio import youtubeVideoToAudio_bp
 from flask_pymongo import PyMongo
 from flask_apscheduler import APScheduler
 from schedulerTask.newsSpider.jobTushareNews import *
@@ -27,7 +28,16 @@ class Config(object):
                 'type': 'cron',
                 'minute':'*/10'
             }
-        }
+        },
+        {
+            'id': 'downloadYoutubeAndConvertAudio',
+            'func': 'schedulerTask.jobYoutubeVideo2audio:youtubeForVideoToAudioSchedulerTaskJob',
+            'args': '',
+            'trigger': {
+                'type': 'cron',
+                'minute':'*/1'
+            }
+        },
     ]
 
 app = Flask(__name__, static_url_path='/static', template_folder='templates'
@@ -38,10 +48,15 @@ Bootstrap(app)
 nav=Nav()
 nav.register_element('top',Navbar(u'Hunk\'s WebSite',
                                     View(u'主页','home'),
-                                    Subgroup(u'运行中的小项目',
+                                    Subgroup(u'新闻',
                                              View(u'新闻关键字排名','keywordRank.index'),
                                              Separator(),
                                              View(u'新闻列表','keywordRank.newslist'),
+                                    ),
+                                    Subgroup(u'听视频',
+                                             View(u'列表','youtubeVideoToAudio.index'),
+                                             Separator(),
+                                             View(u'添加','youtubeVideoToAudio.addVideoLink'),
                                     ),
 ))
 nav.init_app(app)
@@ -69,6 +84,8 @@ def is_current_link(link):
 
 
 app.register_blueprint(keywordRank_bp, url_prefix='/keywordRank')
+app.register_blueprint(youtubeVideoToAudio_bp, url_prefix='/v2a')
+
     
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port='5000', debug=True)
