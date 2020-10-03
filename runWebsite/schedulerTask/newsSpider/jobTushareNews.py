@@ -51,11 +51,12 @@ def yuncaijingNews():
 def saveDb(df):
 
     cl = db["news_data"]
-    #cl.create_index([('content', ASCENDING)], unique=True)         # 添加索引
+    cl.create_index([('content', ASCENDING)], unique=True)         # 添加索引
     newsData = NewsData()
 
-    try:
-        for index,row in df.iterrows():
+    
+    for index,row in df.iterrows():
+        try:
             # title 有时为空
             newsData.title = row['title']
             newsData.published = row['datetime']
@@ -65,8 +66,9 @@ def saveDb(df):
             d = newsData.__dict__
             flt = {'content': newsData.content}
             cl.replace_one(flt, d, True)
-    except:
-        print(row)
+        except:
+            print('--'*50)
+            continue
 
      
 def tushareNewsSpiderSchedulerTaskJob():

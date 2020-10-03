@@ -38,9 +38,9 @@ def addVideoLink():
         youtubeVideo.link = video_link
         d = youtubeVideo.__dict__
         flt = {'link': youtubeVideo.link}
-        mongo.db.youtube_video_link.replace_one(flt, d, False)     
+        mongo.db.youtube_video_link.replace_one(flt, d, True)
         
-        return redirect(url_for('youtubeVideoToAudio.addVideoLink'))
+        return redirect(url_for('youtubeVideoToAudio.index'))
     
 
 @youtubeVideoToAudio_bp.route('/palyer', methods=['GET'])

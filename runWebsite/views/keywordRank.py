@@ -42,15 +42,12 @@ def newslist():
     per_page = int(request.args.get('per_page', 100))           # 每页几条数据
 
     # 总页数查询
-    count = mongo.db.news.find({'published': {'$lt': start, '$gte': end }}).count()
+    count = mongo.db.news_data.find({'published': {'$lt': start, '$gte': end }}).count()
     if count%100 > 0:
         total_page = int(count/100 +1)
     else:
         total_page = int(count/100)
     # 分页查询
-    newslist = mongo.db.news.find({'published': {'$lt': start, '$gte': end }}).sort([('published', -1)]).skip(per_page*(page-1)).limit(100)
-
-#    star = mongo.db.slient.find(finder).sort([('_id', DESCENDING)]).skip(per_page*(page-1)).limit(10)
-
+    newslist = mongo.db.news_data.find({'published': {'$lt': start, '$gte': end }}).sort([('published', -1)]).skip(per_page*(page-1)).limit(100)
 
     return render_template('keywordRank/newslist.html', title_name='新闻列表', list=newslist, total_page=total_page)

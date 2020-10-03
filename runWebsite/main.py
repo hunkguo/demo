@@ -17,7 +17,7 @@ class Config(object):
             'args': '',
             'trigger': {
                 'type': 'cron',
-                'minute':'58'
+                'minute':'*/50'
             }
         },
         {
@@ -26,7 +26,7 @@ class Config(object):
             'args': '',
             'trigger': {
                 'type': 'cron',
-                'minute':'*/10'
+                'minute':'*/5'
             }
         },
         {
@@ -35,7 +35,7 @@ class Config(object):
             'args': '',
             'trigger': {
                 'type': 'cron',
-                'minute':'*/1'
+                'minute':'*/13'
             }
         },
     ]
