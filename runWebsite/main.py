@@ -3,11 +3,32 @@ from flask_bootstrap import Bootstrap
 from flask import Flask,render_template,request,url_for,redirect
 from flask_nav import Nav
 from flask_nav.elements import *
-from wtforms import Form, BooleanField, TextField, PasswordField, validators
-#from views.user import user_bp
-#from views.jzs import jzs_bp
 from views.keywordRank import keywordRank_bp
 from flask_pymongo import PyMongo
+from flask_apscheduler import APScheduler
+from schedulerTask.newsSpider.jobTushareNews import *
+
+class Config(object):
+    JOBS = [
+        {
+            'id': 'tushareNewsData',
+            'func': 'schedulerTask.newsSpider.jobTushareNews:tushareNewsSpiderSchedulerTaskJob',
+            'args': '',
+            'trigger': {
+                'type': 'cron',
+                'minute':'58'
+            }
+        },
+        {
+            'id': 'rssNewsData',
+            'func': 'schedulerTask.newsSpider.jobRssNews:rssNewsSpiderSchedulerTaskJob',
+            'args': '',
+            'trigger': {
+                'type': 'cron',
+                'minute':'*/10'
+            }
+        }
+    ]
 
 app = Flask(__name__, static_url_path='/static', template_folder='templates'
             )
@@ -23,12 +44,15 @@ nav.register_element('top',Navbar(u'Hunk\'s WebSite',
                                              View(u'新闻列表','keywordRank.newslist'),
                                     ),
 ))
-
 nav.init_app(app)
 
 
+scheduler = APScheduler()
+app.config.from_object(Config())
+scheduler.init_app(app)
+scheduler.start()
 
-app.config["MONGO_URI"] = "mongodb://localhost:27017/rssdata"
+app.config["MONGO_URI"] = "mongodb://localhost:27017/db_run_website"
 app.mongo = PyMongo(app)
 
 
@@ -42,18 +66,6 @@ def home():
 @app.template_test('current_link')
 def is_current_link(link):
     return link == request.path
-
-class LoginForm(Form):
-    username = TextField('Username', [validators.Length(min=4, max=25)])
-    email = TextField('Email Address', [validators.Length(min=6, max=35)])
-
-@app.route('/login', methods=['GET', 'POST'])
-def register():
-    form = LoginForm(request.form)
-    if request.method == 'POST' and form.validate():
-        print(form.data)
-        return redirect(url_for('home'))
-    return render_template('login.html', form=form)
 
 
 app.register_blueprint(keywordRank_bp, url_prefix='/keywordRank')

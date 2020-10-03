@@ -18,7 +18,7 @@ def index():
     end = (datetime.datetime.utcnow()-datetime.timedelta(days=1)).isoformat()
     count_frq = Counter()
     useless_eyword = ['11','...','编辑','时间','来源','责任编辑','记者']
-    for row in mongo.db.news.find({'published': {'$lt': start, '$gte': end }}):
+    for row in mongo.db.news_data.find({'published': {'$lt': start, '$gte': end }}):
         #print(row['tags'])
         for keyword in row['tags']:
             #print(keyword)
