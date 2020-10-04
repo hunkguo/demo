@@ -42,6 +42,8 @@ def downloadRssDara(rssFeed):
         try:
             newsData.title = feedData.entries[i].title
             newsData.content = filter_tags(feedData.entries[i].summary)
+            if(newsData.content == ""):
+                newsData.content = newsData.title
             try:
                 newsData.published = convertISODate(feedData.entries[i].published)
             except:

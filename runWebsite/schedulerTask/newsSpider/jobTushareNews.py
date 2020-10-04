@@ -60,12 +60,19 @@ def saveDb(df):
         try:
             # title 有时为空
             newsData.title = row['title']
+            if(newsData.title == ""):
+                newsData.title = newsData.content
             try:
                 newsData.published = datetime.datetime.strptime(row['datetime'],'%Y-%m-%d %H:%M:%S').isoformat()
             except:
                 #print(row)
                 continue
             newsData.content = row['content']
+            if(newsData.content == ""):
+                newsData.content = newsData.title
+            if(newsData.title == ""):
+                newsData.title = newsData.content
+
             newsData.tags = jieba.analyse.extract_tags(newsData.content, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz'))
 
             d = newsData.__dict__
