@@ -15,7 +15,7 @@ def index():
     current_page = int(request.args.get('page', 1))        # 当前在第几页
     if(current_page==0):
         current_page=1
-    pageCount = 10
+    pageCount = 6
     per_page = int(request.args.get('per_page', pageCount))           # 每页几条数据
 
     # 总页数查询

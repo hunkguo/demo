@@ -6,6 +6,7 @@
 
 {% block content %}
 <div class="container">  
+    <div class="row justify-content-md-center"> 
     <form action="{{ url_for('youtubeVideoToAudio.addVideoLink') }}" method="post">
         <div class="form-group">
             <label for="InputVideoLink">链接</label>
@@ -14,6 +15,7 @@
         </div>
         <button type="submit" class="btn btn-primary">保存</button>
     </form>
+    </div>
 </div>
 
 {% endblock %}
