@@ -43,9 +43,9 @@ def downloadRssDara(rssFeed):
             newsData.title = feedData.entries[i].title
             newsData.content = filter_tags(feedData.entries[i].summary)
             try:
-                newsData.published = convertISODate(feedData.entries[i].published)
+                newsData.published = feedData.entries[i].published
             except:
-                newsData.published = convertISODate(newsData.published)
+                continue
 
             newsData.tags = jieba.analyse.extract_tags(newsData.content, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz'))
         except:
