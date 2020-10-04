@@ -8,11 +8,18 @@ import time
 from schedulerTask.jobYoutubeVideo2audio import youtubeForVideoToAudioSchedulerTaskJob
 from schedulerTask.newsSpider.jobRssNews import rssNewsSpiderSchedulerTaskJob
 from schedulerTask.newsSpider.jobTushareNews import tushareNewsSpiderSchedulerTaskJob
+from schedulerTask.newsSpider.jobKeywordCount import keywordCountSchedulerTaskJob
 
 if __name__ == '__main__':
     
     # 进入主循环
     while True:
+        print('-'*20)
+        print('keyword count')
+        print('-'*20)
+        keywordCountSchedulerTaskJob()
+        time.sleep(10)
+
         print('-'*20)
         print('download Rss News')
         print('-'*20)
@@ -23,7 +30,7 @@ if __name__ == '__main__':
         print('download youtube video')
         print('-'*20)
         youtubeForVideoToAudioSchedulerTaskJob()
-        time.sleep(250)
+        time.sleep(200)
 
         print('-'*20)
         print('download Tushare News')
