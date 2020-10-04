@@ -6,6 +6,7 @@ from pymongo import MongoClient, ASCENDING
 from Object import NewsData
 import jieba
 import jieba.analyse
+import datetime
 
 
 jieba.set_dictionary('./schedulerTask/newsSpider/dict.txt')
@@ -59,7 +60,11 @@ def saveDb(df):
         try:
             # title 有时为空
             newsData.title = row['title']
-            newsData.published = row['datetime']
+            try:
+                newsData.published = datetime.datetime.strptime(row['datetime'],'%Y-%m-%d %H:%M:%S').isoformat()
+            except:
+                #print(row)
+                continue
             newsData.content = row['content']
             newsData.tags = jieba.analyse.extract_tags(newsData.content, topK=200, allowPOS=('ns', 'n', 'nr', 'nt', 'nz'))
 
