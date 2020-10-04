@@ -24,16 +24,33 @@
     </div>
     <nav aria-label="Page navigation example">
         <ul class="pagination">
-            <li class="page-item">
-                <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=current_page-1)}}" aria-label="Previous">
-                <span aria-hidden="true">Previous</span>
-                </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=current_page+1)}}" aria-label="Next">
-                <span aria-hidden="true">Next</span>
-                </a>
-            </li>
+            
+            {% if current_page == 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=1)}}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=current_page-1)}}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if current_page == total_page %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=current_page)}}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=current_page+1)}}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
       </nav>
     

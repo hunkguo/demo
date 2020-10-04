@@ -16,7 +16,7 @@ class Config(object):
             'max_instances' : 10,
             'trigger': {
                 'type': 'cron',
-                'minute':'*/50'
+                'minute':'*/58'
             }
         },
         {
@@ -35,7 +35,7 @@ class Config(object):
             'max_instances' : 10,
             'trigger': {
                 'type': 'cron',
-                'minute':'*/13'
+                'minute':'*/28'
             }
         },
     ]

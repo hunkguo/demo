@@ -42,10 +42,6 @@ def downloadRssDara(rssFeed):
         try:
             newsData.title = feedData.entries[i].title
             newsData.content = filter_tags(feedData.entries[i].summary)
-            if(newsData.content=='' and newsData.title==''):
-                newsData.content = newsData.title
-            else:
-                continue
             try:
                 newsData.published = convertISODate(feedData.entries[i].published)
             except:
@@ -57,7 +53,7 @@ def downloadRssDara(rssFeed):
             continue
         
         d = newsData.__dict__
-        flt = {'title': newsData.title}
+        flt = {'content': newsData.content}
         cl.replace_one(flt, d, True)   
 
 
