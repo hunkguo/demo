@@ -14,17 +14,19 @@ if __name__ == '__main__':
     # 进入主循环
     while True:
         print('-'*20)
-        print('download youtube video')
-        print('-'*20)
-        #youtubeForVideoToAudioSchedulerTaskJob()
-
-        print('-'*20)
         print('download Rss News')
         print('-'*20)
-        #rssNewsSpiderSchedulerTaskJob()
+        rssNewsSpiderSchedulerTaskJob()
+        time.sleep(150)
+
+        print('-'*20)
+        print('download youtube video')
+        print('-'*20)
+        youtubeForVideoToAudioSchedulerTaskJob()
+        time.sleep(250)
 
         print('-'*20)
         print('download Tushare News')
         print('-'*20)
         tushareNewsSpiderSchedulerTaskJob()
-        time.sleep(10)
+        time.sleep(100)
