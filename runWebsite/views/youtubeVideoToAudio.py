@@ -12,8 +12,10 @@ youtubeVideoToAudio_bp = Blueprint('youtubeVideoToAudio',__name__)
 def index():
     mongo = current_app.mongo
     # 每页数据展示
-    page = int(request.args.get('page', 1))        # 当前在第几页
-    pageCount = 20
+    current_page = int(request.args.get('page', 1))        # 当前在第几页
+    if(current_page==0):
+        current_page=1
+    pageCount = 10
     per_page = int(request.args.get('per_page', pageCount))           # 每页几条数据
 
     # 总页数查询
@@ -22,10 +24,13 @@ def index():
         total_page = int(count/pageCount +1)
     else:
         total_page = int(count/pageCount)
-    # 分页查询
-    list = mongo.db.youtube_video_link.find({'isDownload': True}).sort([('_id', -1)]).skip(per_page*(page-1)).limit(pageCount)
+    if(current_page > total_page):
+        current_page = total_page
 
-    return render_template('youtubeVideoToAudio/index.html', title_name='播放列表', list=list, total_page=total_page)
+    # 分页查询
+    list = mongo.db.youtube_video_link.find({'isDownload': True}).sort([('_id', -1)]).skip(per_page*(current_page-1)).limit(pageCount)
+
+    return render_template('youtubeVideoToAudio/index.html', title_name='播放列表', list=list, total_page=total_page, current_page=current_page)
 
 @youtubeVideoToAudio_bp.route('/add', methods=['GET', 'POST'])
 def addVideoLink():    

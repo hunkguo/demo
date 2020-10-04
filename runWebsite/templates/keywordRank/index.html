@@ -1,32 +1,20 @@
-{% extends 'bootstrap/base.html' %}  #声明继承
+{% extends 'base.html' %}
 
-{% block title %}{{ title_name }}{% endblock %}
-{% block navbar %}
-    {{ nav.top.render() }}
+{% block title %}
+    {{title_name}}
 {% endblock %}
+
 {% block content %}
-<div class="page-header">
-    <div class="container">
-        <h1>{{ self.title() }}</h1>
-    </div>
-</div>
 <div class="container">
-    <div class="row">
-        <ul class="nav nav-pills" role="tablist">
-            {% for item in list %}
-            <li role="presentation"><a href="#">{{item[0]}} <span class="badge">{{item[1]}}</span></a></li>
-            {% endfor %}
-        </ul>
+    <div class="row row-cols-2">
+        {% for item in list %}
+        <div class="col-3">
+            <h2>{{item[0]}}   <span class="badge badge-primary">{{item[1]}}</span></h2>
+        </div>
+        {% endfor %}
     </div>
+    
 </div>
-{% endblock content %}
 
-{% block head %}
-    {{ super() }}
-{% endblock %}
 
-{% block styles %}
-    {{ super() }}
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/darkly/bootstrap.min.css">
 {% endblock %}
