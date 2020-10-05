@@ -14,10 +14,20 @@
               <h5 class="card-title">{{item.videoTitle}}</h5>
               <p class="card-text">{{item.videoDescription}}</p>
               <p>
-                  <span>时长 {{item.videoDuration}}/</span>
-                  <span>播放量 {{item.videoViewCount}}</span>
+                  时长 {{item.videoDuration}}
               </p>
-              <a href="{{ url_for('youtubeVideoToAudio.playerVideo', id=item.videoId)}}" class="btn btn-primary" >播放</a>
+              <p>
+                  播放量 {{item.videoViewCount}}
+              </p>
+              <div class="row justify-content-md-left">
+                <div class="col-md-auto">
+                    <a href="{{ url_for('youtubeVideoToAudio.playerVideo', id=item.videoId)}}" class="btn btn-primary" >播放</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{{ url_for('youtubeVideoToAudio.deleteVideo', id=item.videoId)}}" class="btn btn-primary" >删除</a>
+                </div>
+              </div>
+              
             </div>
         </div>
         {% endfor %}

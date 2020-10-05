@@ -1,6 +1,6 @@
 
 #coding:utf-8
-#user
+import os, sys
 from flask import Blueprint, render_template, redirect, request,url_for
 from flask import current_app
 import datetime
@@ -62,5 +62,28 @@ def playerVideo():
     
 
     return render_template('youtubeVideoToAudio/player.html', title_name=videoTitle, videofile=videoFile)
+
+@youtubeVideoToAudio_bp.route('/delete', methods=['GET'])
+def deleteVideo():
+    video_id = request.args.get('id')
+    flt = {'videoId': video_id}
+    mongo = current_app.mongo
+    videoId = ''
+    videoFile = ''
+    for row in mongo.db.youtube_video_link.find(flt):
+        videoFile = row['downloadFile']
+        videoId = row['videoId']
+    try:
+        mediaDir = current_app.root_path+current_app.static_url_path+"/media/"
+        for root, dirs, files in os.walk(mediaDir):
+            for filename in files:
+                name = os.path.splitext(filename)[0]
+                if(name == videoId):
+                    os.remove(os.path.join(root, filename))
+        mongo.db.youtube_video_link.remove(flt)
+    except(FileNotFoundError):
+        print("文件不存在")
+    
+    return redirect(url_for('youtubeVideoToAudio.index'))
 
 
