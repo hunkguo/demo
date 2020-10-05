@@ -15,7 +15,7 @@ def index():
     mongo = current_app.mongo
     # convert your date string to datetime object
     start = datetime.datetime.utcnow().isoformat()
-    end = (datetime.datetime.utcnow()-datetime.timedelta(days=3)).isoformat()
+    end = (datetime.datetime.utcnow()-datetime.timedelta(days=1)).isoformat()
     count_frq = Counter()
     useless_eyword = ['11','...','编辑','时间','来源','责任编辑','记者']
     for row in mongo.db.news_data.find({'published': {'$lt': start, '$gte': end }}):

@@ -5,6 +5,8 @@ from views.keywordRank import keywordRank_bp
 from views.youtubeVideoToAudio import youtubeVideoToAudio_bp
 from flask_pymongo import PyMongo
 from flask_apscheduler import APScheduler
+import atexit
+import fcntl
 
 class Config(object):
     JOBS = [
@@ -38,10 +40,23 @@ bootstrap = Bootstrap()
 bootstrap.init_app(app)
 
 
+def initAPScheduler(app):
+    f = open("scheduler.lock", "wb")
+    try:
+        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        scheduler = APScheduler()
+        scheduler.init_app(app)
+        scheduler.start()
+    except:
+        pass
+    def unlock():
+        fcntl.flock(f, fcntl.LOCK_UN)
+        f.close()
+    atexit.register(unlock)
+
 scheduler = APScheduler()
 app.config.from_object(Config())
-scheduler.init_app(app)
-scheduler.start()
+initAPScheduler(app)
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/db_run_website"
 app.mongo = PyMongo(app)
