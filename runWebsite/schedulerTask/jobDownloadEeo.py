@@ -140,28 +140,29 @@ class Eeo(object):
 
 def downloadEeoSchedulerTaskJob():
 
-	'''下载最新一期
-	print('-'*20+'开始下载经济观察报'+'-'*20)
+	
+	#下载最新一期
 	eeo =  Eeo()
 	eeoData = EeoData()
 	eeoData.pdfId = int(eeo.getVersion())
-	print('-'*20+'获取最新版本成功'+'-'*20)
+	print('-'*20+'开始下载经济观察报No.'+str(eeoData.pdfId)+'-'*20)
+	#print('-'*20+'获取最新版本成功'+'-'*20)
 	# 获取当前最新版报纸
 	eeoData.pdfList = eeo.getPdfList(eeoData.pdfId)
-	print('-'*20+'获取最新报纸'+'-'*20)
+	#print('-'*20+'获取最新报纸'+'-'*20)
 	eeo.download_all_pdf_files(eeoData.pdfId,eeoData.pdfList)
-	print('-'*20+'下载成功'+'-'*20)
+	#print('-'*20+'下载成功'+'-'*20)
 	eeo.merge_pdf_files(eeoData.pdfId,eeoData.pdfList)
 	eeoData.pdfFile = 'eeo_'+str(eeoData.pdfId)+'.pdf' 
-	print('-'*20+'合并成功'+eeoData.pdfFile+'-'*20)
+	#print('-'*20+'合并成功'+eeoData.pdfFile+'-'*20)
 
 
 	cl = db["eeo_paper"]
 	d = eeoData.__dict__
 	flt = {'pdfId': eeoData.pdfId}
 	cl.replace_one(flt, d, True)
+
 	'''
-	
 	# 获取 第900期至今的报纸
 	cl = db["eeo_paper"]
 	eeo =  Eeo()
@@ -177,6 +178,8 @@ def downloadEeoSchedulerTaskJob():
 		d = eeoData.__dict__
 		flt = {'pdfId': eeoData.pdfId}
 		cl.replace_one(flt, d, True)
+	'''
+
 
 if __name__ == "__main__":
     downloadEeoSchedulerTaskJob()

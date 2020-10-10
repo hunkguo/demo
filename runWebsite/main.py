@@ -39,8 +39,8 @@ class Config(object):
             'trigger': {
                 'type': 'cron',
                 'day_of_week':"sun",
-                'hour':'6',
-                'minute':'58',
+                'hour':'8',
+                'minute':'32',
                 'second': '0'
             }
         },
