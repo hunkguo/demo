@@ -3,6 +3,7 @@ from flask_bootstrap import Bootstrap
 from flask import Flask,render_template,request,url_for,redirect
 from views.keywordRank import keywordRank_bp
 from views.youtubeVideoToAudio import youtubeVideoToAudio_bp
+from views.eeoPaper import eeoPaper_bp
 from flask_pymongo import PyMongo
 from flask_apscheduler import APScheduler
 import atexit
@@ -30,6 +31,18 @@ class Config(object):
             'args': '',
             'trigger': 'interval',
             'minutes': 58
+        },
+        {
+            'id': 'downloadEeoSchedulerTaskJob',
+            'func': 'schedulerTask.jobDownloadEeo:downloadEeoSchedulerTaskJob',
+            'args': '',
+            'trigger': {
+                'type': 'cron',
+                'day_of_week':"sun",
+                'hour':'6',
+                'minute':'58',
+                'second': '0'
+            }
         },
     ]
 
@@ -76,6 +89,8 @@ def is_current_link(link):
 
 app.register_blueprint(keywordRank_bp, url_prefix='/keywordRank')
 app.register_blueprint(youtubeVideoToAudio_bp, url_prefix='/v2a')
+app.register_blueprint(eeoPaper_bp, url_prefix='/eeo')
+
 
     
 if __name__ == '__main__':

@@ -9,6 +9,7 @@ from schedulerTask.jobYoutubeVideo2audio import youtubeForVideoToAudioSchedulerT
 from schedulerTask.newsSpider.jobRssNews import rssNewsSpiderSchedulerTaskJob
 from schedulerTask.newsSpider.jobTushareNews import tushareNewsSpiderSchedulerTaskJob
 from schedulerTask.newsSpider.jobKeywordCount import keywordCountSchedulerTaskJob
+from schedulerTask.jobDownloadEeo import downloadEeoSchedulerTaskJob
 
 if __name__ == '__main__':
     
@@ -33,10 +34,15 @@ if __name__ == '__main__':
         youtubeForVideoToAudioSchedulerTaskJob()
         time.sleep(120)
 
-        '''
         print('-'*20)
         print('download Tushare News')
         print('-'*20)
         tushareNewsSpiderSchedulerTaskJob()
         break
         time.sleep(120)
+        '''
+
+
+        downloadEeoSchedulerTaskJob()
+        break
+

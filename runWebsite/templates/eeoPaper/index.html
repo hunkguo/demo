@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{title_name}}
+{% endblock %}
+
+{% block content %}
+<div class="container">    
+    <div class="row justify-content-md-center">        
+        {% for item in list %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">经济观察报 第{{item.pdfId}}期</h5>
+              <div class="row justify-content-md-left">
+                <div class="col-md-auto">
+                    <a href="{{ url_for('eeoPaper.view', id=item.pdfId)}}" class="btn btn-primary" >阅读</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{{ url_for('eeoPaper.delete', id=item.pdfId)}}" class="btn btn-primary" >删除</a>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row justify-content-md-center"> 
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            
+            {% if current_page == 1 %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('eeoPaper.index', page=1)}}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('eeoPaper.index', page=current_page-1)}}" aria-label="Previous">
+                    <span aria-hidden="true">Previous</span>
+                    </a>
+                </li>
+            {% endif %}
+            {% if current_page == total_page %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('eeoPaper.index', page=current_page)}}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('youtubeVideoToAudio.index', page=current_page+1)}}" aria-label="Next">
+                    <span aria-hidden="true">Next</span>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+      </nav>
+    </div>
+    
+</div>
+
+{% endblock %}

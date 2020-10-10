@@ -1,4 +1,8 @@
-#coding:utf-8
+# -*- coding:utf-8 -*-
+from pymongo import MongoClient, ASCENDING
+from Object import EeoData
+import json
+from datetime import datetime
 import requests
 import random
 from lxml import etree
@@ -6,6 +10,20 @@ import re
 import sys
 import os
 from PyPDF2 import PdfFileMerger
+
+# 加载配置
+config = open('./schedulerTask/config.json')
+#config = open('config.json')
+setting = json.load(config)
+
+MONGO_HOST = setting['MONGO_HOST']
+MONGO_PORT = setting['MONGO_PORT']
+News_DB_NAME = setting['News_DB_NAME']
+RSS_SOURCE = setting["RSS_SOURCE"]
+RSS_HOTS = setting["RSS_HOTS"]
+
+mc = MongoClient(MONGO_HOST, MONGO_PORT)        # Mongo连接
+db = mc[News_DB_NAME]                         # 数据库
 
 
 class Eeo(object):
@@ -86,7 +104,7 @@ class Eeo(object):
 		for index, pdf in enumerate(pdfs, 1):
 			try:
 				response = requests.get(pdf , stream=True)
-				new_pdf_file = 'eeo_'+str(pdfid)+'_'+str(index)+'.pdf'
+				new_pdf_file = './static/eeo_paper/'+'eeo_'+str(pdfid)+'_'+str(index)+'.pdf'
 				with open(new_pdf_file, 'wb') as handle:
 					for block in response.iter_content(1024):
 						handle.write(block)
@@ -95,13 +113,13 @@ class Eeo(object):
 
 	def merge_pdf_files(self,pdfid,pdfs):
 		pdf_file_merger = PdfFileMerger()
-		merged_pdf = 'eeo_'+str(pdfid)+'.pdf' 
+		merged_pdf = './static/eeo_paper/'+'eeo_'+str(pdfid)+'.pdf' 
 
 		for index, pdf in enumerate(pdfs, 1):
 			if merged_pdf == pdf:
 				self.remove_pdf_file(pdf)
 			try:
-				new_pdf_file = 'eeo_'+str(pdfid)+'_'+str(index)+'.pdf'
+				new_pdf_file = './static/eeo_paper/'+'eeo_'+str(pdfid)+'_'+str(index)+'.pdf'
 				pdf_file_merger.append(open(new_pdf_file, 'rb'))
 				self.remove_pdf_file(new_pdf_file)
 			except Exception as e:
@@ -120,27 +138,46 @@ class Eeo(object):
 			self.remove_pdf_file(file)
 
 
-def main():
+def downloadEeoSchedulerTaskJob():
+
+	'''下载最新一期
 	print('-'*20+'开始下载经济观察报'+'-'*20)
 	eeo =  Eeo()
-	current_pdfid = int(eeo.getVersion())
+	eeoData = EeoData()
+	eeoData.pdfId = int(eeo.getVersion())
 	print('-'*20+'获取最新版本成功'+'-'*20)
 	# 获取当前最新版报纸
-	pdfs_url = eeo.getPdfList(current_pdfid)
+	eeoData.pdfList = eeo.getPdfList(eeoData.pdfId)
 	print('-'*20+'获取最新报纸'+'-'*20)
-	eeo.download_all_pdf_files(current_pdfid,pdfs_url)
+	eeo.download_all_pdf_files(eeoData.pdfId,eeoData.pdfList)
 	print('-'*20+'下载成功'+'-'*20)
-	eeo.merge_pdf_files(current_pdfid,pdfs_url)
-	print('-'*20+'合并成功'+'-'*20)
-	'''
-	# 获取 第900期至今的报纸
-	for pdfid in range(900,current_pdfid+1):
-		pdfs_url = eeo.getPdfList(pdfid)
-		eeo.download_all_pdf_files(pdfid,pdfs_url)
-		eeo.merge_pdf_files(pdfid,pdfs_url)
+	eeo.merge_pdf_files(eeoData.pdfId,eeoData.pdfList)
+	eeoData.pdfFile = 'eeo_'+str(eeoData.pdfId)+'.pdf' 
+	print('-'*20+'合并成功'+eeoData.pdfFile+'-'*20)
+
+
+	cl = db["eeo_paper"]
+	d = eeoData.__dict__
+	flt = {'pdfId': eeoData.pdfId}
+	cl.replace_one(flt, d, True)
 	'''
 	
-
+	# 获取 第900期至今的报纸
+	cl = db["eeo_paper"]
+	eeo =  Eeo()
+	current_pdfid = int(eeo.getVersion())
+	for pdfid in range(980,current_pdfid):
+		print('-'*20+'开始下载经济观察报No.'+str(pdfid)+'-'*20)
+		eeoData = EeoData()
+		eeoData.pdfId = pdfid
+		eeoData.pdfList = eeo.getPdfList(eeoData.pdfId)
+		eeo.download_all_pdf_files(eeoData.pdfId,eeoData.pdfList)
+		eeo.merge_pdf_files(eeoData.pdfId,eeoData.pdfList)
+		eeoData.pdfFile = 'eeo_'+str(eeoData.pdfId)+'.pdf' 
+		d = eeoData.__dict__
+		flt = {'pdfId': eeoData.pdfId}
+		cl.replace_one(flt, d, True)
 
 if __name__ == "__main__":
-    main()
+    downloadEeoSchedulerTaskJob()
+

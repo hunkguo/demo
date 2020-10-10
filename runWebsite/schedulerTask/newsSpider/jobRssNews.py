@@ -37,8 +37,10 @@ def downloadRssDara(rssFeed):
     feedData=feedparser.parse(rssFeed)
     cl = db["news_data"]
     cl.ensure_index([('content', ASCENDING)], unique=True)         # 添加索引
+    
     for i in range(len(feedData.entries)):  
         newsData = NewsData()
+        newsData.source = 'RSS'
         try:
             newsData.title = feedData.entries[i].title
             newsData.content = filter_tags(feedData.entries[i].summary)

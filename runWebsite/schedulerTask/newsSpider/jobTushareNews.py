@@ -60,6 +60,7 @@ def saveDb(df):
         try:
             # title 有时为空
             newsData.title = row['title']
+            newsData.source = 'tushare'
             if(newsData.title == ""):
                 newsData.title = newsData.content
             try:

@@ -13,6 +13,7 @@ class NewsData(BaseData):
         self.title = ''       
         self.published = datetime.now()
         self.content = ''    
+        self.source = ''    
         self.tags = {}   
 
 
@@ -38,3 +39,14 @@ class YoutubeVideo(BaseData):
         self.isDownload = False
         self.downloadDate = datetime.now()
         self.downloadFile = ''
+
+
+class EeoData(BaseData):
+    def __init__(self):
+        """Constructor"""
+        super(EeoData, self).__init__()
+        self.pdfId = 0
+        self.pdfList = {}
+        self.pdfFile = ''
+
+
