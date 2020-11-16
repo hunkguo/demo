@@ -1,7 +1,4 @@
 from flask import jsonify, request
-from main import bp
-
-from api.models import *
 from main import db
 from error import bad_request
 

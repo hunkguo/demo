@@ -8,6 +8,10 @@ from flask_pymongo import PyMongo
 from flask_apscheduler import APScheduler
 import atexit
 import fcntl
+from flask_cors import CORS
+from views.InvoicingManagementSystems import invoicingManagementSystems_bp
+from dbs import mysql_db
+
 
 class Config(object):
     JOBS = [
@@ -73,6 +77,13 @@ initAPScheduler(app)
 
 app.config["MONGO_URI"] = "mongodb://localhost:27017/db_run_website"
 app.mongo = PyMongo(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://ims:ghlhj2891@localhost/ims'
+app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = True
+mysql_db.init_app(app)
+
+
+CORS(app)
 
 
 
@@ -90,10 +101,13 @@ def is_current_link(link):
 app.register_blueprint(keywordRank_bp, url_prefix='/keywordRank')
 app.register_blueprint(youtubeVideoToAudio_bp, url_prefix='/v2a')
 app.register_blueprint(eeoPaper_bp, url_prefix='/eeo')
-
+app.register_blueprint(invoicingManagementSystems_bp, url_prefix='/ims')
 
     
 if __name__ == '__main__':
+    with app.app_context():
+        #mysql_db.drop_all()
+        mysql_db.create_all()
     app.run(host='0.0.0.0', port='5000', debug=True)
 
 

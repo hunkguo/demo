@@ -1,5 +1,6 @@
-########################################################################
-from datetime import datetime
+
+
+
 class BaseData(object):
     def __init__(self):
         """Constructor"""
@@ -48,5 +49,3 @@ class EeoData(BaseData):
         self.pdfId = 0
         self.pdfList = {}
         self.pdfFile = ''
-
-

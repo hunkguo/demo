@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/nav.html' import render_breadcrumb_item %}
+
+{% block title %}
+    {{title_name}}
+{% endblock %}
+
+{% block content %}   
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '添加产品', use_li=True) }}   
+        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '进', use_li=True) }}   
+        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '销', use_li=True) }}   
+        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '存', use_li=True) }}   
+    </ol>
+</nav>
+<div class="container">    
+    <div class="row justify-content-md-center">        
+        {% for item in list %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">SKU: {{item.productSku}}</h5>
+              <p class="card-text">产品名称： {{item.productName}}</p>
+              <div class="row justify-content-md-left">
+                <div class="col-md-auto">
+                    <a href="#" class="btn btn-primary" >管理</a>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+</div>
+
+{% endblock %}

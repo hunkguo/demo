@@ -36,7 +36,7 @@ def newslist():
     mongo = current_app.mongo
     # convert your date string to datetime object
     start = datetime.datetime.utcnow().isoformat()
-    end = (datetime.datetime.utcnow()-datetime.timedelta(days=1)).isoformat()
+    end = (datetime.datetime.utcnow()-datetime.timedelta(days=30)).isoformat()
     # 每页数据展示
     current_page = int(request.args.get('page', 1))        # 当前在第几页
     if(current_page==0):

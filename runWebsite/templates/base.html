@@ -13,20 +13,15 @@
         href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/slate/bootstrap.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                {{ render_nav_item('home', 'Home', use_li=True) }}         
-                {{ render_nav_item('keywordRank.index', '热门新闻关键字排名', use_li=True) }}  
-                {{ render_nav_item('keywordRank.newslist', '热门新闻列表', use_li=True) }}         
-                {{ render_nav_item('youtubeVideoToAudio.index', '听视频列表', use_li=True) }}      
-                {{ render_nav_item('youtubeVideoToAudio.addVideoLink', '添加视频链接', use_li=True) }}
-                {{ render_nav_item('eeoPaper.index', '经济观察报', use_li=True) }}          
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="navbar-nav mr-auto">
+            {{ render_nav_item('home', 'Home', use_li=True) }}         
+            {{ render_nav_item('keywordRank.index', '热门新闻关键字排名', use_li=True) }}  
+            {{ render_nav_item('keywordRank.newslist', '热门新闻列表', use_li=True) }}         
+            {{ render_nav_item('youtubeVideoToAudio.index', '听视频列表', use_li=True) }}      
+            {{ render_nav_item('youtubeVideoToAudio.addVideoLink', '添加视频链接', use_li=True) }}
+            {{ render_nav_item('eeoPaper.index', '经济观察报', use_li=True) }}     
+            {{ render_nav_item('invoicingManagementSystems.index', '进销存管理系统', use_li=True) }} 
         </div>
     </nav>
     
