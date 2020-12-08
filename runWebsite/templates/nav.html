@@ -1,37 +1,49 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container">
-        <a class="navbar-brand" href="#">Hunk's Website</a>
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item {% if request.endpoint == 'index' %} active {% endif %}">
-                    <a class="nav-link" href="{{ url_for('home') }}">首页<span class="sr-only">(current)</span></a>
-                </li>
-            </ul>
-            <ul class="navbar-nav">
-                <li class="nav-item {% if request.endpoint == 'login' %} active {% endif %}">
+    <a class="navbar-brand" href="#">Hunk'2s Website</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item {% if request.endpoint == 'home' %} active {% endif %}">
+                <a class="nav-link" href="{{ url_for('home') }}">首页<span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    热门新闻
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="nav-link" href="{{ url_for('keywordRank.index') }}">热门新闻关键字排名</a>
-                </li>
-                <li class="nav-item {% if request.endpoint == 'register' %} active {% endif %}">
                     <a class="nav-link" href="{{ url_for('keywordRank.newslist') }}">热门新闻列表</a>
-                </li>
-                <li class="nav-item {% if request.endpoint == 'register' %} active {% endif %}">
-                    <a class="nav-link" href="{{ url_for('youtubeVideoToAudio.index') }}">听视频列表</a>
-                </li>
-                <li class="nav-item {% if request.endpoint == 'register' %} active {% endif %}">
-                    <a class="nav-link" href="{{ url_for('youtubeVideoToAudio.addVideoLink') }}">添加视频链接</a>
-                </li>
-                <li class="nav-item {% if request.endpoint == 'register' %} active {% endif %}">
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					听视频 
+				</a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link" href="{{ url_for('youtubeVideoToAudio.index') }}">听视频列表</a>
+                        <a class="nav-link" href="{{ url_for('youtubeVideoToAudio.addVideoLink') }}">添加视频链接</a>
+                    </div>
+            </li>
+            <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					经济观察报
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="nav-link" href="{{ url_for('eeoPaper.index') }}">经济观察报</a>
-                </li>
-                <li class="nav-item {% if request.endpoint == 'register' %} active {% endif %}">
-                    <a class="nav-link" href="{{ url_for('invoicingManagementSystems.index') }}">进销存管理系统</a>
-                </li>
-            </ul>
-        </div>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					进销存
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="nav-link" href="{{ url_for('invoicingManagementSystems.index') }}">进销存管理系统</a>
+                </div>
+            </li>
+        </ul>
     </div>
-</nav>
+  </nav>

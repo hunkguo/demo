@@ -15,6 +15,11 @@ if __name__ == '__main__':
     
     # 进入主循环
     while True:
+        print('-'*20)
+        print('download youtube video')
+        print('-'*20)
+        youtubeForVideoToAudioSchedulerTaskJob()
+        time.sleep(60)
         '''被屏蔽
         print('-'*20)
         print('keyword count')
@@ -40,9 +45,8 @@ if __name__ == '__main__':
         tushareNewsSpiderSchedulerTaskJob()
         break
         time.sleep(120)
-        '''
 
 
         downloadEeoSchedulerTaskJob()
-        break
+        '''
 

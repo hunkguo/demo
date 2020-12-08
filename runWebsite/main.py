@@ -20,7 +20,7 @@ class Config(object):
             'func': 'schedulerTask.newsSpider.jobTushareNews:tushareNewsSpiderSchedulerTaskJob',
             'args': '',
             'trigger': 'interval',
-            'minutes': 128
+            'minutes': 68
         },
         {
             'id': 'rssNewsData',
@@ -34,7 +34,7 @@ class Config(object):
             'func': 'schedulerTask.jobYoutubeVideo2audio:youtubeForVideoToAudioSchedulerTaskJob',
             'args': '',
             'trigger': 'interval',
-            'minutes': 58
+            'minutes': 28
         },
         {
             'id': 'downloadEeoSchedulerTaskJob',
