@@ -6,8 +6,8 @@ from flask import current_app
 import datetime
 from flask_pymongo import PyMongo,DESCENDING,ASCENDING
 from Object import YoutubeVideo
-youtubeVideoToAudio_bp = Blueprint('youtubeVideoToAudio',__name__)
 
+youtubeVideoToAudio_bp = Blueprint('youtubeVideoToAudio',__name__)
 @youtubeVideoToAudio_bp.route('/index')
 def index():
     mongo = current_app.mongo

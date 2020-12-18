@@ -5,25 +5,64 @@
 {% endblock %}
 
 {% block content %}
+
+
 <div class="container">
-    <div class="row justify-content-md-center"> 
-        <div class="page-header">
-            <div class="container">
-                <h1>{{ self.title() }}</h1>
+    <div class="jumbotron">
+        <h5 class="display-6">{{ self.title() }}</h5>
+    </div> 
+    <div class="row justify-content-md-center">     
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <p>
+                <audio autoplay="autoplay" 
+                    controls="controls"
+                    preload="auto"
+                    controlsList="nodownload" 
+                    id="myaudio"
+                    >
+                    <source src="/static/media/{{ videofile }}" type="audio/mpeg">
+                </audio>
+              </p>
+              <div class="row justify-content-md-left">
+                <div class="col-md-auto">
+                    <a href="#"  onclick="autoPlay()" class="btn btn-primary" >播放</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="#"  onclick="closePlay()" class="btn btn-success" >关闭</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="#"  onclick="task(10)" class="btn btn-info" >10分钟后关闭</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="#"  onclick="task(20)" class="btn btn-warning" >20分钟后关闭</a>
+                </div>
+              </div>
+              
             </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-sm">
-            <audio autoplay="autoplay" 
-                controls="controls"
-                preload="auto"
-                controlsList="nodownload" 
-                >
-                <source src="/static/media/{{ videofile }}" type="audio/mpeg">
-            </audio>
         </div>
     </div>
 </div>
 
+
+
+
+
+
+
+<script language="javascript" type="text/javascript">
+    function autoPlay() {
+        var myAuto = document.getElementById('myaudio');
+        myAuto.play();
+    }
+    function closePlay() {
+        var myAuto = document.getElementById('myaudio');
+        myAuto.pause();
+    }
+    function task(t){
+        autoPlay()
+        setInterval(closePlay, t*60*1000)
+    }
+    
+</script>
 {% endblock %}

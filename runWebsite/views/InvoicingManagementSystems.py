@@ -23,17 +23,49 @@ def addProduct():
         ProductSKU = request.form.get('InputSKU')
         ProductName = request.form.get('InputProductName')    
         if (not Product.query.filter_by(productSku=ProductSKU).first()):
-            print('222')   
-            mysql_db.session.add(Product(ProductSKU,ProductName))
+            mysql_db.session.add(Product(ProductSKU,ProductName,0))
             mysql_db.session.commit()
         return redirect(url_for('invoicingManagementSystems.index'))
         
-        '''
-        if (list2):
-            return redirect(url_for('invoicingManagementSystems.index'))
-        else:
-            Product = Product(product_sku=ProductSKU,product_name=ProductName)        
-            mysql_db.session.add(Product)
-            mysql_db.session.commit()
-            return redirect(url_for('invoicingManagementSystems.index'))
-        '''
+
+
+@invoicingManagementSystems_bp.route('/edit', methods=['GET', 'POST'])
+def editProduct():    
+    if request.method == 'GET':
+        product = Product.query.get(request.args.get('id'))
+        return render_template('ims/edit.html', title_name='编辑产品', product=product)
+    else:        
+        ProductSKU = request.form.get('InputSKU')
+        ProductName = request.form.get('InputProductName')
+        product = Product.query.get(request.form.get('ProductId'))
+        product.productSKU = ProductSKU
+        product.productName = ProductName
+        mysql_db.session.commit()
+        return redirect(url_for('invoicingManagementSystems.index'))
+
+
+@invoicingManagementSystems_bp.route('/purchase', methods=['GET', 'POST'])
+def purchaseProduct(): 
+    if request.method == 'GET':
+        product = Product.query.get(request.args.get('id'))
+        return render_template('ims/purchase.html', title_name='进货', product=product)
+    else:       
+        ProductInstock = request.form.get('InputProductInstock')
+        product = Product.query.get(request.form.get('ProductId'))
+        product.productInstock = product.productInstock+ int(ProductInstock)
+        mysql_db.session.commit()
+        return redirect(url_for('invoicingManagementSystems.index'))
+
+@invoicingManagementSystems_bp.route('/sales', methods=['GET', 'POST'])
+def salesProduct(): 
+    if request.method == 'GET':
+        product = Product.query.get(request.args.get('id'))
+        return render_template('ims/sales.html', title_name='销货', product=product)
+    else:   
+        ProductInstock = request.form.get('InputProductInstock')
+        product = Product.query.get(request.form.get('ProductId'))
+        product.productInstock = product.productInstock - int(ProductInstock)
+        mysql_db.session.commit()
+        return redirect(url_for('invoicingManagementSystems.index'))
+
+        

@@ -8,10 +8,7 @@
 {% block content %}   
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '添加产品', use_li=True) }}   
-        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '进', use_li=True) }}   
-        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '销', use_li=True) }}   
-        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '存', use_li=True) }}   
+        {{ render_breadcrumb_item('invoicingManagementSystems.addProduct', '添加产品', use_li=True) }}  
     </ol>
 </nav>
 <div class="container">    
@@ -21,9 +18,16 @@
             <div class="card-body">
               <h5 class="card-title">SKU: {{item.productSku}}</h5>
               <p class="card-text">产品名称： {{item.productName}}</p>
+              <p class="card-text">库存 {{item.productInstock}}</p>
               <div class="row justify-content-md-left">
                 <div class="col-md-auto">
-                    <a href="#" class="btn btn-primary" >管理</a>
+                    <a href="{{ url_for('invoicingManagementSystems.purchaseProduct', id=item.id)}}" class="btn btn-primary" >进货</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{{ url_for('invoicingManagementSystems.salesProduct', id=item.id)}}" class="btn btn-primary" >销货</a>
+                </div>
+                <div class="col-md-auto">
+                    <a href="{{ url_for('invoicingManagementSystems.editProduct', id=item.id)}}" class="btn btn-primary" >编辑</a>
                 </div>
               </div>
               

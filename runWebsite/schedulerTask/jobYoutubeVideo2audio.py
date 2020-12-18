@@ -46,7 +46,8 @@ class GetVideoItem(object):
             'outtmpl': './static/media/%(id)s.%(ext)s'
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:      
-            info_dict = ydl.extract_info(youtube_url, download=True)                
+            info_dict = ydl.extract_info(youtube_url, download=True) 
+            #print(ydl.extract_info(youtube_url, download=True) )
             youtubeVideo = YoutubeVideo()                
             video_id = info_dict.get("id", None)
             youtubeVideo.link = youtube_url
