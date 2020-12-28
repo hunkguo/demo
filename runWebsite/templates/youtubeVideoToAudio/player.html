@@ -19,11 +19,18 @@
                     controls="controls"
                     preload="auto"
                     controlsList="nodownload" 
-                    id="myaudio"
+                    id="audio"
                     >
                     <source src="/static/media/{{ videofile }}" type="audio/mpeg">
                 </audio>
               </p>
+              <p>选择播放速率：<select id="selRate">
+                <option value="0.5">0.5</option>
+                <option value="1" selected>1.0</option>
+                <option value="1.25">1.25</option>
+                <option value="1.5">1.5</option>
+                <option value="2">2.0</option>
+            </select></p>
               <div class="row justify-content-md-left">
                 <div class="col-md-auto">
                     <a href="#"  onclick="autoPlay()" class="btn btn-primary" >播放</a>
@@ -51,18 +58,23 @@
 
 
 <script language="javascript" type="text/javascript">
+    // 视频元素
+    var audio = document.getElementById('audio');
     function autoPlay() {
-        var myAuto = document.getElementById('myaudio');
-        myAuto.play();
+        audio.play();
     }
     function closePlay() {
-        var myAuto = document.getElementById('myaudio');
-        myAuto.pause();
+        audio.pause();
     }
     function task(t){
         autoPlay()
         setInterval(closePlay, t*60*1000)
     }
-    
+
+    var eleSelect = document.getElementById('selRate');
+    // 改变播放速率
+    eleSelect.addEventListener('change', function () {
+        audio.playbackRate = this.value;
+    })
 </script>
 {% endblock %}
