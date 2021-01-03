@@ -19,11 +19,13 @@
                   播放量 {{item.videoViewCount}}
               </p>
               <div class="row justify-content-md-left">
-                <div class="col-md-auto">
-                    <a href="{{ url_for('youtubeVideoToAudio.playerVideo', id=item.videoId)}}" class="btn btn-primary" >播放</a>
-                </div>
-                <div class="col-md-auto">
-                    <a href="{{ url_for('youtubeVideoToAudio.deleteVideo', id=item.videoId)}}" class="btn btn-primary" >删除</a>
+                <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <a href="{{ url_for('youtubeVideoToAudio.playerVideo', id=item.videoId)}}" class="btn btn-success" >More...</a>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Second group">
+                        <a href="{{ url_for('youtubeVideoToAudio.deleteVideo', id=item.videoId)}}" class="btn btn-primary" >删除</a>
+                    </div>
                 </div>
               </div>
               
