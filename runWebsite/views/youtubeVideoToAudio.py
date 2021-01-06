@@ -58,10 +58,11 @@ def playerVideo():
     for row in mongo.db.youtube_video_link.find(flt):
         videoTitle = row['videoTitle']
         videoFile = row['downloadFile']
+        videoId = row['videoId']
 
     
 
-    return render_template('youtubeVideoToAudio/player.html', title_name=videoTitle, videofile=videoFile)
+    return render_template('youtubeVideoToAudio/player.html', title_name=videoTitle, videofile=videoFile, videoId=videoId)
 
 @youtubeVideoToAudio_bp.route('/delete', methods=['GET'])
 def deleteVideo():

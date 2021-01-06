@@ -74,25 +74,9 @@
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script language="javascript" type="text/javascript">
-    var myAudio = document.getElementById('myAudio');
-    var btnPlay = document.getElementById('btnPlay');
-    //断点续播
-    var currentTime = localStorage.getItem("currentTime");
-        //console.log(currentTime);
-        myAudio.addEventListener("loadedmetadata",function(){
-            this.currentTime = currentTime;
-        });
-        
-        myAudio.addEventListener("timeupdate",function(){
-            var currentTime = Math.floor(myAudio.currentTime);
-            localStorage.setItem("currentTime",currentTime);
-            //console.log(localStorage.getItem("currentTime"));
-        });
-
     //播放和暂停
     $(document).ready(function(){
         $('#btnPlay').click(function() {
-            
             if (myAudio.paused) {
                 myAudio.play();
                 $("#btnPlay").text('暂停');
@@ -100,16 +84,31 @@
                 $("#btnPlay").text('播放');
                 myAudio.pause();
         }
-        })
+        });
+
+        //断点续播
+        var currentTime = localStorage.getItem("{{videoId}}");
+        console.log(currentTime);
+        $('#myAudio').on('loadedmetadata',function(){
+            this.currentTime = currentTime;
+        });
+        $("#myAudio").on('timeupdate',function(){
+            var currentTime = Math.floor(myAudio.currentTime);
+            localStorage.setItem("{{videoId}}",currentTime);
+        });
+
     });
 
     //定时关闭
+    var myInterval;
     function task(t){
-        setInterval(stopPlay, t*60*1000);
+        myInterval = setInterval(stopPlay, t*60*1000);
     };
     function stopPlay(){
         $('#btnPlay').trigger("click");
-        myAudio.pause();
+        //$("#btnPlay").text('播放');
+        //myAudio.pause();
+        clearInterval(myInterval);
     }
 
     //播放速率
