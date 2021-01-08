@@ -66,13 +66,14 @@
         </div>
     </div>
 </div>
+{% endblock %}
 
 
 
 
 
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+{% block scripts %}
+{{ super() }}
 <script language="javascript" type="text/javascript">
     //播放和暂停
     $(document).ready(function(){
@@ -88,7 +89,7 @@
 
         //断点续播
         var currentTime = localStorage.getItem("{{videoId}}");
-        console.log(currentTime);
+        //console.log(currentTime);
         $('#myAudio').on('loadedmetadata',function(){
             this.currentTime = currentTime;
         });
