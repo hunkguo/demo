@@ -9,6 +9,7 @@
     <div class="row justify-content-md-center">        
         {% for item in list %}
         <div class="card" style="width: 18rem;">
+            <img class="card-img-top" src="{{item.videoThumbnail}}" >
             <div class="card-body">
               <h5 class="card-title">{{item.videoTitle}}</h5>
               <p class="card-text desc" >{{item.videoDescription}}</p>
