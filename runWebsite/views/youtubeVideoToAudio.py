@@ -59,10 +59,11 @@ def playerVideo():
         videoTitle = row['videoTitle']
         videoFile = row['downloadFile']
         videoId = row['videoId']
+        videoLink = row['link']
 
     
 
-    return render_template('youtubeVideoToAudio/player.html', title_name=videoTitle, videofile=videoFile, videoId=videoId)
+    return render_template('youtubeVideoToAudio/player.html', title_name=videoTitle, videofile=videoFile, videoId=videoId, videoLink=videoLink)
 
 @youtubeVideoToAudio_bp.route('/delete', methods=['GET'])
 def deleteVideo():
