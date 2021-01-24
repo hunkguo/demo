@@ -1,0 +1,37 @@
+{% extends 'base.html' %}  #声明继承
+{% from 'bootstrap/utils.html' import render_messages %}
+{% from 'bootstrap/form.html' import render_field %}
+
+{% block title %}{{ title_name }}{% endblock %}
+{% block navbar %}
+    {{ nav.top.render() }}
+{% endblock %}
+{% block content %}
+    <div class="page-header">
+        <div class="container">
+            <h1>{{ self.title() }}</h1>
+        </div>
+    </div>
+    <div class="container">
+        
+        <div class="row">
+        <form method="post">
+            {{ form.hidden_tag() }}
+            {{ render_field(form.applicantName) }}
+            {{ render_field(form.identityNumber) }}
+            {{ render_field(form.communityName) }}
+            {{ render_field(form.buildingNumber) }}
+            {{ render_field(form.unitNumber) }}
+            {{ render_field(form.floorNumber) }}
+            {{ render_field(form.roomNo) }}
+            {{ render_field(form.constructionArea) }}
+            {{ render_field(form.approvedPrice) }}
+            {{ render_field(form.buildingCompletionDate) }}
+            {{ render_field(form.transferRatio) }}
+            {{ render_field(form.submit) }}
+        </form>
+        </div>
+        
+        
+    </div>
+{% endblock content %}

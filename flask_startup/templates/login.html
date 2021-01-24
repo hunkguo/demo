@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/utils.html' import render_messages %}
+{% from 'bootstrap/form.html' import render_field %}
+
+{% block title %}
+    {{title_name}}
+{% endblock %}
+{% block menunav %}{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome!</h1>
+            <hr class="my-4">
+            <p>
+                <form method="post">
+                    {{ form.hidden_tag() }}
+                    {{ render_field(form.username) }}
+                    {{ render_field(form.password) }}
+                    {{ render_field(form.submit) }}
+                </form>
+            </p>
+        </div>
+</div>
+{% endblock %}
+
