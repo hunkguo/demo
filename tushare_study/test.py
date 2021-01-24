@@ -97,10 +97,17 @@ class ggt:
         #df.sort_values("ratio", inplace=False)
         print(df.tail(20))
 
+class fenbi:
+    def __init__ (self):
+        self.pro = ts.pro_api('d94b8d1af9f3110dca7acf2e85b4bf10b7d33de74491de8f671c4b8b')
+    
+    def run(self):
+        df = ts.get_realtime_quotes('000581') #Single stock symbol
+        df[['code','name','price','bid','ask','volume','amount','time']]
 
 if __name__ == "__main__":
     
-    s = ggt()
+    s = fenbi()
     s.run()
     #print('开始交易日为：%s ;结束交易日为：%s ' % (start_date_open, end_date_open))
 

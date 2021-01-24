@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{title_name}}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome!</h1>
+            <p class="lead">This is Hunk's Website.</p>
+            <hr class="my-4">
+            <p>Some tools.</p>
+            {{title_name}}
+            <p>
+                {% if current_user.is_authenticated %}
+                    Hi {{ current_user.username }}!
+                {% endif %}
+            </p>
+            <a class="btn btn-primary btn-lg" href="#" role="button">more...</a>
+        </div>
+</div>
+{% endblock %}
