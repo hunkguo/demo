@@ -3,7 +3,7 @@
 #user
 from flask import Blueprint, render_template, redirect, request, url_for
 from flask_wtf import FlaskForm
-from wtforms import BooleanField, TextField, HiddenField, PasswordField, validators, DateField, StringField, SubmitField, FieldList, FormField, FloatField, DateField
+from wtforms import BooleanField, FileField,TextField, HiddenField, PasswordField, validators, DateField, StringField, SubmitField, FieldList, FormField, FloatField, DateField
 from flask import current_app
 from models import EconomicsHousingToCommercialHousing
 from flask import flash
@@ -122,9 +122,50 @@ def edit():
 
 
 
+class UploadForm(FlaskForm):
+    fileUpload = FileField()
 
+from werkzeug.utils import secure_filename
+from uuid import uuid4
+import base64
+from werkzeug.datastructures import FileStorage
+import requests
+from io import BufferedReader
+@e2c_bp.route('/ocr', methods=['GET', 'POST'])
+def ocr():
+    form = UploadForm()
+    
+    if form.validate_on_submit():
+        filename = str(uuid4())
+        form.fileUpload.data.save('uploads/' + filename)
         
-        
+        with open('uploads/' + filename, "rb") as image_file:
+            encoded_string = base64.b64encode(image_file.read())
+        #print('file_encoded_string:', encoded_string)
+        result = baiduOcr(encoded_string)
+        flash(result)
+
+        return redirect(url_for('e2c.ocr'))
+        #return render_template('e2c/ocr.html', form=form)
+
+    return render_template('e2c/ocr.html', form=form)
 
 
 
+def baiduOcr(b64image):
+    # client_id 为官网获取的AK， client_secret 为官网获取的SK
+    host = 'https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=UaVDdsMRdASOEL4FEUwDlFyD&client_secret=17u8kCWAQ4YzTAx7eG2lyxIiFtiO2eRd'
+    response = requests.get(host)
+    if response:
+        #print(response.json())
+        access_token = (response.json())['access_token']
+        '''
+        身份证识别
+        '''
+        request_url = "https://aip.baidubce.com/rest/2.0/ocr/v1/idcard"
+        params = {"id_card_side":"front","image":b64image}
+        request_url = request_url + "?access_token=" + access_token
+        headers = {'content-type': 'application/x-www-form-urlencoded'}
+        response = requests.post(request_url, data=params, headers=headers)
+        if response:
+            return (response.json())
