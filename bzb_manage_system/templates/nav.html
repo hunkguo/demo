@@ -12,21 +12,29 @@
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    经转商
+                    <i class="bi-house-fill"></i>经转商
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="nav-link" href="{{ url_for('e2c.index') }}">列表</a>
-                    <a class="nav-link" href="{{ url_for('e2c.edit') }}">添加</a>
+                    <a class="nav-link" href="{{ url_for('e2c.index') }}">
+                        <i class="bi-card-list"></i>
+                        列表
+                    </a>
+                    <a class="nav-link" href="{{ url_for('e2c.ocrIdcrad') }}">
+                        <i class="bi-cursor-text"></i>
+                        添加
+                    </a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="bi-person-square"></i>
                     {% if current_user.is_authenticated %}
-                        Hi {{ current_user.username }}!
+                    Hello, {{ current_user.username }}.
                     {% endif %}
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="nav-link" href="{{ url_for('logout') }}">退出</a>
+                    <a class="nav-link" href="{{ url_for('logout') }}"><i class="bi-eject"></i>退出</a>
+                    
                 </div>
             </li>
         </ul>

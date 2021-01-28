@@ -9,8 +9,11 @@
 {% block content %}
 
 <form method="post" id="ocrForm" name="ocrForm" enctype="multipart/form-data">
-  {{ form.hidden_tag() }}
-    <input id="fileUpload" name="fileUpload" type="file" accept="image/*;" capture="camera" onchange="form.submit()" >
+
+    <label for="fileUpload">身份证拍照上传</label>
+    {{ form.hidden_tag() }}
+    <input id="fileUpload" name="fileUpload"  class="form-control-file"  type="file" accept="image/*;" capture="camera" onchange="form.submit()" >
 </form>
+
 
 {% endblock %}

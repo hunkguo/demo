@@ -9,6 +9,7 @@
     <!-- Bootstrap CSS -->
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}"> 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/superhero/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     {% endblock %} 
 
     {% if title %}
@@ -25,11 +26,11 @@
     
     {% with messages = get_flashed_messages() %}
         {% if messages %}
-        <ul class=flashes>
         {% for message in messages %}
-            <li>{{ message }}</li>
+            <div class="alert alert-secondary" role="alert">
+                {{ message }}
+            </div>
         {% endfor %}
-        </ul>
         {% endif %}
     {% endwith %}
     <div class="container">
@@ -48,6 +49,9 @@
     {% block scripts %}
     <!-- Optional JavaScript -->
     {{ bootstrap.load_js() }} 
+    <script>
+        $('.alert').show().delay(3000).fadeOut();
+    </script>
     {% endblock %}
 </body>
 

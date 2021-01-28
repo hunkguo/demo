@@ -15,3 +15,5 @@
 flask_demo/access.log
 flask_demo/access.log
 .DS_Store
+
+bzb_manage_system/uploads/*

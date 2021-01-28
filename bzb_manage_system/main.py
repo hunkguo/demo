@@ -83,12 +83,14 @@ class LoginForm(FlaskForm):
         user = User.query.filter_by(username=self.username.data).first()
         if not user:
             #self.username.errors.append('Invalid username or password.')
-            self.password.errors.append('用户名或密码错')
+            #self.password.errors.append('用户名或密码错')
+            flash('用户名或密码错')
             return False
 
         # Check the password whether right.
         if not user.check_password(self.password.data):
-            self.password.errors.append('用户名或密码错')
+            #self.password.errors.append('用户名或密码错')
+            flash('用户名或密码错')
             return False
         return True
 
@@ -111,8 +113,6 @@ def login():
         # user should be an instance of your `User` class
         user = User.query.filter_by(username=form.username.data).one()
         login_user(user)
-
-        flash("You have been logged in.", category="success")
 
         flash('Logged in successfully.')
 
@@ -148,12 +148,26 @@ def create_user():
     # 创建管理员
     admin_user = user_datastore.create_user(username='admin',password='123456')
     bzb_user = user_datastore.create_user(username = "bzb",password = "123456")
+    edit_user = user_datastore.create_user(username = "edit",password = "123456")
+    view_user = user_datastore.create_user(username = "view",password = "123456")
+    input_user = user_datastore.create_user(username = "input",password = "123456")
     # 创建普通用户角色和Admin角色
-    user_role = user_datastore.create_role(name='User', description='Generic user role')
+    user_role = user_datastore.create_role(name='User', description='BZB user role')
     admin_role = user_datastore.create_role(name='Admin', description='Admin user role')
+    view_role = user_datastore.create_role(name='View', description='浏览数据')
+    input_role = user_datastore.create_role(name='Input', description='数据录入')
+    edit_role = user_datastore.create_role(name='Edit', description='数据编辑')
+
+    
+
+
     # 为admin添加Admin角色(admin_role)
     user_datastore.add_role_to_user(admin_user, admin_role)
     user_datastore.add_role_to_user(bzb_user, user_role)
+    user_datastore.add_role_to_user(edit_user, view_role)
+    user_datastore.add_role_to_user(view_user, view_role)
+    user_datastore.add_role_to_user(edit_user, input_role)
+    user_datastore.add_role_to_user(edit_user, edit_role)
     mysql_db.session.commit()
 
 
