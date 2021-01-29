@@ -19,8 +19,6 @@ e2c_bp = Blueprint('e2c',__name__)
 @e2c_bp.route('/')
 @login_required
 @roles_required('View')
-@roles_required('Input')
-@roles_required('Edit')
 def index():
     #e2c_data = e2c.query.all()
     e2c_data = EconomicsHousingToCommercialHousing.query.order_by(EconomicsHousingToCommercialHousing.id.desc())
@@ -169,7 +167,18 @@ def edit():
 
 
 class UploadForm(FlaskForm):
-    fileUpload = FileField()
+    #fileUpload = FileField()
+    uploadFileData = HiddenField()
+
+import io
+import PIL
+from PIL import Image
+
+def size(b64string):
+    return  (len(b64string) * 3) / 4 - b64string.count('=', -2)
+    #file_size = (len(b64string) * 6 - b64string.count('=') * 8) / 8
+    #file_size = len(b64string) * 3 / 4 - b64string.count('=')
+    
 
 from werkzeug.utils import secure_filename
 from uuid import uuid4
@@ -177,6 +186,7 @@ import base64
 from werkzeug.datastructures import FileStorage
 import requests
 from io import BufferedReader
+import os
 from models.identityIdCard import identityIdCard
 @e2c_bp.route('/ocridcrad', methods=['GET', 'POST'])
 @login_required
@@ -186,44 +196,47 @@ def ocrIdcrad():
     form = UploadForm()
     
     if form.validate_on_submit():
+        print(size(form.uploadFileData.data))
+        '''
         filename = str(uuid4())
-        form.fileUpload.data.save('uploads/' + filename)
-        
+        form.uploadFileData.data.save('uploads/' + filename)
+        print(f'File Size in MegaBytes is {os.path.getsize("uploads/" + filename) / (1024 * 1024)} MB')
         with open('uploads/' + filename, "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
+        '''    
         #print('file_encoded_string:', encoded_string)
-        ocrResult = baiduOcr(encoded_string)
+        ocrResult = baiduOcr(form.uploadFileData.data)
         #print(ocrResult)
+        if(ocrResult['words_result_num'] !=0):
+            if( ocrResult['words_result']['姓名']['words']!='' and ocrResult['words_result']['公民身份号码']['words']!=''):
+                identityName = ocrResult['words_result']['姓名']['words']
+                identityNumber = ocrResult['words_result']['公民身份号码']['words']
+                identity_id_card = identityIdCard(identityName,identityNumber)
+                identity_id_card.dateOfBirth = ocrResult['words_result']['出生']['words']
+                identity_id_card.address = ocrResult['words_result']['住址']['words']
+                identity_id_card.gender = ocrResult['words_result']['性别']['words']
+                identity_id_card.nation = ocrResult['words_result']['民族']['words']
 
-        identityName = ocrResult['words_result']['姓名']['words']
-        identityNumber = ocrResult['words_result']['公民身份号码']['words']
-        if(identityName!='' and identityNumber!=''):
-            identity_id_card = identityIdCard(identityName,identityNumber)
-            identity_id_card.dateOfBirth = ocrResult['words_result']['出生']['words']
-            identity_id_card.address = ocrResult['words_result']['住址']['words']
-            identity_id_card.gender = ocrResult['words_result']['性别']['words']
-            identity_id_card.nation = ocrResult['words_result']['民族']['words']
+                identity_id_card_obj = mysql_db.session.query(identityIdCard).filter(identityIdCard.identityName == identityName and identityIdCard.identityNumber==identityNumber).first()
 
-            identity_id_card_obj = mysql_db.session.query(identityIdCard).filter(identityIdCard.identityName == identityName and identityIdCard.identityNumber==identityNumber).first()
-
-            if(identity_id_card_obj):
-                #identity_id_card_obj.identityNumber = identity_id_card.identityNumber
-                #identity_id_card_obj.identityName = identity_id_card.identityName 
-                identity_id_card_obj.dateOfBirth = identity_id_card.dateOfBirth
-                identity_id_card_obj.address = identity_id_card.address
-                identity_id_card_obj.gender = identity_id_card.gender
-                identity_id_card_obj.nation = identity_id_card.nation
-                mysql_db.session.commit()
-                #print('更新Return identityIdCard uuid %s\n' % identity_id_card_obj.uuid) 
-                identity_id_card_uuid = identity_id_card_obj.uuid
+                if(identity_id_card_obj):
+                    #identity_id_card_obj.identityNumber = identity_id_card.identityNumber
+                    #identity_id_card_obj.identityName = identity_id_card.identityName 
+                    identity_id_card_obj.dateOfBirth = identity_id_card.dateOfBirth
+                    identity_id_card_obj.address = identity_id_card.address
+                    identity_id_card_obj.gender = identity_id_card.gender
+                    identity_id_card_obj.nation = identity_id_card.nation
+                    mysql_db.session.commit()
+                    #print('更新Return identityIdCard uuid %s\n' % identity_id_card_obj.uuid) 
+                    identity_id_card_uuid = identity_id_card_obj.uuid
+                else:
+                    mysql_db.session.add(identity_id_card)
+                    mysql_db.session.commit()
+                    #print('插入Return identityIdCard uuid %s\n' % identity_id_card.uuid)
+                    identity_id_card_uuid = identity_id_card.uuid
+                return redirect(url_for('e2c.edit', uuid= identity_id_card_uuid ))
             else:
-                mysql_db.session.add(identity_id_card)
-                mysql_db.session.commit()
-                #print('插入Return identityIdCard uuid %s\n' % identity_id_card.uuid)
-                identity_id_card_uuid = identity_id_card.uuid
-            return redirect(url_for('e2c.edit', uuid= identity_id_card_uuid ))
-        else:
-            return redirect(url_for('e2c.edit' ))
+                return redirect(url_for('e2c.edit' ))
 
 
         #print(identityIdCard.query(identity_id_card.identityName==identityName, identityIdCard.identityNumber==identityNumber).first())

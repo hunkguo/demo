@@ -166,6 +166,7 @@ def create_user():
     user_datastore.add_role_to_user(bzb_user, user_role)
     user_datastore.add_role_to_user(edit_user, view_role)
     user_datastore.add_role_to_user(view_user, view_role)
+    user_datastore.add_role_to_user(input_user, view_role)
     user_datastore.add_role_to_user(edit_user, input_role)
     user_datastore.add_role_to_user(edit_user, edit_role)
     mysql_db.session.commit()
