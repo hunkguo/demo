@@ -196,7 +196,7 @@ def ocrIdcrad():
     form = UploadForm()
     
     if form.validate_on_submit():
-        print(size(form.uploadFileData.data))
+        #print(size(form.uploadFileData.data))
         '''
         filename = str(uuid4())
         form.uploadFileData.data.save('uploads/' + filename)
