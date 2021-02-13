@@ -1,12 +1,15 @@
 from fake_useragent import UserAgent
 import urllib.request
 import json
+from json.decoder import JSONDecodeError
 
 
 from pymongo import MongoClient, ASCENDING
 import time
+import socket
 
 from random import randint
+
 
 Client = MongoClient()
 
@@ -17,7 +20,7 @@ News_DB_NAME = "db_gaokao"
 mc = MongoClient(MONGO_HOST, MONGO_PORT)        # Mongo连接
 db = mc[News_DB_NAME]                         # 数据库
 
-ua = UserAgent()
+ua = UserAgent(verify_ssl=False)
 # 伪装浏览器
 headers = {
             'Origin': 'https://gkcx.eol.cn',
@@ -98,8 +101,10 @@ def schoolScoreUrlList():
         schoolId = school['school_id']
         for province in provinceList:
             provinceId = province['provinceid']
-            for recruit_type in range(1,10):
-                for i in range(1,10):
+            for recruit_type in range(1,4):
+            # for recruit_type in range(1,2):
+                for i in range(1,6):
+                # for i in range(1,2):
                     url = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/{}/{}/{}/{}.json'.format(schoolId,provinceId,recruit_type,i)
                     url_list.append(url)
     return url_list
@@ -115,37 +120,37 @@ logging.basicConfig(filename='debug.log', level=logging.DEBUG, format=LOG_FORMAT
 
 def spider(url_path):
     data_html = ''
-    time.sleep(randint(1,3))
+    # time.sleep(randint(1,3))
     try:
         req = urllib.request.Request(
                         url, 
                         data=None, 
                         headers = headers
                     )
-
+        # print(url_path)
         f = urllib.request.urlopen(req, timeout=60)
-        result = json.loads(f.read().decode('utf-8'))
-        COUNT = 0
-        if(f.getcode()==200 and result!=''):
+        if(f.getcode()==200):
+            result = json.loads(f.read().decode('utf-8'))
             if( result['code'] == '0000' and result['message'] =='成功'):
+                COUNT = 0
                 for item in result['data']['item']:
                     COUNT = COUNT + 1
-#                                         cl.insert_one(item)
                     flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
                     cl.replace_one(flt, item, True)
-
-                logging.info('Crawl %d records   - URL %s', COUNT, url_path)   
-            else:
-                logging.error('Return json data error - URL %s', url_path)    
+                logging.info('Crawl %d records  - URL %s', COUNT, url_path)    
     except urllib.error.HTTPError as error:
-        logging.error('Data not retrieved because %s\nURL: %s', error, url)
+        logging.error('Data not retrieved because %s - URL: %s', error, url)
     except urllib.error.URLError as error:
         if isinstance(error.reason, socket.timeout):
-            logging.error('socket timed out - URL %s', url)
+            logging.error('socket timed out because %s - URL: %s', error, url)
         else:
-            logging.error('some other error happened')
+            logging.error('some other error happened %s - URL: %s', error, url)
     except socket.timeout as error: 
-        logging.error('socket timed out - URL %s', url)    
+        logging.error('socket timed out because %s - URL: %s', error, url)
+    except JSONDecodeError as error:
+        logging.error('json decode error  because %s - URL: %s', error, url)
+    except:
+        pass
     else:
         pass
     return data_html
@@ -161,38 +166,55 @@ cl.create_index([('school_id', ASCENDING),('type',ASCENDING),('batch',ASCENDING)
 
 
 def saveData(data_html):
-    result = json.loads(data_html)
-    if(result!=''):
+    try:
+        result = json.loads(data_html)
         if( result['code'] == '0000' and result['message'] =='成功'):
             for item in result['data']['item']:
                 flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
                 cl.replace_one(flt, item, True)
+    except JSONDecodeError as error:
+        # logging.error('json load error - URL %s', url)  
+        pass
 
-# 创建一个最大容量为1的线程
-executor = ThreadPoolExecutor(max_workers=16)
+from tqdm import tqdm
 if __name__=="__main__":
-    #print(url_list)
-    #print(randint(1,5))
+    
 
-    #url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/13/1/1.json']
-
-
+    # url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/6/7.json']
     url_list = schoolScoreUrlList()
+    
+    executor = ThreadPoolExecutor(max_workers=8)
     tasks = []
-    # 执行蜘蛛并加入执行列表
     for url in url_list:
         # 执行函数，并传入参数
         task = executor.submit(spider, url)
         tasks.append(task)
-        time.sleep(randint(3,10))
+        # time.sleep(0.3)
+    with tqdm(total=len(tasks)) as pbar:
+        for future in as_completed(tasks):
+            data_html = future.result()
+            saveData(data_html)
+            pbar.update(1)
+
+    '''
+    executor = ThreadPoolExecutor(max_workers=8)
+    # url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/6/7.json']
+    url_list = schoolScoreUrlList()
+    tasks = []
+    # 执行蜘蛛并加入执行列表
+    # 循环方式添加
+    for url in url_list:
+        # 执行函数，并传入参数
+        task = executor.submit(spider, url)
+        tasks.append(task)
+        time.sleep(randint(1,5))
     # 等待方式1： 结束
     # wait(tasks, return_when=ALL_COMPLETED)
     # 等待方式2：结束
     for future in as_completed(tasks):
-        # spider方法无返回，则返回为None
         data_html = future.result()
         saveData(data_html)
     # 等待方式3: 结束 - 替代submit并伴随等待！
     # for data in executor.map(spider, url_list):
     #     print(data)
-
+    '''
