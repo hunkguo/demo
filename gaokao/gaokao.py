@@ -8,8 +8,6 @@ from pymongo import MongoClient, ASCENDING
 import time
 import socket
 
-from random import randint
-
 
 Client = MongoClient()
 
@@ -101,9 +99,9 @@ def schoolScoreUrlList():
         schoolId = school['school_id']
         for province in provinceList:
             provinceId = province['provinceid']
-            for recruit_type in range(1,4):
+            for recruit_type in range(1,10):
             # for recruit_type in range(1,2):
-                for i in range(1,6):
+                for i in range(1,10):
                 # for i in range(1,2):
                     url = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/{}/{}/{}/{}.json'.format(schoolId,provinceId,recruit_type,i)
                     url_list.append(url)
@@ -120,7 +118,8 @@ logging.basicConfig(filename='debug.log', level=logging.DEBUG, format=LOG_FORMAT
 
 def spider(url_path):
     data_html = ''
-    # time.sleep(randint(1,3))
+    # time.sleep(0.1)
+    # print("线程开始 : %s" % time.ctime())
     try:
         req = urllib.request.Request(
                         url, 
@@ -153,6 +152,7 @@ def spider(url_path):
         pass
     else:
         pass
+    # print("线程结束 : %s" % time.ctime())
     return data_html
 
 
@@ -185,16 +185,19 @@ if __name__=="__main__":
     
     executor = ThreadPoolExecutor(max_workers=8)
     tasks = []
+
+    print("任务开始 : %s" % time.ctime())
+    # with tqdm(total=len(url_list)) as pbar:
     for url in url_list:
         # 执行函数，并传入参数
         task = executor.submit(spider, url)
         tasks.append(task)
-        # time.sleep(0.3)
-    with tqdm(total=len(tasks)) as pbar:
-        for future in as_completed(tasks):
-            data_html = future.result()
-            saveData(data_html)
-            pbar.update(1)
+        time.sleep(0.1)
+        # for future in as_completed(tasks):
+        #     # data_html = future.result()
+        #     # saveData(data_html)
+        #     pbar.update(1)
+    print("线程执行完毕 : %s" % time.ctime())
 
     '''
     executor = ThreadPoolExecutor(max_workers=8)

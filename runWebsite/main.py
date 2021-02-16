@@ -11,6 +11,7 @@ import fcntl
 from flask_cors import CORS
 from views.InvoicingManagementSystems import invoicingManagementSystems_bp
 from dbs import mysql_db
+from pymongo import MongoClient, ASCENDING
 
 
 class Config(object):
@@ -87,9 +88,23 @@ CORS(app)
 
 
 
+Client = MongoClient()
+MONGO_HOST = "localhost"
+MONGO_PORT = 27017
+News_DB_NAME = "db_gaokao"
+
+mc = MongoClient(MONGO_HOST, MONGO_PORT)        # Mongo连接
+db = mc[News_DB_NAME]                         # 数据库
+
 @app.route('/')
 def home():
-    return render_template('home.html', title_name='Hunk\'s Website')
+    cl = db["school_score_data"]
+    school_score_data_count = cl.estimated_document_count()
+
+    cl2 = db["school_special_score_data"]
+    major_score_data_count = cl2.estimated_document_count()
+
+    return render_template('home.html', title_name='Hunk\'s Website', school_score_data_count =school_score_data_count, major_score_data_count=major_score_data_count)
 
 
 

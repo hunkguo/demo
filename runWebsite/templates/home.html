@@ -10,8 +10,18 @@
             <h1 class="display-4">Welcome!</h1>
             <p class="lead">This is Hunk's Website.</p>
             <hr class="my-4">
-            <p>Some tools.</p>
-            <a class="btn btn-primary btn-lg" href="#" role="button">more...</a>
+            <button type="button" class="btn btn-info">
+                各省分数线总数 
+                <span class="badge badge-success">
+                    {{school_score_data_count}}
+                </span>
+            </button>
+            <button type="button" class="btn btn-info">
+                各省按专业分数线总数 
+                <span class="badge badge-success">
+                    {{major_score_data_count}}
+                </span>
+            </button>
         </div>
 </div>
 {% endblock %}
