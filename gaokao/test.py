@@ -1,5 +1,5 @@
 from pymongo import MongoClient, ASCENDING
-
+import multiprocessing
 
 Client = MongoClient()
 
@@ -20,3 +20,6 @@ if __name__ == '__main__':
     cl_school_score_link_data = db["school_score_link_data"]
     data = list(cl_school_score_link_data.find().sort('check_at', -1).limit(100))
     print(len(data))
+
+
+    print(multiprocessing.cpu_count())

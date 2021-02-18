@@ -14,6 +14,7 @@ from urllib import request,error
 from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED, ALL_COMPLETED, as_completed
 from urllib import request,error
 import logging
+import multiprocessing
 
 # 教育在线数据
 
@@ -263,7 +264,7 @@ class eolData:
         # major_score_link_list = ['https://static-data.eol.cn/www/2.0/schoolspecialindex/2019/102/11/1/1.json']
         major_score_link_list = self.majorScoreLink()
         
-        executor = ThreadPoolExecutor(max_workers=8)
+        executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
         tasks = []
 
         # startTime = datetime.datetime.now()
@@ -310,7 +311,7 @@ class eolData:
         school_score_link_list = self.schoolScoreLink()
 
 
-        executor = ThreadPoolExecutor(max_workers=8)
+        executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
         tasks = []
 
         # startTime = datetime.datetime.now()
@@ -346,7 +347,7 @@ class eolData:
         enroll_plan_link_list = self.enrollPlanLink()
 
 
-        executor = ThreadPoolExecutor(max_workers=8)
+        executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
         tasks = []
 
         # startTime = datetime.datetime.now()
@@ -362,23 +363,23 @@ class eolData:
 
 if __name__=="__main__":
     eol = eolData()
-    eol.schoolScoreLink()
+    # eol.schoolScoreLink()
     eol.majorScoreLink()
-    eol.enrollPlanLink()
-    while True:
-        print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-        eol.runMajorScore()
-        print("-"*20+"休息一下")
-        time.sleep(10)
+    # eol.enrollPlanLink()
+    # while True:
+    #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
+    #     eol.runMajorScore()
+    #     print("-"*20+"休息一下")
+    #     time.sleep(10)
 
 
-        print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-        eol.runSchoolScore()
-        print("休息一下")
-        time.sleep(10)
+    #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
+    #     eol.runSchoolScore()
+    #     print("休息一下")
+    #     time.sleep(10)
 
 
-        print("开始抓取招生计划  "+str(datetime.datetime.now()))
-        eol.runEnrollPlan()
-        print("休息一下")
-        time.sleep(10)
+    #     print("开始抓取招生计划  "+str(datetime.datetime.now()))
+    #     eol.runEnrollPlan()
+    #     print("休息一下")
+    #     time.sleep(10)
