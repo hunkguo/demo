@@ -51,6 +51,7 @@ def baiduOcr(filepath):
         response = requests.post(request_url, data=params, headers=headers)
         if response:
             result = response.json()
+            print(result)
             request_id = result['result'][0]['request_id']
 
         time.sleep(5)
@@ -66,8 +67,9 @@ def baiduOcr(filepath):
         
 
 if __name__ == "__main__":
-    pdfPath = '2020年河南省普通高招分数段统计表(理科).pdf'
+    # pdfPath = '2020年河南省普通高招分数段统计表(理科).pdf'
     # pdfPath = '2020年河南省普通高招分数段统计表(文科).pdf'
+    pdfPath = '浙江省 2020 年普通高校招生成绩分数段表.pdf'
     imagePath = 'images'
     pyMuPDF_fitz(pdfPath, imagePath)
 

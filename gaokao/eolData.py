@@ -135,7 +135,7 @@ class eolData:
 
                             flt = {'link': item['link']}
                             cl_school_score_link_data.replace_one(flt, item, True)
-        data = list(cl_school_score_link_data.find().sort('check_at', -1).limit(100))
+        data = list(cl_school_score_link_data.find().sort('check_at', 1).limit(100))
         return data
                         
 
@@ -163,7 +163,7 @@ class eolData:
                                 item['check_at'] = datetime.datetime.now()
                                 flt = {'link': item['link']}
                                 cl_major_score_link_data.replace_one(flt, item, True)
-        data = list(cl_major_score_link_data.find().sort('check_at', -1).limit(100))
+        data = list(cl_major_score_link_data.find().sort('check_at', 1).limit(100))
         return data
 
     # 学校招生计划待抓取链接
@@ -190,7 +190,7 @@ class eolData:
                                     item['check_at'] = datetime.datetime.now()
                                     flt = {'link': item['link']}
                                     cl_enroll_plan_link_data.replace_one(flt, item, True)
-        data = list(cl_enroll_plan_link_data.find().sort('check_at', -1).limit(100))
+        data = list(cl_enroll_plan_link_data.find().sort('check_at', 1).limit(100))
         return data
 
 
@@ -361,25 +361,37 @@ class eolData:
                 data_json = future.result()
                 self.saveDataEnrollPlan(data_json, url, cl_enroll_plan) 
 
+    def noticeIfttt(self, msg):
+        d = { "value1" : msg}
+        url = 'https://maker.ifttt.com/trigger/notice_task_iphone/with/key/eT7xmvYI5fXlIgjmmYoHQ'
+        requests.post(url, data=d)
+
+    
 if __name__=="__main__":
     eol = eolData()
-    # eol.schoolScoreLink()
-    eol.majorScoreLink()
-    # eol.enrollPlanLink()
-    # while True:
-    #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-    #     eol.runMajorScore()
-    #     print("-"*20+"休息一下")
-    #     time.sleep(10)
+    try:
+        # eol.schoolScoreLink()
+        # 在执行
+        # eol.majorScoreLink()
+        # eol.noticeIfttt('任务[专业分数线链接]完成')
+
+        # 未执行
+        # eol.enrollPlanLink()
+        while True:
+            print("开始抓取专业分数线  "+str(datetime.datetime.now()))
+            eol.runSchoolScore()
+            time.sleep(10)
 
 
-    #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-    #     eol.runSchoolScore()
-    #     print("休息一下")
-    #     time.sleep(10)
+        # 未执行
+        #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
+        #     eol.runMajorScore()
+        #     time.sleep(10)
 
 
-    #     print("开始抓取招生计划  "+str(datetime.datetime.now()))
-    #     eol.runEnrollPlan()
-    #     print("休息一下")
-    #     time.sleep(10)
+        # 未执行
+        #     print("开始抓取招生计划  "+str(datetime.datetime.now()))
+        #     eol.runEnrollPlan()
+        #     time.sleep(10)
+    except:
+        eol.noticeIfttt('任务有错')
