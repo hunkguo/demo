@@ -108,12 +108,6 @@ def schoolScoreUrlList():
     return url_list
                     
 
-from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED, ALL_COMPLETED, as_completed
-from urllib import request,error
-import logging
-LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
-DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
-logging.basicConfig(filename='debug.log', level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
 
 def spider(url_path):
@@ -180,7 +174,7 @@ from tqdm import tqdm
 if __name__=="__main__":
     
 
-    # url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/6/7.json']
+    # url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json']
     url_list = schoolScoreUrlList()
     
     executor = ThreadPoolExecutor(max_workers=8)
@@ -201,7 +195,7 @@ if __name__=="__main__":
 
     '''
     executor = ThreadPoolExecutor(max_workers=8)
-    # url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/6/7.json']
+    # url_list = ['https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json']
     url_list = schoolScoreUrlList()
     tasks = []
     # 执行蜘蛛并加入执行列表
