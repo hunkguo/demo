@@ -96,15 +96,53 @@ News_DB_NAME = "db_gaokao"
 mc = MongoClient(MONGO_HOST, MONGO_PORT)        # Mongo连接
 db = mc[News_DB_NAME]                         # 数据库
 
+
+
+ 
+def str_of_num(num):
+    '''
+    递归实现，精确为最大单位值 + 小数点后三位
+    '''
+    def strofsize(num, level):
+        if level >= 2:
+            return num, level
+        elif num >= 10000:
+            num /= 10000
+            level += 1
+            return strofsize(num, level)
+        else:
+            return num, level
+    units = ['', '万', '亿']
+    num, level = strofsize(num, 0)
+    if level > len(units):
+        level -= 1
+    return '{}{}'.format(round(num, 3), units[level])
+
+
+
 @app.route('/')
 def home():
-    cl = db["school_score_data"]
-    school_score_data_count = cl.estimated_document_count()
+    # 学校分数线
+    cl_school_score = db["school_score_data"]
+    school_score_data_count = str_of_num(cl_school_score.estimated_document_count())
 
-    cl2 = db["school_special_score_data"]
-    major_score_data_count = cl2.estimated_document_count()
+    # 专业分数线
+    cl_major_score_data = db["major_score_data"]
+    major_score_data_count = str_of_num(cl_major_score_data.estimated_document_count())
 
-    return render_template('home.html', title_name='Hunk\'s Website', school_score_data_count =school_score_data_count, major_score_data_count=major_score_data_count)
+    # 专业分数线链接
+    cl_major_score_link_data = db["major_score_link_data"]
+    major_score_link_data_count = str_of_num(cl_major_score_link_data.estimated_document_count())
+
+    # 招生计划链接
+    cl_enroll_plan_link_data = db["enroll_plan_link_data"]
+    cl_enroll_plan_link_data_count = str_of_num(cl_enroll_plan_link_data.estimated_document_count())
+
+    
+
+    
+
+    return render_template('home.html', title_name='Hunk\'s Website', data = {'school_score_data_count':school_score_data_count, 'major_score_data_count':major_score_data_count, 'major_score_link_data_count':major_score_link_data_count, 'cl_enroll_plan_link_data_count':cl_enroll_plan_link_data_count})
 
 
 
