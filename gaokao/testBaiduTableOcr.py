@@ -19,7 +19,6 @@ def pyMuPDF_fitz(pdfPath, imagePath):
 
         if not os.path.exists(imagePath):#判断存放图片的文件夹是否存在
             os.makedirs(imagePath) # 若图片文件夹不存在就创建
-        t
         (pdfFile, pdfExt) = os.path.splitext(pdfPath)
         pix.writePNG(imagePath+'/'+pdfFile+'_%s.png' % pg)#将图片写入指定的文件夹内
 
@@ -42,7 +41,7 @@ def baiduOcr(filepath):
         # request_url = "https://aip.baidubce.com/rest/2.0/ocr/v1/form"
         request_url = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/request"
         # 二进制方式打开图片文件
-        print(filepath)
+        # print(filepath)
         f = open(filepath, 'rb')
         img = base64.b64encode(f.read())
 
@@ -54,21 +53,23 @@ def baiduOcr(filepath):
             result = response.json()
             request_id = result['result'][0]['request_id']
 
-        time.sleep(10)
+        time.sleep(5)
         request_url = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/get_request_result"
         request_url = request_url + "?access_token=" + access_token
         headers = {'content-type': 'application/x-www-form-urlencoded'}
-        params = {"request_id":request_id, "result_type":"json"}
+        params = {"request_id":request_id, "result_type":"excel"}
         response = requests.post(request_url, data=params, headers=headers)
         if response:
-            result = response.json()
-            print(result['result']['result_data'])
+            result = (response.json())['result']['result_data']
+            
+            print(result)
         
 
 if __name__ == "__main__":
     pdfPath = '2020年河南省普通高招分数段统计表(理科).pdf'
+    # pdfPath = '2020年河南省普通高招分数段统计表(文科).pdf'
     imagePath = 'images'
-    # pyMuPDF_fitz(pdfPath, imagePath)
+    pyMuPDF_fitz(pdfPath, imagePath)
 
 
     g = os.walk(r"images")  
@@ -77,7 +78,6 @@ if __name__ == "__main__":
         for file_name in file_list:  
             # print(os.path.join(path, file_name) )
             baiduOcr(os.path.join(path, file_name))
-            break
         break
 
 
