@@ -16,6 +16,7 @@ from urllib import request,error
 import logging
 import multiprocessing
 from tqdm import tqdm
+import requests
 
 # 教育在线数据
 
@@ -147,23 +148,26 @@ class eolData:
             cl_major_score_link_data.create_index([('link', ASCENDING)], unique=True) 
             schoolList = self.schools()
             provinceList = self.provinces()
-            for school in schoolList:
-                schoolId = school['school_id']
-                for province in provinceList:
-                    provinceId = province['provinceid']
-                    for recruit_type in range(1,10):
-                    # for recruit_type in range(1,2):
-                        for i in range(1,10):
-                        # for i in range(1,2):
-                            for yearNumber in range(2020,2014,-1):
-                                item = {}
-                                # link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/13/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
-                                link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/{}/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
-                                item['link'] = link
-                                item['responseData'] = ''
-                                item['check_at'] = datetime.datetime.now()
-                                flt = {'link': item['link']}
-                                cl_major_score_link_data.replace_one(flt, item, True)
+            with tqdm(total=(len(schoolList)*len(provinceList))*9*9*6) as pbar:
+                for school in schoolList:
+                    schoolId = school['school_id']
+                    for province in provinceList:
+                        provinceId = province['provinceid']
+                        for recruit_type in range(1,10):
+                        # for recruit_type in range(1,2):
+                            for i in range(1,10):
+                            # for i in range(1,2):
+                                for yearNumber in range(2020,2014,-1):
+                                    item = {}
+                                    # link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/13/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
+                                    link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/{}/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
+                                    item['link'] = link
+                                    item['responseData'] = ''
+                                    item['check_at'] = datetime.datetime.now()
+                                    flt = {'link': item['link']}
+                                    cl_major_score_link_data.replace_one(flt, item, True)
+                                    pbar.update(1)
+
         data = list(cl_major_score_link_data.find().sort('check_at', 1).limit(100))
         return data
 
@@ -366,9 +370,12 @@ class eolData:
                 self.saveDataEnrollPlan(data_json, url, cl_enroll_plan) 
 
     def noticeIfttt(self, msg):
-        d = { "value1" : msg}
-        url = 'https://maker.ifttt.com/trigger/notice_task_iphone/with/key/eT7xmvYI5fXlIgjmmYoHQ'
-        requests.post(url, data=d)
+        try:
+            d = { "value1" : msg}
+            url = 'https://maker.ifttt.com/trigger/notice_task_iphone/with/key/eT7xmvYI5fXlIgjmmYoHQ'
+            requests.post(url, data=d)
+        except:
+            pass
 
     
 if __name__=="__main__":
@@ -376,12 +383,14 @@ if __name__=="__main__":
     try:
         # eol.schoolScoreLink()
         # 在执行    1474.pts-0.vmDebian
+        # eol.noticeIfttt('任务[专业分数线链接]开始 '+str(datetime.datetime.now()))
         # eol.majorScoreLink()
-        # eol.noticeIfttt('任务[专业分数线链接]完成')
+        # eol.noticeIfttt('任务[专业分数线链接]完成 '+str(datetime.datetime.now()))
 
         # 在执行    4579.pts-0.vmDebian
-        eol.enrollPlanLink()
-        eol.noticeIfttt('任务[招生计划链接]完成')
+        # eol.noticeIfttt('任务[招生计划链接]开始 '+str(datetime.datetime.now()))
+        # eol.enrollPlanLink()
+        # eol.noticeIfttt('任务[招生计划链接]完成 '+str(datetime.datetime.now()))
 
         # while True:
 
@@ -401,5 +410,8 @@ if __name__=="__main__":
         #     print("开始抓取招生计划  "+str(datetime.datetime.now()))
         #     eol.runEnrollPlan()
         #     time.sleep(10)
+
+        pass
+
     except:
         eol.noticeIfttt('任务有错')

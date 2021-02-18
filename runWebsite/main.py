@@ -130,6 +130,14 @@ def home():
     cl_major_score_data = db["major_score_data"]
     major_score_data_count = str_of_num(cl_major_score_data.estimated_document_count())
 
+    # 招生计划
+    cl_enroll_plan_data = db["enroll_plan_data"]
+    enroll_plan_data_count = str_of_num(cl_enroll_plan_data.estimated_document_count())
+
+    # 学校分数线链接
+    cl_school_score_link_data = db["school_score_link_data"]
+    school_score_link_data_count = str_of_num(cl_school_score_link_data.estimated_document_count())
+
     # 专业分数线链接
     cl_major_score_link_data = db["major_score_link_data"]
     major_score_link_data_count = str_of_num(cl_major_score_link_data.estimated_document_count())
@@ -142,7 +150,7 @@ def home():
 
     
 
-    return render_template('home.html', title_name='Hunk\'s Website', data = {'school_score_data_count':school_score_data_count, 'major_score_data_count':major_score_data_count, 'major_score_link_data_count':major_score_link_data_count, 'cl_enroll_plan_link_data_count':cl_enroll_plan_link_data_count})
+    return render_template('home.html', title_name='Hunk\'s Website', data = {'school_score_data_count':school_score_data_count, 'major_score_data_count':major_score_data_count, 'enroll_plan_data_count':enroll_plan_data_count, 'school_score_link_data_count':school_score_link_data_count, 'major_score_link_data_count':major_score_link_data_count, 'cl_enroll_plan_link_data_count':cl_enroll_plan_link_data_count})
 
 
 
