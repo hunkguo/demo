@@ -15,6 +15,7 @@ from concurrent.futures import ThreadPoolExecutor, wait, FIRST_COMPLETED, ALL_CO
 from urllib import request,error
 import logging
 import multiprocessing
+from tqdm import tqdm
 
 # 教育在线数据
 
@@ -173,23 +174,26 @@ class eolData:
             cl_enroll_plan_link_data.create_index([('link', ASCENDING)], unique=True) 
             schoolList = self.schools()
             provinceList = self.provinces()
-            for school in schoolList:
-                schoolId = school['school_id']
-                for province in provinceList:
-                    provinceId = province['provinceid']
-                    for recruit_type in range(1,10):
-                    # for recruit_type in range(1,2):
-                        for batchNumber in range(1,100):
-                            for i in range(1,10):
-                            # for i in range(1,2):
-                                for yearNumber in range(2020,2014,-1):
-                                    item = {}
-                                    link ='https://static-data.eol.cn/www/2.0/schoolplanindex/{}/{}/{}/{}/{}/{}.json'.format(yearNumber,schoolId,provinceId,recruit_type,batchNumber,i)
-                                    item['link'] = link
-                                    item['responseData'] = ''
-                                    item['check_at'] = datetime.datetime.now()
-                                    flt = {'link': item['link']}
-                                    cl_enroll_plan_link_data.replace_one(flt, item, True)
+
+            with tqdm(total=(len(schoolList)*len(provinceList))*9*99*9*6) as pbar:
+                for school in schoolList:
+                    schoolId = school['school_id']
+                    for province in provinceList:
+                        provinceId = province['provinceid']
+                        for recruit_type in range(1,10):
+                        # for recruit_type in range(1,2):
+                            for batchNumber in range(1,100):
+                                for i in range(1,10):
+                                # for i in range(1,2):
+                                    for yearNumber in range(2020,2014,-1):
+                                        item = {}
+                                        link ='https://static-data.eol.cn/www/2.0/schoolplanindex/{}/{}/{}/{}/{}/{}.json'.format(yearNumber,schoolId,provinceId,recruit_type,batchNumber,i)
+                                        item['link'] = link
+                                        item['responseData'] = ''
+                                        item['check_at'] = datetime.datetime.now()
+                                        flt = {'link': item['link']}
+                                        cl_enroll_plan_link_data.replace_one(flt, item, True)
+                                        pbar.update(1)
         data = list(cl_enroll_plan_link_data.find().sort('check_at', 1).limit(100))
         return data
 
@@ -371,16 +375,20 @@ if __name__=="__main__":
     eol = eolData()
     try:
         # eol.schoolScoreLink()
-        # 在执行
+        # 在执行    1474.pts-0.vmDebian
         # eol.majorScoreLink()
         # eol.noticeIfttt('任务[专业分数线链接]完成')
 
-        # 未执行
-        # eol.enrollPlanLink()
-        while True:
-            print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-            eol.runSchoolScore()
-            time.sleep(10)
+        # 在执行    4579.pts-0.vmDebian
+        eol.enrollPlanLink()
+        eol.noticeIfttt('任务[招生计划链接]完成')
+
+        # while True:
+
+        # 在执行    3149.pts-0.vmDebian
+        #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
+        #     eol.runSchoolScore()
+        #     time.sleep(10)
 
 
         # 未执行
