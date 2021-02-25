@@ -18,6 +18,10 @@ import multiprocessing
 from tqdm import tqdm
 import requests
 
+
+import aiohttp
+import asyncio
+
 # 教育在线数据
 
 # 写死了数据库连接，待优化
@@ -366,6 +370,12 @@ class eolData:
                 data_json = future.result()
                 self.saveDataEnrollPlan(data_json, url, cl_enroll_plan) 
 
+
+
+
+
+
+
     def noticeIfttt(self, msg):
         try:
             d = { "value1" : msg}
@@ -374,10 +384,82 @@ class eolData:
         except:
             pass
 
+
+
+    # 基于aiohttp
+    # 公用爬虫
+    async def fetch(self, client, uri):
+        
+        async with client.get(uri,headers=self.headers, timeout=60) as resp:
+            assert resp.status == 200
+            return await resp.json()
+
+    # 保存学校分数线数据  v2
+
+
+    async def SchoolScoreTask(self, uri,  cl_school_score_link, cl_school_score):
+        async with aiohttp.ClientSession() as client:
+            data_json = await self.fetch(client, uri)
+            # print(uri)
+
+            # 更新返回数据
+            myquery = { "link": uri}
+            newvalues = { "$set": { "responseData": data_json, "check_at":datetime.datetime.now()} }
+            cl_school_score_link.update_one(myquery, newvalues)
+
+            try:
+                for item in data_json:
+                    flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
+                    
+                    cl_school_score.replace_one(flt, item, True)
+                # logging.info('Crawl %d records  - URL %s', COUNT, url_path)   
+            except:
+                logging.error('some error - URL %s', uri)  
+                # pass
+
+
+
+
     
+
+    # 抓取学校分数线数据
+    def SchoolScoreMain(self):
+        cl_school_score_link = self.db["school_score_link_data"]
+
+        cl_school_score = self.db["school_score_data"]
+        cl_school_score.create_index([('school_id', ASCENDING),('type',ASCENDING),('batch',ASCENDING),('xclevel',ASCENDING),('zslx_name', ASCENDING),('province_id', ASCENDING),('type_control',ASCENDING),('batch_control',ASCENDING),('proscore',ASCENDING),('max',ASCENDING),('min',ASCENDING),('min_section',ASCENDING),('average',ASCENDING),('filing',ASCENDING),('year', ASCENDING)], unique=True)
+
+        
+        # https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
+        school_score_link_list = self.schoolScoreLink()
+
+
+        '''
+        tasks = []
+        # startTime = datetime.datetime.now()
+        # print("任务开始 : %s" % startTime)
+        for school_score_link in school_score_link_list:
+            uri = school_score_link['link']
+            # 执行函数，并传入参数
+            task = self.executor.submit(self.spider, url, cl = self.db["school_score_link_data"])
+            tasks.append(task)
+            for future in as_completed(tasks):
+                data_json = future.result()
+                self.saveDataSchoolScore(data_json, url, cl_school_score) 
+        '''
+        
+        loop = asyncio.get_event_loop()
+
+        for school_score_link in school_score_link_list:
+            uri = school_score_link['link']
+            # uri = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json'
+            loop.run_until_complete(self.SchoolScoreTask(uri, cl_school_score_link, cl_school_score))
+
+
+
 if __name__=="__main__":
     eol = eolData()
-
+    # eol.SchoolScoreMain()
     # 需要测试验证
     # eol.runEnrollPlan()
 
@@ -397,7 +479,7 @@ if __name__=="__main__":
 
         # 在执行    3149.pts-0.vmDebian
             print("开始抓取学校分数线  "+str(datetime.datetime.now()))
-            eol.runSchoolScore()
+            eol.SchoolScoreMain()
 
 
             # print("开始抓取专业分数线  "+str(datetime.datetime.now()))
@@ -407,7 +489,6 @@ if __name__=="__main__":
             # print("开始抓取招生计划  "+str(datetime.datetime.now()))
             # eol.runEnrollPlan()
 
-
             print("休息一下  "+str(datetime.datetime.now()))
             time.sleep(1)
 
@@ -415,7 +496,6 @@ if __name__=="__main__":
 
     except:
         eol.noticeIfttt('任务有错')
-
 
 
 
