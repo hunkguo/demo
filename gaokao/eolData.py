@@ -389,10 +389,12 @@ class eolData:
     # 基于aiohttp
     # 公用爬虫
     async def fetch(self, client, uri):
-        
-        async with client.get(uri,headers=self.headers, timeout=60) as resp:
-            assert resp.status == 200
-            return await resp.json()
+        try:
+            async with client.get(uri,headers=self.headers, timeout=60) as resp:
+                assert resp.status == 200
+                return await resp.json()
+        except:
+            pass
 
     # 保存学校分数线数据  v2
 
@@ -450,19 +452,22 @@ class eolData:
         
         loop = asyncio.get_event_loop()
 
-        for school_score_link in school_score_link_list:
-            uri = school_score_link['link']
-            # uri = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json'
-            loop.run_until_complete(self.SchoolScoreTask(uri, cl_school_score_link, cl_school_score))
+        with tqdm(total=(len(school_score_link_list))) as pbar:
+            for school_score_link in school_score_link_list:
+                uri = school_score_link['link']
+                # uri = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
+
+                loop.run_until_complete(self.SchoolScoreTask(uri, cl_school_score_link, cl_school_score))
+                pbar.update(1)
 
 
 
 if __name__=="__main__":
     eol = eolData()
-    # eol.SchoolScoreMain()
+    eol.SchoolScoreMain()
     # 需要测试验证
     # eol.runEnrollPlan()
-
+'''
     try:
         # eol.schoolScoreLink()
         # 执行完毕
@@ -496,6 +501,6 @@ if __name__=="__main__":
 
     except:
         eol.noticeIfttt('任务有错')
-
+'''
 
 
