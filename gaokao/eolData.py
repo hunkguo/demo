@@ -455,7 +455,7 @@ class eolData:
         with tqdm(total=(len(school_score_link_list))) as pbar:
             for school_score_link in school_score_link_list:
                 uri = school_score_link['link']
-                # uri = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
+                # uri = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json'
 
                 loop.run_until_complete(self.SchoolScoreTask(uri, cl_school_score_link, cl_school_score))
                 pbar.update(1)
