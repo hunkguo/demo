@@ -44,6 +44,9 @@ class eolData:
     DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
     logging.basicConfig(filename='debug.log', level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
+
+    executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
+
     
     # 学校数据
     def schools(self):
@@ -73,7 +76,7 @@ class eolData:
                             for item in schools:
                                 flt = {'school_id': item['school_id']}
                                 cl_school_data.replace_one(flt, item, True)
-                            time.sleep(0.5)
+                            # time.sleep(0.5)
         #print(list(cl.find()))
         return list(cl_school_data.find())
 
@@ -137,7 +140,7 @@ class eolData:
 
                             flt = {'link': item['link']}
                             cl_school_score_link_data.replace_one(flt, item, True)
-        data = list(cl_school_score_link_data.find().sort('check_at', 1).limit(100))
+        data = list(cl_school_score_link_data.find().sort('check_at', 1).limit(100000))
         return data
                         
 
@@ -168,7 +171,7 @@ class eolData:
                                     cl_major_score_link_data.replace_one(flt, item, True)
                                     pbar.update(1)
 
-        data = list(cl_major_score_link_data.find().sort('check_at', 1).limit(100))
+        data = list(cl_major_score_link_data.find().sort('check_at', 1).limit(100000))
         return data
 
     # 学校招生计划待抓取链接
@@ -198,7 +201,7 @@ class eolData:
                                         flt = {'link': item['link']}
                                         cl_enroll_plan_link_data.replace_one(flt, item, True)
                                         pbar.update(1)
-        data = list(cl_enroll_plan_link_data.find().sort('check_at', 1).limit(100))
+        data = list(cl_enroll_plan_link_data.find().sort('check_at', 1).limit(100000))
         return data
 
 
@@ -272,15 +275,14 @@ class eolData:
         # major_score_link_list = ['https://static-data.eol.cn/www/2.0/schoolspecialindex/2019/102/11/1/1.json']
         major_score_link_list = self.majorScoreLink()
         
-        executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
         tasks = []
 
         # startTime = datetime.datetime.now()
         # print("任务开始 : %s" % startTime)
         for major_score_link in major_score_link_list:
-            url = school_score_link['link']
+            url = major_score_link['link']
             # 执行函数，并传入参数
-            task = executor.submit(self.spider, url, cl = self.db["major_score_link_data"])
+            task = self.executor.submit(self.spider, url, cl = self.db["major_score_link_data"])
             tasks.append(task)
             for future in as_completed(tasks):
                 data_json = future.result()
@@ -318,8 +320,6 @@ class eolData:
         # https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
         school_score_link_list = self.schoolScoreLink()
 
-
-        executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
         tasks = []
 
         # startTime = datetime.datetime.now()
@@ -327,7 +327,7 @@ class eolData:
         for school_score_link in school_score_link_list:
             url = school_score_link['link']
             # 执行函数，并传入参数
-            task = executor.submit(self.spider, url, cl = self.db["school_score_link_data"])
+            task = self.executor.submit(self.spider, url, cl = self.db["school_score_link_data"])
             tasks.append(task)
             for future in as_completed(tasks):
                 data_json = future.result()
@@ -338,7 +338,7 @@ class eolData:
     def saveDataEnrollPlan(self, data_json, url, cl):
         try:
             for item in data_json:
-                print(item)
+                # print(item)
                 item['year'] = url.split('/')[6]
                 flt = {'school_id':item['school_id'],'special_id':item['special_id'],'type':item['type'],'year':item['year'],'id':item['id'],'spid':item['spid'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province': item['province'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'level1':item['level1'],'level2':item['level2'],'level3':item['level3'],'local_batch_name':item['local_batch_name']}
                 # print(item)
@@ -354,16 +354,13 @@ class eolData:
         # https://static-data.eol.cn/www/2.0/schoolspecialindex/2019/102/11/1/1.json
         enroll_plan_link_list = self.enrollPlanLink()
 
-
-        executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
         tasks = []
-
         # startTime = datetime.datetime.now()
         # print("任务开始 : %s" % startTime)
         for enroll_plan_link in enroll_plan_link_list:
             url = enroll_plan_link['link']
             # 执行函数，并传入参数
-            task = executor.submit(self.spider, url, cl = self.db["enroll_plan_link_data"])
+            task = self.executor.submit(self.spider, url, cl = self.db["enroll_plan_link_data"])
             tasks.append(task)
             for future in as_completed(tasks):
                 data_json = future.result()
@@ -380,9 +377,13 @@ class eolData:
     
 if __name__=="__main__":
     eol = eolData()
+
+    # 需要测试验证
+    # eol.runEnrollPlan()
+
     try:
         # eol.schoolScoreLink()
-        # 在执行    1474.pts-0.vmDebian
+        # 执行完毕
         # eol.noticeIfttt('任务[专业分数线链接]开始 '+str(datetime.datetime.now()))
         # eol.majorScoreLink()
         # eol.noticeIfttt('任务[专业分数线链接]完成 '+str(datetime.datetime.now()))
@@ -392,26 +393,29 @@ if __name__=="__main__":
         # eol.enrollPlanLink()
         # eol.noticeIfttt('任务[招生计划链接]完成 '+str(datetime.datetime.now()))
 
-        # while True:
+        while True:
 
         # 在执行    3149.pts-0.vmDebian
-        #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-        #     eol.runSchoolScore()
-        #     time.sleep(10)
+            print("开始抓取学校分数线  "+str(datetime.datetime.now()))
+            eol.runSchoolScore()
 
 
-        # 未执行
-        #     print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-        #     eol.runMajorScore()
-        #     time.sleep(10)
+            # print("开始抓取专业分数线  "+str(datetime.datetime.now()))
+            # eol.runMajorScore()
+
+            # 需要测试验证
+            # print("开始抓取招生计划  "+str(datetime.datetime.now()))
+            # eol.runEnrollPlan()
 
 
-        # 未执行
-        #     print("开始抓取招生计划  "+str(datetime.datetime.now()))
-        #     eol.runEnrollPlan()
-        #     time.sleep(10)
+            print("休息一下  "+str(datetime.datetime.now()))
+            time.sleep(1)
 
-        pass
+        # pass
 
     except:
         eol.noticeIfttt('任务有错')
+
+
+
+

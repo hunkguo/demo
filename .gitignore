@@ -17,3 +17,4 @@ flask_demo/access.log
 .DS_Store
 
 bzb_manage_system/uploads/*
+*/target/debug/*
