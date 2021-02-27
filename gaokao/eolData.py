@@ -424,11 +424,9 @@ class eolData:
 
 
     
-
+    # v3
     # 抓取学校分数线数据
     def SchoolScoreMain(self):
-        cl_school_score_link = self.db["school_score_link_data"]
-
         cl_school_score = self.db["school_score_data"]
         cl_school_score.create_index([('school_id', ASCENDING),('type',ASCENDING),('batch',ASCENDING),('xclevel',ASCENDING),('zslx_name', ASCENDING),('province_id', ASCENDING),('type_control',ASCENDING),('batch_control',ASCENDING),('proscore',ASCENDING),('max',ASCENDING),('min',ASCENDING),('min_section',ASCENDING),('average',ASCENDING),('filing',ASCENDING),('year', ASCENDING)], unique=True)
 
@@ -436,22 +434,34 @@ class eolData:
         # https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
         school_score_link_list = self.schoolScoreLink()
 
-
-        '''
-        tasks = []
-        # startTime = datetime.datetime.now()
-        # print("任务开始 : %s" % startTime)
         for school_score_link in school_score_link_list:
-            uri = school_score_link['link']
-            # 执行函数，并传入参数
-            task = self.executor.submit(self.spider, url, cl = self.db["school_score_link_data"])
-            tasks.append(task)
-            for future in as_completed(tasks):
-                data_json = future.result()
-                self.saveDataSchoolScore(data_json, url, cl_school_score) 
-        '''
-        
-        loop = asyncio.get_event_loop()
+            
+            response_data = school_score_link['responseData']
+            if(response_data!="none" and response_data!=""):
+                # print(response_data)
+                response_data_json = json.loads(response_data)
+
+                if( response_data_json['code'] == '0000' and response_data_json['message'] =='成功'):
+                    # print(url)
+                    data_json = response_data_json['data']['item']
+                    # print(response_data_json)
+                    for item in data_json:
+                        # print(item['school_id'])
+                        flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
+                    
+                        cl_school_score.replace_one(flt, item, True)
+
+'''
+
+            try:
+                for item in data_json:
+                    flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
+                    
+                    cl_school_score.replace_one(flt, item, True)
+                # logging.info('Crawl %d records  - URL %s', COUNT, url_path)   
+            except:
+                logging.error('some error - URL %s', uri)  
+
 
         with tqdm(total=(len(school_score_link_list))) as pbar:
             for school_score_link in school_score_link_list:
@@ -460,17 +470,32 @@ class eolData:
 
                 loop.run_until_complete(self.SchoolScoreTask(uri, cl_school_score_link, cl_school_score))
                 pbar.update(1)
+                # pass
+'''
 
 
 
 if __name__=="__main__":
     eol = eolData()
-    # eol.SchoolScoreMain()
+
+    eol.SchoolScoreMain()
+    
     # 需要测试验证
     # eol.runEnrollPlan()
-
+    
+    
+    
     try:
-        # eol.schoolScoreLink()
+        while True:
+            # 23059.pts-0.vmDebian
+            print("开始生成学校分数线链接  "+str(datetime.datetime.now()))
+            eol.schoolScoreLink()
+            print("开始抓取学校分数线  "+str(datetime.datetime.now()))
+            eol.SchoolScoreMain()
+
+
+
+
         # 执行完毕
         # eol.noticeIfttt('任务[专业分数线链接]开始 '+str(datetime.datetime.now()))
         # eol.majorScoreLink()
@@ -481,11 +506,9 @@ if __name__=="__main__":
         # eol.enrollPlanLink()
         # eol.noticeIfttt('任务[招生计划链接]完成 '+str(datetime.datetime.now()))
 
-        while True:
+        
 
         # 在执行    5818.pts-0.vmDebian
-            print("开始抓取学校分数线  "+str(datetime.datetime.now()))
-            eol.SchoolScoreMain()
 
 
             # print("开始抓取专业分数线  "+str(datetime.datetime.now()))
@@ -495,8 +518,8 @@ if __name__=="__main__":
             # print("开始抓取招生计划  "+str(datetime.datetime.now()))
             # eol.runEnrollPlan()
 
-            print("休息一下  "+str(datetime.datetime.now()))
-            time.sleep(1)
+            # print("休息一下  "+str(datetime.datetime.now()))
+            # time.sleep(1)
 
         # pass
 

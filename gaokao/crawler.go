@@ -45,8 +45,8 @@ type EolLink struct {
 func FindManyLinks(filter bson.M) ([]EolLink, error) {
 
 	findOptions := options.Find()
-	// findOptions.SetSort(bson.D{{"check_at", -1}})
-	// findOptions.SetLimit(10000)
+	findOptions.SetSort(bson.D{{"check_at", 1}})
+	findOptions.SetLimit(10000)
 
 	cursor, err := SchoolScoreLinkColl.Find(ctx, filter, findOptions)
 	if err != nil {
@@ -181,12 +181,11 @@ func schoolScore(){
 
 func main() {
 	fmt.Println("Hello, world")
-	// for {
-	// 	schoolScore()
-	// 	time.Sleep(time.Duration(2)*time.Second)
-	// }
+	for {
+		schoolScore()
+		// time.Sleep(time.Duration(2)*time.Second)
+	}
 
-	schoolScore()
 
 
 	
