@@ -139,7 +139,7 @@ class eolData:
                             link = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/{}/{}/{}/{}.json'.format(schoolId,provinceId,recruit_type,i)
                             item['link'] = link
                             item['responseData'] = ''
-                            item['check_at'] = datetime.datetime.now()
+                            item['check_at'] = datetime.datetime.utcnow()
 
 
                             flt = {'link': item['link']}
@@ -170,7 +170,7 @@ class eolData:
                                     link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/{}/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
                                     item['link'] = link
                                     item['responseData'] = ''
-                                    item['check_at'] = datetime.datetime.now()
+                                    item['check_at'] = datetime.datetime.utcnow()
                                     flt = {'link': item['link']}
                                     cl_major_score_link_data.replace_one(flt, item, True)
                                     pbar.update(1)
@@ -201,7 +201,7 @@ class eolData:
                                         link ='https://static-data.eol.cn/www/2.0/schoolplanindex/{}/{}/{}/{}/{}/{}.json'.format(yearNumber,schoolId,provinceId,recruit_type,batchNumber,i)
                                         item['link'] = link
                                         item['responseData'] = ''
-                                        item['check_at'] = datetime.datetime.now()
+                                        item['check_at'] = datetime.datetime.utcnow()
                                         flt = {'link': item['link']}
                                         cl_enroll_plan_link_data.replace_one(flt, item, True)
                                         pbar.update(1)
@@ -228,7 +228,7 @@ class eolData:
                 result = json.loads(f.read().decode('utf-8'))
                 # 更新返回数据
                 myquery = { "link": url}
-                newvalues = { "$set": { "responseData": result, "check_at":datetime.datetime.now()} }
+                newvalues = { "$set": { "responseData": result, "check_at":datetime.datetime.utcnow()} }
                 cl.update_one(myquery, newvalues)
 
                 # 判断json数据是否正确
@@ -406,7 +406,8 @@ class eolData:
 
             # 更新返回数据
             myquery = { "link": uri}
-            newvalues = { "$set": { "responseData": data_json, "check_at":datetime.datetime.now()} }
+            newvalues = { "$set": { "responseData": data_json, "check_at":datetime.datetime.utcnow()} }
+            print(uri)
             cl_school_score_link.update_one(myquery, newvalues)
 
             try:
@@ -464,10 +465,10 @@ class eolData:
 
 if __name__=="__main__":
     eol = eolData()
-    eol.SchoolScoreMain()
+    # eol.SchoolScoreMain()
     # 需要测试验证
     # eol.runEnrollPlan()
-'''
+
     try:
         # eol.schoolScoreLink()
         # 执行完毕
@@ -482,7 +483,7 @@ if __name__=="__main__":
 
         while True:
 
-        # 在执行    3149.pts-0.vmDebian
+        # 在执行    5818.pts-0.vmDebian
             print("开始抓取学校分数线  "+str(datetime.datetime.now()))
             eol.SchoolScoreMain()
 
@@ -501,6 +502,6 @@ if __name__=="__main__":
 
     except:
         eol.noticeIfttt('任务有错')
-'''
+
 
 
