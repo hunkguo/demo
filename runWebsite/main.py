@@ -147,10 +147,9 @@ def home():
     cl_enroll_plan_link_data_count = str_of_num(cl_enroll_plan_link_data.estimated_document_count())
 
     
-
+    school_score_link_data_new = list(cl_school_score_link_data.find({}).sort('check_at', -1).limit(10))
     
-
-    return render_template('home.html', title_name='Hunk\'s Website', data = {'school_score_data_count':school_score_data_count, 'major_score_data_count':major_score_data_count, 'enroll_plan_data_count':enroll_plan_data_count, 'school_score_link_data_count':school_score_link_data_count, 'major_score_link_data_count':major_score_link_data_count, 'cl_enroll_plan_link_data_count':cl_enroll_plan_link_data_count})
+    return render_template('home.html', title_name='Hunk\'s Website', data = {'school_score_data_count':school_score_data_count, 'major_score_data_count':major_score_data_count, 'enroll_plan_data_count':enroll_plan_data_count, 'school_score_link_data_count':school_score_link_data_count, 'major_score_link_data_count':major_score_link_data_count, 'cl_enroll_plan_link_data_count':cl_enroll_plan_link_data_count, 'school_score_link_data_new':school_score_link_data_new})
 
 
 

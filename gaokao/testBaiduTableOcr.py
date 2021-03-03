@@ -5,7 +5,7 @@ import json,time
 def pyMuPDF_fitz(pdfPath, imagePath):
     startTime_pdf2img = datetime.datetime.now()#开始时间
 
-    print("imagePath="+imagePath)
+    # print("imagePath="+imagePath)
     pdfDoc = fitz.open(pdfPath)
     for pg in range(pdfDoc.pageCount):
         page = pdfDoc[pg]
@@ -51,10 +51,10 @@ def baiduOcr(filepath):
         response = requests.post(request_url, data=params, headers=headers)
         if response:
             result = response.json()
-            print(result)
+            # print(result)
             request_id = result['result'][0]['request_id']
 
-        time.sleep(5)
+        time.sleep(10)
         request_url = "https://aip.baidubce.com/rest/2.0/solution/v1/form_ocr/get_request_result"
         request_url = request_url + "?access_token=" + access_token
         headers = {'content-type': 'application/x-www-form-urlencoded'}
@@ -67,11 +67,12 @@ def baiduOcr(filepath):
         
 
 if __name__ == "__main__":
-    # pdfPath = '2020年河南省普通高招分数段统计表(理科).pdf'
+    pdfPath = '2015年河南省普通高招分数段统计表(理科).pdf'
     # pdfPath = '2020年河南省普通高招分数段统计表(文科).pdf'
-    pdfPath = '浙江省 2020 年普通高校招生成绩分数段表.pdf'
+    # pdfPath = '浙江省 2020 年普通高校招生成绩分数段表.pdf'
     imagePath = 'images'
     pyMuPDF_fitz(pdfPath, imagePath)
+
 
 
     g = os.walk(r"images")  
@@ -79,7 +80,9 @@ if __name__ == "__main__":
     for path,dir_list,file_list in g:  
         for file_name in file_list:  
             # print(os.path.join(path, file_name) )
-            baiduOcr(os.path.join(path, file_name))
+            # if(file_name =="2017年河南省普通高招分数段统计表(文科)_2.png"):
+                # print(file_name)
+            baiduOcr(os.path.join(path, file_name)) 
         break
 
 

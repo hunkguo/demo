@@ -14,7 +14,7 @@ import (
 )
 
 var ctx = context.Background() 		// create a new context
-var SchoolScoreLinkColl *mongo.Collection 		// create a new collection
+var MajorScoreLinkColl *mongo.Collection 		// create a new collection
 
 // connect database
 func db_connect() {
@@ -29,7 +29,7 @@ func db_connect() {
 		log.Fatal(err)
 	}
     	//example coll
-	SchoolScoreLinkColl = client.Database("db_gaokao").Collection("school_score_link_data")
+	MajorScoreLinkColl = client.Database("db_gaokao").Collection("major_score_link_data")
 }
 
 
@@ -48,7 +48,7 @@ func FindManyLinks(filter bson.M) ([]EolLink, error) {
 	findOptions.SetSort(bson.D{{"check_at", 1}})
 	findOptions.SetLimit(10000)
 
-	cursor, err := SchoolScoreLinkColl.Find(ctx, filter, findOptions)
+	cursor, err := MajorScoreLinkColl.Find(ctx, filter, findOptions)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func FindManyLinks(filter bson.M) ([]EolLink, error) {
 	return res, nil
 }
 func UpdateOneLink(filter bson.M, update bson.M) (*mongo.UpdateResult, error) {
-	res, err := SchoolScoreLinkColl.UpdateOne(ctx, filter, update)
+	res, err := MajorScoreLinkColl.UpdateOne(ctx, filter, update)
 	// fmt.Println(update)
 	return res, err
 }
@@ -76,7 +76,7 @@ func UpdateOneLink(filter bson.M, update bson.M) (*mongo.UpdateResult, error) {
 
 
 
-func schoolScoreLink(inChEolLink chan EolLink){
+func majorScoreLink(inChEolLink chan EolLink){
 	
 	
 
@@ -101,7 +101,7 @@ func schoolScoreLink(inChEolLink chan EolLink){
 
 
 
-func schoolScoreFetch(inChEolLink chan EolLink){
+func majorScoreFetch(inChEolLink chan EolLink){
 	for {
 		eolLink := <- inChEolLink
 		url := eolLink.Link
@@ -165,17 +165,17 @@ func schoolScoreFetch(inChEolLink chan EolLink){
 
 
 
-func schoolScore(){
+func majorScore(){
 
 	db_connect()
 
 	// 初始化channels
-	var inChEolLink = make(chan EolLink, 100)
+	var inChEolLink = make(chan EolLink, 200)
 
 	
 
-	go schoolScoreFetch(inChEolLink)
-	schoolScoreLink(inChEolLink)
+	go majorScoreFetch(inChEolLink)
+	majorScoreLink(inChEolLink)
 	defer close(inChEolLink)
 }
 
@@ -183,7 +183,7 @@ func schoolScore(){
 func main() {
 	fmt.Println("Hello, world")
 	for {
-		schoolScore()
+		majorScore()
 		// time.Sleep(time.Duration(2)*time.Second)
 	}
 

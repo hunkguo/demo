@@ -6,46 +6,87 @@
 
 {% block content %}
 <div class="container">
-        <div class="jumbotron">
-            <h1 class="display-4">Welcome!</h1>
-            <p class="lead">This is Hunk's Website.</p>
-            <hr class="my-4">
-            <button type="button" class="btn btn-info">
-                学校分数线 
-                <span class="badge badge-success">
-                    {{data.school_score_data_count}}
-                </span>
-            </button>
-            <button type="button" class="btn btn-info">
-                专业分数线 
-                <span class="badge badge-success">
-                    {{data.major_score_data_count}}
-                </span>
-            </button>
-            <button type="button" class="btn btn-info">
-                招生计划
-                <span class="badge badge-success">
-                    {{data.enroll_plan_data_count}}
-                </span>
-            </button>
-            <button type="button" class="btn btn-info">
-                学校分数线链接 
-                <span class="badge badge-success">
-                    {{data.school_score_link_data_count}}
-                </span>
-            </button>
-            <button type="button" class="btn btn-info">
-                专业分数线链接 
-                <span class="badge badge-success">
-                    {{data.major_score_link_data_count}}
-                </span>
-            </button>
-            <button type="button" class="btn btn-info">
-                招生计划链接 
-                <span class="badge badge-success">
-                    {{data.cl_enroll_plan_link_data_count}}
-                </span>
-            </button>
+    <div class="jumbotron">
+        <h1 class="display-4">Welcome!</h1>
+        <p class="lead">This is Hunk's Website.</p>
+        <hr class="my-4">
+
+        <div class="row justify-content-md-center">
+            <div class="col-sm">
+                <button type="button" class="btn btn-info">
+                    学校分数线 
+                    <span class="badge badge-success">
+                        {{data.school_score_data_count}}
+                    </span>
+                </button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-info">
+                    专业分数线 
+                    <span class="badge badge-success">
+                        {{data.major_score_data_count}}
+                    </span>
+                </button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-info">
+                    招生计划
+                    <span class="badge badge-success">
+                        {{data.enroll_plan_data_count}}
+                    </span>
+                </button>
+            </div>
         </div>
+
+        <div class="row justify-content-md-center">
+            <div class="col-sm">
+                <button type="button" class="btn btn-info">
+                    学校分数线链接 
+                    <span class="badge badge-success">
+                        {{data.school_score_link_data_count}}
+                    </span>
+                </button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-info">
+                    专业分数线链接 
+                    <span class="badge badge-success">
+                        {{data.major_score_link_data_count}}
+                    </span>
+                </button>
+            </div>
+            <div class="col-sm">
+                <button type="button" class="btn btn-info">
+                    招生计划链接 
+                    <span class="badge badge-success">
+                        {{data.cl_enroll_plan_link_data_count}}
+                    </span>
+                </button>
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center">
+            <div class="col-sm">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">链接</th>
+                        <th scope="col">更新时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in data.school_score_link_data_new %}
+                        <tr>
+                            <td>{{item.link}}</td>
+                            <td>{{item.check_at}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
+        
+    </div>
 </div>
 {% endblock %}

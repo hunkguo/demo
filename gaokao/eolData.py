@@ -46,7 +46,7 @@ class eolData:
 
     LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
     DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
-    logging.basicConfig(filename='debug.log', level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
+    logging.basicConfig(filename='error.log', level=logging.ERROR, format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
 
     executor = ThreadPoolExecutor(max_workers=multiprocessing.cpu_count())
@@ -144,38 +144,46 @@ class eolData:
 
                             flt = {'link': item['link']}
                             cl_school_score_link_data.replace_one(flt, item, True)
-        data = list(cl_school_score_link_data.find().sort('check_at', 1).limit(100000))
+        data = list(cl_school_score_link_data.find().sort('check_at', -1).limit(100000))
         return data
                         
 
     # 专业分数线待抓取链接
     def majorScoreLink(self):
         cl_major_score_link_data = self.db["major_score_link_data"]
+
         if(cl_major_score_link_data.estimated_document_count()==0):
             cl_major_score_link_data.create_index([('link', ASCENDING)], unique=True) 
             schoolList = self.schools()
             provinceList = self.provinces()
-            with tqdm(total=(len(schoolList)*len(provinceList))*9*9*6) as pbar:
-                for school in schoolList:
-                    schoolId = school['school_id']
-                    for province in provinceList:
-                        provinceId = province['provinceid']
-                        for recruit_type in range(1,10):
-                        # for recruit_type in range(1,2):
-                            for i in range(1,10):
-                            # for i in range(1,2):
-                                for yearNumber in range(2020,2014,-1):
-                                    item = {}
-                                    # link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/13/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
-                                    link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/{}/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
-                                    item['link'] = link
-                                    item['responseData'] = ''
-                                    item['check_at'] = datetime.datetime.utcnow()
-                                    flt = {'link': item['link']}
-                                    cl_major_score_link_data.replace_one(flt, item, True)
-                                    pbar.update(1)
 
-        data = list(cl_major_score_link_data.find().sort('check_at', 1).limit(100000))
+
+            cl_school_score = self.db["school_score_data"]
+
+            for school in schoolList:
+                schoolId = school['school_id']
+                # recruit_type_data = cl_school_score.distinct("type", {"school_id":schoolId})
+                recruit_type_data = cl_school_score.distinct("type", {"school_id":str(schoolId)})
+                for province in provinceList:
+                    provinceId = province['provinceid']
+                    # 录取类型
+                    # db.school_score_data.distinct("type", {school_id:"42"})
+                    for recruit_type in recruit_type_data:
+                    # for recruit_type in range(1,2):
+                        for i in range(1,5):    #待验证是否够用
+                        # for i in range(1,2):
+                            for yearNumber in range(2020,2014,-1):
+                                item = {}
+                                # link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/13/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
+                                link = 'https://static-data.eol.cn/www/2.0/schoolspecialindex/{}/{}/{}/{}/{}.json'.format(yearNumber, schoolId,provinceId,recruit_type,i)
+                                item['link'] = link
+                                item['responseData'] = ''
+                                item['check_at'] = datetime.datetime.utcnow()
+                                flt = {'link': item['link']}
+                                # print(item)
+                                cl_major_score_link_data.replace_one(flt, item, True)
+
+        data = list(cl_major_score_link_data.find().sort('check_at', -1).limit(100000))
         return data
 
     # 学校招生计划待抓取链接
@@ -186,28 +194,185 @@ class eolData:
             schoolList = self.schools()
             provinceList = self.provinces()
 
-            with tqdm(total=(len(schoolList)*len(provinceList))*9*99*9*6) as pbar:
-                for school in schoolList:
-                    schoolId = school['school_id']
-                    for province in provinceList:
-                        provinceId = province['provinceid']
-                        for recruit_type in range(1,10):
-                        # for recruit_type in range(1,2):
-                            for batchNumber in range(1,100):
-                                for i in range(1,10):
-                                # for i in range(1,2):
-                                    for yearNumber in range(2020,2014,-1):
-                                        item = {}
-                                        link ='https://static-data.eol.cn/www/2.0/schoolplanindex/{}/{}/{}/{}/{}/{}.json'.format(yearNumber,schoolId,provinceId,recruit_type,batchNumber,i)
-                                        item['link'] = link
-                                        item['responseData'] = ''
-                                        item['check_at'] = datetime.datetime.utcnow()
-                                        flt = {'link': item['link']}
-                                        cl_enroll_plan_link_data.replace_one(flt, item, True)
-                                        pbar.update(1)
-        data = list(cl_enroll_plan_link_data.find().sort('check_at', 1).limit(100000))
+            cl_school_score = self.db["school_score_data"]
+
+            for school in schoolList:
+                schoolId = school['school_id']
+                recruit_type_data = cl_school_score.distinct("type", {"school_id":str(42)})
+                batchNumber_data = cl_school_score.distinct("batch", {"school_id":str(42)})
+            # print(recruit_type_data)
+            # print(batchNumber_data)
+            # https://static-data.eol.cn/www/2.0/schoolplanindex/2019/42/33/1/12/1.json
+            for province in provinceList:
+                provinceId = province['provinceid']
+                for recruit_type in recruit_type_data:
+                    # print(type(recruit_type))
+                    # 录取类型
+                    # db.school_score_data.distinct("type", {school_id:"42"})
+                    # for recruit_type in range(1,2):
+                        for batchNumber in batchNumber_data:
+                        # db.school_score_data.distinct("batch", {school_id:"42"})
+                        # 没猜对
+                        # 根据学校录取情况取批次
+                            for i in range(1,5):
+                            # for i in range(1,2):
+                                for yearNumber in range(2020,2014,-1):
+                                    link ='https://static-data.eol.cn/www/2.0/schoolplanindex/{}/{}/{}/{}/{}/{}.json'.format(yearNumber,schoolId,provinceId,recruit_type,batchNumber,i)
+                                    # data_json = self.crawler(link)
+
+                                    item = {}
+                                    item['link'] = link
+                                    item['responseData'] = ''
+                                    item['check_at'] = datetime.datetime.utcnow()
+                                    flt = {'link': item['link']}
+                                    cl_enroll_plan_link_data.replace_one(flt, item, True)
+        data = list(cl_enroll_plan_link_data.find().sort('check_at', -1).limit(100000))
         return data
 
+
+
+
+
+
+
+
+    def noticeIfttt(self, msg):
+        try:
+            d = { "value1" : msg}
+            url = 'https://maker.ifttt.com/trigger/notice_task_iphone/with/key/eT7xmvYI5fXlIgjmmYoHQ'
+            requests.post(url, data=d)
+        except:
+            pass
+
+
+
+
+
+
+    
+    # v3
+    # 抓取学校分数线数据
+    def SchoolScoreMain(self):
+        cl_school_score = self.db["school_score_data"]
+        cl_school_score.create_index([('school_id', ASCENDING),('type',ASCENDING),('batch',ASCENDING),('xclevel',ASCENDING),('zslx_name', ASCENDING),('province_id', ASCENDING),('type_control',ASCENDING),('batch_control',ASCENDING),('proscore',ASCENDING),('max',ASCENDING),('min',ASCENDING),('min_section',ASCENDING),('average',ASCENDING),('filing',ASCENDING),('year', ASCENDING)], unique=True)
+
+        
+        # https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
+        school_score_link_list = self.schoolScoreLink()
+
+        for school_score_link in school_score_link_list:
+            # print(school_score_link['link'])
+            response_data = school_score_link['responseData']
+            if(response_data!="none" and response_data!=""):
+                # print(response_data)
+                try:
+                    response_data_json = json.loads(response_data)
+                except:
+                    cl_school_score_link_data = self.db["school_score_link_data"]
+                    item = {}
+                    item['link'] = school_score_link['link']
+                    item['responseData'] = ''
+                    item['check_at'] = datetime.datetime.utcnow()
+                    flt = {'link': item['link']}
+                    cl_school_score_link_data.replace_one(flt, item, True)
+
+
+                if( response_data_json['code'] == '0000' and response_data_json['message'] =='成功'):
+                    # print(url)
+                    data_json = response_data_json['data']['item']
+                    # print(response_data_json)
+                    for item in data_json:
+                        # print(item['school_id'])
+                        flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
+                    
+                        cl_school_score.replace_one(flt, item, True)
+                        
+    # 测试是否有返回值
+    def crawler(self, url):
+        data_json = ''
+        try:
+            # print(url)
+            req = urllib.request.Request(
+                            url, 
+                            data=None, 
+                            headers = self.headers
+                        )
+            f = urllib.request.urlopen(req, timeout=60)
+            
+            if(f.getcode()==200):
+                result = json.loads(f.read().decode('utf-8'))
+
+                # 判断json数据是否正确
+                if( result['code'] == '0000' and result['message'] =='成功'):
+                    print(url)
+                    data_json = result['data']['item']
+        except:
+            pass
+        return data_json
+
+
+
+if __name__=="__main__":
+    eol = eolData()
+    try:
+        # while True:
+            # 完成
+            # print("任务[专业分数线链接]开始  "+str(datetime.datetime.now()))
+            # eol.majorScoreLink()
+
+            # print("任务[招生计划链接]开始"+str(datetime.datetime.now()))
+            eol.enrollPlanLink()
+
+
+            # 23059.pts-0.vmDebian
+            # print("任务[学校分数线]开始"+str(datetime.datetime.now()))
+            # eol.SchoolScoreMain()
+            
+
+
+
+
+
+
+        
+
+
+        # pass
+
+
+
+        # cl_school_score = eol.db["school_score_data"]
+
+        # # for school in schoolList:
+        #     # schoolId = school['school_id']
+        # # recruit_type_data = cl_school_score.distinct("type", {"school_id":str(42), "province_id":str(33)})
+        # # batchNumber_data = cl_school_score.distinct("batch", {"school_id":str(42), "province_id":str(33)})
+        # recruit_type_data = cl_school_score.distinct("type", {"school_id":str(42)})
+        # batchNumber_data = cl_school_score.distinct("batch", {"school_id":str(42)})
+        # print(recruit_type_data)
+        # print(batchNumber_data)
+
+        # for recruit_type in range(1,4):
+        #     for batchNumber in range(1,100):
+        #         for i in range(1,6):
+        #             link ='https://static-data.eol.cn/www/2.0/schoolplanindex/2020/42/13/{}/{}/{}.json'.format(recruit_type,batchNumber,i)
+        #             data_json = eol.crawler(link)
+
+
+    except Exception as e: 
+        logging.error('Unknow error : '+ str(e))
+        eol.noticeIfttt('任务有错')
+
+
+
+
+
+
+
+
+
+
+'''
 
 
     # 共用爬虫
@@ -370,22 +535,6 @@ class eolData:
                 data_json = future.result()
                 self.saveDataEnrollPlan(data_json, url, cl_enroll_plan) 
 
-
-
-
-
-
-
-    def noticeIfttt(self, msg):
-        try:
-            d = { "value1" : msg}
-            url = 'https://maker.ifttt.com/trigger/notice_task_iphone/with/key/eT7xmvYI5fXlIgjmmYoHQ'
-            requests.post(url, data=d)
-        except:
-            pass
-
-
-
     # 基于aiohttp
     # 公用爬虫
     async def fetch(self, client, uri):
@@ -420,111 +569,5 @@ class eolData:
                 logging.error('some error - URL %s', uri)  
                 # pass
 
-
-
-
-    
-    # v3
-    # 抓取学校分数线数据
-    def SchoolScoreMain(self):
-        cl_school_score = self.db["school_score_data"]
-        cl_school_score.create_index([('school_id', ASCENDING),('type',ASCENDING),('batch',ASCENDING),('xclevel',ASCENDING),('zslx_name', ASCENDING),('province_id', ASCENDING),('type_control',ASCENDING),('batch_control',ASCENDING),('proscore',ASCENDING),('max',ASCENDING),('min',ASCENDING),('min_section',ASCENDING),('average',ASCENDING),('filing',ASCENDING),('year', ASCENDING)], unique=True)
-
-        
-        # https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json
-        school_score_link_list = self.schoolScoreLink()
-
-        for school_score_link in school_score_link_list:
-            
-            response_data = school_score_link['responseData']
-            if(response_data!="none" and response_data!=""):
-                # print(response_data)
-                response_data_json = json.loads(response_data)
-
-                if( response_data_json['code'] == '0000' and response_data_json['message'] =='成功'):
-                    # print(url)
-                    data_json = response_data_json['data']['item']
-                    # print(response_data_json)
-                    for item in data_json:
-                        # print(item['school_id'])
-                        flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
-                    
-                        cl_school_score.replace_one(flt, item, True)
-
 '''
-
-            try:
-                for item in data_json:
-                    flt = {'school_id':item['school_id'],'type':item['type'],'batch':item['batch'],'zslx_name':item['zslx_name'],'province_id': item['province_id'],'xclevel': item['xclevel'],'type_control': item['type_control'],'batch_control': item['batch_control'],'proscore': item['proscore'],'max': item['max'],'min': item['min'],'min_section': item['min_section'],'average': item['average'],'filing': item['filing'],'year':item['year']}
-                    
-                    cl_school_score.replace_one(flt, item, True)
-                # logging.info('Crawl %d records  - URL %s', COUNT, url_path)   
-            except:
-                logging.error('some error - URL %s', uri)  
-
-
-        with tqdm(total=(len(school_score_link_list))) as pbar:
-            for school_score_link in school_score_link_list:
-                uri = school_score_link['link']
-                # uri = 'https://static-data.eol.cn/www/2.0/schoolprovinceindex/detial/102/52/1/1.json'
-
-                loop.run_until_complete(self.SchoolScoreTask(uri, cl_school_score_link, cl_school_score))
-                pbar.update(1)
-                # pass
-'''
-
-
-
-if __name__=="__main__":
-    eol = eolData()
-
-    eol.SchoolScoreMain()
-    
-    # 需要测试验证
-    # eol.runEnrollPlan()
-    
-    
-    
-    try:
-        while True:
-            # 23059.pts-0.vmDebian
-            print("开始生成学校分数线链接  "+str(datetime.datetime.now()))
-            eol.schoolScoreLink()
-            print("开始抓取学校分数线  "+str(datetime.datetime.now()))
-            eol.SchoolScoreMain()
-
-
-
-
-        # 执行完毕
-        # eol.noticeIfttt('任务[专业分数线链接]开始 '+str(datetime.datetime.now()))
-        # eol.majorScoreLink()
-        # eol.noticeIfttt('任务[专业分数线链接]完成 '+str(datetime.datetime.now()))
-
-        # 在执行    4579.pts-0.vmDebian
-        # eol.noticeIfttt('任务[招生计划链接]开始 '+str(datetime.datetime.now()))
-        # eol.enrollPlanLink()
-        # eol.noticeIfttt('任务[招生计划链接]完成 '+str(datetime.datetime.now()))
-
-        
-
-        # 在执行    5818.pts-0.vmDebian
-
-
-            # print("开始抓取专业分数线  "+str(datetime.datetime.now()))
-            # eol.runMajorScore()
-
-            # 需要测试验证
-            # print("开始抓取招生计划  "+str(datetime.datetime.now()))
-            # eol.runEnrollPlan()
-
-            # print("休息一下  "+str(datetime.datetime.now()))
-            # time.sleep(1)
-
-        # pass
-
-    except:
-        eol.noticeIfttt('任务有错')
-
-
 
